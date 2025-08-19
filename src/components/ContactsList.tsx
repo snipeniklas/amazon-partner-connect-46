@@ -110,6 +110,8 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
     
     try {
       const contactIds = contacts.map(c => c.id);
+      console.log('Fetching comment counts for contacts:', contactIds);
+      
       const { data, error } = await supabase
         .from('contact_comments')
         .select('contact_id')
@@ -117,12 +119,15 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
 
       if (error) throw error;
 
+      console.log('Raw comment data:', data);
+
       // Count comments per contact
       const counts: Record<string, number> = {};
       data?.forEach(comment => {
         counts[comment.contact_id] = (counts[comment.contact_id] || 0) + 1;
       });
       
+      console.log('Calculated comment counts:', counts);
       setCommentCounts(counts);
     } catch (error) {
       console.error('Error fetching comment counts:', error);
@@ -132,6 +137,16 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
   // Fetch comment counts when contacts change
   useEffect(() => {
     fetchCommentCounts();
+  }, [contacts]);
+
+  // Refresh comment counts when returning from contact details
+  useEffect(() => {
+    const handleFocus = () => {
+      fetchCommentCounts();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
   }, [contacts]);
 
   // Reset to page 1 when filters change
