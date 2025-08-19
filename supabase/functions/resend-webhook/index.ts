@@ -1,9 +1,28 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const webhookSecret = Deno.env.get("RESEND_WEBHOOK_SECRET")!;
+// Get environment variables with proper error handling
+const supabaseUrl = Deno.env.get("SUPABASE_URL");
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const webhookSecret = Deno.env.get("RESEND_WEBHOOK_SECRET");
+
+// Validate required environment variables
+if (!supabaseUrl) {
+  console.error("Missing SUPABASE_URL environment variable");
+  throw new Error("Missing SUPABASE_URL environment variable");
+}
+
+if (!supabaseServiceKey) {
+  console.error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable");
+  throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable");
+}
+
+if (!webhookSecret) {
+  console.error("Missing RESEND_WEBHOOK_SECRET environment variable");
+  throw new Error("Missing RESEND_WEBHOOK_SECRET environment variable");
+}
+
+console.log("Environment variables loaded successfully");
 
 // Create Supabase client with service role for database operations
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
