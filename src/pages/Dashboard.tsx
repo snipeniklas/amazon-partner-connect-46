@@ -161,13 +161,12 @@ const Dashboard = () => {
         return acc;
       }, {} as Record<string, string[]>);
 
-      // Get contacts that have comments (single efficient query)
-      const contactIds = (contactsData || []).map(c => c.id);
+      // Get contacts that have comments (optimized query with RLS filtering)
       const { data: contactsWithComments } = await supabase
         .from('contact_comments')
-        .select('contact_id')
-        .in('contact_id', contactIds);
+        .select('contact_id');
 
+      // Create a Set of unique contact IDs that have comments  
       const contactsWithCommentsSet = new Set(
         (contactsWithComments || []).map(c => c.contact_id)
       );
