@@ -1,0 +1,6 @@
+supabase/
+.env.local
+.env.example
+README.md
+*.md
+.git/
