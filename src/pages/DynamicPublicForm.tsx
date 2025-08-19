@@ -181,7 +181,7 @@ const DynamicPublicForm = () => {
           website: "https://demo-logistics.com",
           contact_person_first_name: "Max",
           contact_person_last_name: "Mustermann",
-          contact_person_position: "Geschäftsführer",
+          contact_person_position: (targetMarket === 'uk' || targetMarket === 'ireland') ? "Managing Director" : "Geschäftsführer",
           phone_number: "+49 30 12345678",
           email_address: "max@demo-logistics.com",
           market_type: marketType,
@@ -886,14 +886,21 @@ const DynamicPublicForm = () => {
    const getRequiredFieldsForStep = (step: number) => {
       switch (step) {
         case 1:
-          return {
+          const step1Fields: any = {
             company_name: 'Firmenname',
             email_address: 'E-Mail-Adresse',
             company_address: 'Firmenadresse',
-            website: 'Website',
             contact_person_first_name: 'Ansprechpartner Vorname',
+            contact_person_position: 'Position',
             phone_number: 'Telefonnummer'
           };
+          
+          // Website is only required for non-UK/Ireland markets
+          if (targetMarket !== 'uk' && targetMarket !== 'ireland') {
+            step1Fields.website = 'Website';
+          }
+          
+          return step1Fields;
          case 2:
            const step2Fields: any = {
              company_established_year: 'Gründungsjahr',
@@ -1364,7 +1371,7 @@ const DynamicPublicForm = () => {
 
                       <div className="space-y-2">
                         <Label htmlFor="website" className={hasFieldError('website') ? 'text-destructive' : ''}>
-                          {t('forms:publicForm.companyData.website')} *
+                          {t('forms:publicForm.companyData.website')}{(targetMarket !== 'uk' && targetMarket !== 'ireland') ? ' *' : ''}
                         </Label>
                         <Input
                           id="website"
@@ -1373,7 +1380,7 @@ const DynamicPublicForm = () => {
                           onChange={(e) => updateFormData('website', e.target.value)}
                           className={hasFieldError('website') ? 'border-destructive focus:border-destructive' : ''}
                           placeholder="https://..."
-                          required
+                          required={targetMarket !== 'uk' && targetMarket !== 'ireland'}
                         />
                       </div>
 
@@ -1386,6 +1393,19 @@ const DynamicPublicForm = () => {
                           value={formData.contact_person_first_name}
                           onChange={(e) => updateFormData('contact_person_first_name', e.target.value)}
                           className={hasFieldError('contact_person_first_name') ? 'border-destructive focus:border-destructive' : ''}
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="contact_person_position" className={hasFieldError('contact_person_position') ? 'text-destructive' : ''}>
+                          {t('forms:contactForm.fields.position')} *
+                        </Label>
+                        <Input
+                          id="contact_person_position"
+                          value={formData.contact_person_position}
+                          onChange={(e) => updateFormData('contact_person_position', e.target.value)}
+                          className={hasFieldError('contact_person_position') ? 'border-destructive focus:border-destructive' : ''}
                           required
                         />
                       </div>
