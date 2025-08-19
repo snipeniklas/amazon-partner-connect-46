@@ -26,7 +26,7 @@ interface MetaPixelSetting {
 }
 
 const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
-  const { t } = useTranslation(['settings', 'common']);
+  const { t, i18n } = useTranslation(['settings', 'common']);
   const { toast } = useToast();
   const [settings, setSettings] = useState<MetaPixelSetting[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,25 +39,117 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
     pixel_code: ''
   });
 
-  const marketTypes = [
-    { value: 'van_transport', label: t('settings:metaPixel.marketTypes.vanTransport', 'Van Transport') },
-    { value: 'bicycle_delivery', label: t('settings:metaPixel.marketTypes.bicycleDelivery', 'Bicycle Delivery') }
-  ];
+  // Get translated market types
+  const getMarketTypes = () => {
+    const currentLang = i18n.language;
+    if (currentLang === 'de') {
+      return [
+        { value: 'van_transport', label: 'Van Transport' },
+        { value: 'bicycle_delivery', label: 'Fahrrad Lieferung' }
+      ];
+    } else if (currentLang === 'es') {
+      return [
+        { value: 'van_transport', label: 'Transporte en Furgoneta' },
+        { value: 'bicycle_delivery', label: 'Entrega en Bicicleta' }
+      ];
+    } else if (currentLang === 'fr') {
+      return [
+        { value: 'van_transport', label: 'Transport Fourgonnette' },
+        { value: 'bicycle_delivery', label: 'Livraison à Vélo' }
+      ];
+    } else if (currentLang === 'it') {
+      return [
+        { value: 'van_transport', label: 'Trasporto Furgonato' },
+        { value: 'bicycle_delivery', label: 'Consegna in Bicicletta' }
+      ];
+    }
+    // Default English
+    return [
+      { value: 'van_transport', label: 'Van Transport' },
+      { value: 'bicycle_delivery', label: 'Bicycle Delivery' }
+    ];
+  };
 
-  const targetMarkets = [
-    { value: 'germany', label: t('settings:metaPixel.targetMarkets.germany', 'Germany') },
-    { value: 'uk', label: t('settings:metaPixel.targetMarkets.uk', 'UK') },
-    { value: 'ireland', label: t('settings:metaPixel.targetMarkets.ireland', 'Ireland') },
-    { value: 'france', label: t('settings:metaPixel.targetMarkets.france', 'France') },
-    { value: 'italy', label: t('settings:metaPixel.targetMarkets.italy', 'Italy') },
-    { value: 'spain', label: t('settings:metaPixel.targetMarkets.spain', 'Spain') },
-    { value: 'paris', label: t('settings:metaPixel.targetMarkets.paris', 'Paris') },
-    { value: 'milan', label: t('settings:metaPixel.targetMarkets.milan', 'Milan') },
-    { value: 'rome', label: t('settings:metaPixel.targetMarkets.rome', 'Rome') },
-    { value: 'berlin', label: t('settings:metaPixel.targetMarkets.berlin', 'Berlin') },
-    { value: 'barcelona', label: t('settings:metaPixel.targetMarkets.barcelona', 'Barcelona') },
-    { value: 'madrid', label: t('settings:metaPixel.targetMarkets.madrid', 'Madrid') }
-  ];
+  // Get translated target markets
+  const getTargetMarkets = () => {
+    const currentLang = i18n.language;
+    if (currentLang === 'de') {
+      return [
+        { value: 'germany', label: 'Deutschland' },
+        { value: 'uk', label: 'Vereinigtes Königreich' },
+        { value: 'ireland', label: 'Irland' },
+        { value: 'france', label: 'Frankreich' },
+        { value: 'italy', label: 'Italien' },
+        { value: 'spain', label: 'Spanien' },
+        { value: 'paris', label: 'Paris' },
+        { value: 'milan', label: 'Mailand' },
+        { value: 'rome', label: 'Rom' },
+        { value: 'berlin', label: 'Berlin' },
+        { value: 'barcelona', label: 'Barcelona' },
+        { value: 'madrid', label: 'Madrid' }
+      ];
+    } else if (currentLang === 'es') {
+      return [
+        { value: 'germany', label: 'Alemania' },
+        { value: 'uk', label: 'Reino Unido' },
+        { value: 'ireland', label: 'Irlanda' },
+        { value: 'france', label: 'Francia' },
+        { value: 'italy', label: 'Italia' },
+        { value: 'spain', label: 'España' },
+        { value: 'paris', label: 'París' },
+        { value: 'milan', label: 'Milán' },
+        { value: 'rome', label: 'Roma' },
+        { value: 'berlin', label: 'Berlín' },
+        { value: 'barcelona', label: 'Barcelona' },
+        { value: 'madrid', label: 'Madrid' }
+      ];
+    } else if (currentLang === 'fr') {
+      return [
+        { value: 'germany', label: 'Allemagne' },
+        { value: 'uk', label: 'Royaume-Uni' },
+        { value: 'ireland', label: 'Irlande' },
+        { value: 'france', label: 'France' },
+        { value: 'italy', label: 'Italie' },
+        { value: 'spain', label: 'Espagne' },
+        { value: 'paris', label: 'Paris' },
+        { value: 'milan', label: 'Milan' },
+        { value: 'rome', label: 'Rome' },
+        { value: 'berlin', label: 'Berlin' },
+        { value: 'barcelona', label: 'Barcelone' },
+        { value: 'madrid', label: 'Madrid' }
+      ];
+    } else if (currentLang === 'it') {
+      return [
+        { value: 'germany', label: 'Germania' },
+        { value: 'uk', label: 'Regno Unito' },
+        { value: 'ireland', label: 'Irlanda' },
+        { value: 'france', label: 'Francia' },
+        { value: 'italy', label: 'Italia' },
+        { value: 'spain', label: 'Spagna' },
+        { value: 'paris', label: 'Parigi' },
+        { value: 'milan', label: 'Milano' },
+        { value: 'rome', label: 'Roma' },
+        { value: 'berlin', label: 'Berlino' },
+        { value: 'barcelona', label: 'Barcellona' },
+        { value: 'madrid', label: 'Madrid' }
+      ];
+    }
+    // Default English
+    return [
+      { value: 'germany', label: 'Germany' },
+      { value: 'uk', label: 'United Kingdom' },
+      { value: 'ireland', label: 'Ireland' },
+      { value: 'france', label: 'France' },
+      { value: 'italy', label: 'Italy' },
+      { value: 'spain', label: 'Spain' },
+      { value: 'paris', label: 'Paris' },
+      { value: 'milan', label: 'Milan' },
+      { value: 'rome', label: 'Rome' },
+      { value: 'berlin', label: 'Berlin' },
+      { value: 'barcelona', label: 'Barcelona' },
+      { value: 'madrid', label: 'Madrid' }
+    ];
+  };
 
   const fetchSettings = async () => {
     if (!user) return;
@@ -73,7 +165,7 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
         console.error('Error fetching meta pixel settings:', error);
         toast({
           title: t('common:messages.error'),
-          description: t('settings:metaPixel.errors.loadFailed', 'Failed to load Meta Pixel settings'),
+          description: 'Failed to load Meta Pixel settings',
           variant: 'destructive'
         });
         return;
@@ -192,6 +284,9 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
       </div>
     );
   }
+
+  const marketTypes = getMarketTypes();
+  const targetMarkets = getTargetMarkets();
 
   return (
     <div className="space-y-6">
