@@ -77,7 +77,7 @@ export function DashboardOverview({ user, contacts }: DashboardOverviewProps) {
       const emailsSent = accessibleContacts.filter(contact => contact.email_sent).length;
       const formsCompleted = accessibleContacts.filter(contact => contact.form_completed).length;
       
-      // Get ALL tracking data from email_tracking table - count UNIQUE CONTACTS, not events
+      // Get ALL tracking data - split into batches to avoid URL length limit
       let emailsDelivered = 0;
       let emailsOpened = 0;
       let emailsClicked = 0;
@@ -87,19 +87,30 @@ export function DashboardOverview({ user, contacts }: DashboardOverviewProps) {
       if (accessibleContacts.length > 0) {
         const contactIds = accessibleContacts.map(contact => contact.id);
         console.log('🔍 DEBUG: Accessible contacts count:', accessibleContacts.length);
-        console.log('🔍 DEBUG: Sample contact IDs:', contactIds.slice(0, 5));
         
-        // Get all email tracking events in one query
-        const { data: allTrackingData, error } = await supabase
-          .from('email_tracking')
-          .select('contact_id, event_type')
-          .in('contact_id', contactIds);
+        // Split contact IDs into batches of 100 to avoid URL length limits
+        const batchSize = 100;
+        let allTrackingData: any[] = [];
         
-        console.log('🔍 DEBUG: Tracking data error:', error);
-        console.log('🔍 DEBUG: Tracking data length:', allTrackingData?.length || 0);
-        console.log('🔍 DEBUG: Sample tracking data:', allTrackingData?.slice(0, 5));
+        for (let i = 0; i < contactIds.length; i += batchSize) {
+          const batch = contactIds.slice(i, i + batchSize);
+          console.log(`🔍 DEBUG: Fetching batch ${Math.floor(i/batchSize) + 1}/${Math.ceil(contactIds.length/batchSize)} with ${batch.length} contacts`);
+          
+          const { data: batchData, error } = await supabase
+            .from('email_tracking')
+            .select('contact_id, event_type')
+            .in('contact_id', batch);
+          
+          if (error) {
+            console.error('🔍 DEBUG: Batch error:', error);
+          } else if (batchData) {
+            allTrackingData = [...allTrackingData, ...batchData];
+          }
+        }
         
-        if (allTrackingData) {
+        console.log('🔍 DEBUG: Total tracking events fetched:', allTrackingData.length);
+        
+        if (allTrackingData.length > 0) {
           // Count unique contacts for each event type
           const deliveredContacts = new Set(allTrackingData.filter(r => r.event_type === 'delivered').map(r => r.contact_id));
           const openedContacts = new Set(allTrackingData.filter(r => r.event_type === 'opened').map(r => r.contact_id));
