@@ -86,12 +86,18 @@ export function DashboardOverview({ user, contacts }: DashboardOverviewProps) {
       
       if (accessibleContacts.length > 0) {
         const contactIds = accessibleContacts.map(contact => contact.id);
+        console.log('🔍 DEBUG: Accessible contacts count:', accessibleContacts.length);
+        console.log('🔍 DEBUG: Sample contact IDs:', contactIds.slice(0, 5));
         
         // Get all email tracking events in one query
-        const { data: allTrackingData } = await supabase
+        const { data: allTrackingData, error } = await supabase
           .from('email_tracking')
           .select('contact_id, event_type')
           .in('contact_id', contactIds);
+        
+        console.log('🔍 DEBUG: Tracking data error:', error);
+        console.log('🔍 DEBUG: Tracking data length:', allTrackingData?.length || 0);
+        console.log('🔍 DEBUG: Sample tracking data:', allTrackingData?.slice(0, 5));
         
         if (allTrackingData) {
           // Count unique contacts for each event type
@@ -100,6 +106,10 @@ export function DashboardOverview({ user, contacts }: DashboardOverviewProps) {
           const clickedContacts = new Set(allTrackingData.filter(r => r.event_type === 'clicked').map(r => r.contact_id));
           const bouncedContacts = new Set(allTrackingData.filter(r => r.event_type === 'bounced').map(r => r.contact_id));
           const delayedContacts = new Set(allTrackingData.filter(r => r.event_type === 'delayed').map(r => r.contact_id));
+          
+          console.log('🔍 DEBUG: Delivered contacts:', deliveredContacts.size);
+          console.log('🔍 DEBUG: Opened contacts:', openedContacts.size);
+          console.log('🔍 DEBUG: Clicked contacts:', clickedContacts.size);
           
           emailsDelivered = deliveredContacts.size;
           emailsOpened = openedContacts.size;
