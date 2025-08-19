@@ -1,0 +1,14 @@
+[providers]
+node = true
+
+[phases.setup]
+nixPkgs = ['nodejs_18', 'npm']
+
+[phases.build]
+cmds = ['npm ci', 'npm run build']
+
+[phases.start]
+cmd = 'npm run preview'
+
+[variables]
+NODE_VERSION = '18'

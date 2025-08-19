@@ -4,3 +4,7 @@ supabase/
 README.md
 *.md
 .git/
+bun.lockb
+components.json
+postcss.config.js
+tsconfig.*.json

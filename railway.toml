@@ -1,0 +1,13 @@
+[build]
+builder = "nixpacks"
+nixpacksConfigPath = "nixpacks.toml"
+watchPatterns = [
+  "src/**",
+  "public/**",
+  "package.json",
+  "vite.config.ts"
+]
+
+[deploy]
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
