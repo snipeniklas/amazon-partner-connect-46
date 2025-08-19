@@ -110,7 +110,7 @@ const Dashboard = () => {
       
       console.log('🔍 DEBUG: Fetching', totalBatches, 'batches of', batchSize, 'contacts each');
 
-      // Create batch queries
+      // Create batch queries with comment counts
       const batchQueries = [];
       for (let i = 0; i < totalBatches; i++) {
         const startRange = i * batchSize;
@@ -119,7 +119,10 @@ const Dashboard = () => {
         batchQueries.push(
           supabase
             .from('contacts')
-            .select('*')
+            .select(`
+              *,
+              comment_count:contact_comments(count)
+            `)
             .range(startRange, endRange)
             .order('created_at', { ascending: false })
         );

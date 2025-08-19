@@ -75,7 +75,6 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
   
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [commentCounts, setCommentCounts] = useState<Record<string, number>>({});
   const [filters, setFilters] = useState<ContactFilters>({
     searchTerm: "",
     emailStatus: "all",
@@ -104,35 +103,6 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
 
   const itemsPerPage = 25;
 
-  // Fetch comment counts for contacts
-  const fetchCommentCounts = async () => {
-    if (contacts.length === 0) return;
-    
-    try {
-      const contactIds = contacts.map(c => c.id);
-      const { data, error } = await supabase
-        .from('contact_comments')
-        .select('contact_id')
-        .in('contact_id', contactIds);
-
-      if (error) throw error;
-
-      // Count comments per contact
-      const counts: Record<string, number> = {};
-      data?.forEach(comment => {
-        counts[comment.contact_id] = (counts[comment.contact_id] || 0) + 1;
-      });
-      
-      setCommentCounts(counts);
-    } catch (error) {
-      console.error('Error fetching comment counts:', error);
-    }
-  };
-
-  // Fetch comment counts when contacts change
-  useEffect(() => {
-    fetchCommentCounts();
-  }, [contacts]);
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -631,7 +601,7 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
                               <span className="sm:hidden">{t('contacts:list.badges.amazon')}</span>
                             </Badge>
                           )}
-                          {commentCounts[contact.id] > 0 && (
+                          {contact.comment_count && contact.comment_count > 0 && (
                             <Badge variant="outline" className="flex items-center gap-1 text-blue-600 border-blue-200 bg-blue-50 text-xs">
                               <MessageCircle className="h-3 w-3" />
                               <span className="hidden sm:inline">{t('contacts:list.badges.hasComments')}</span>
