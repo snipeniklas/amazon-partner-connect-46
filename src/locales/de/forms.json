@@ -29,8 +29,8 @@
       "servicesOffered": "Angebotene Dienstleistungen",
       "operatingHours": "Betriebszeiten",
       "specializations": "Spezialisierungen",
-      "worksForGigEconomyFood": "Arbeitet Ihr Unternehmen für Gig-Economy-Food-Delivery-Unternehmen?",
-      "worksForQuickCommerce": "Arbeitet Ihr Unternehmen für Quick-Commerce-Unternehmen?",
+      "worksForGigEconomyFood": "Arbeitet Ihr Unternehmen für app-basierte On-Demand-Lieferdienste?",
+      "worksForQuickCommerce": "Arbeitet Ihr Unternehmen für app-basierte On-Demand-Essenslieferungen?",
       "operatesLastMileLogistics": "Ist Ihr Unternehmen im Last-Mile-Logistik-Bereich tätig?",
       "companyOwnsVehicles": "Besitzt Ihr Unternehmen die Fahrzeuge (einschließlich Fahrräder) oder stellen die Fahrer ihre eigenen?",
       "usesCargobikes": "Verwendet Ihr Unternehmen Lastenfahrräder oder Anhänger zum Transport von Paketen?",
@@ -128,6 +128,7 @@
     "dpd": "DPD",
     "yodel": "Yodel",
     "glovo": "Glovo",
+    "goPuff": "Go-Puff",
     "other": "Andere"
   },
   "quickCommerceCompanies": {

@@ -29,8 +29,8 @@
       "servicesOffered": "Services Offered",
       "operatingHours": "Operating Hours",
       "specializations": "Specializations",
-      "worksForGigEconomyFood": "Does your company work for any quick gig economy food delivery companies?",
-      "worksForQuickCommerce": "Does your company work for any quick commerce companies?",
+      "worksForGigEconomyFood": "Does your company work in any app based on-demand delivery services?",
+      "worksForQuickCommerce": "Does your company work in app based on-demand food delivery?",
       "operatesLastMileLogistics": "Does your company operate in the Last Mile Logistics space?",
       "companyOwnsVehicles": "Does your company own the vehicles (including bikes) or do drivers provide their own?",
       "companyOwnsVehiclesUkIreland": "Does your company own the vehicles or do drivers provide their own?",
@@ -129,6 +129,7 @@
     "dpd": "DPD",
     "yodel": "Yodel",
     "glovo": "Glovo",
+    "goPuff": "Go-Puff",
     "other": "Other"
   },
   "quickCommerceCompanies": {

@@ -1532,7 +1532,7 @@ const DynamicPublicForm = () => {
                             <div className="space-y-3">
                               <Label>{t('forms:publicForm.logistics.gigEconomyCompaniesSelect')}</Label>
                               <div className="grid grid-cols-2 gap-2">
-                                {['uberEats', 'deliveroo', 'justEat', 'dpd', 'yodel', 'glovo'].map((company) => (
+                                {['uberEats', 'deliveroo', 'justEat', 'dpd', 'yodel', 'glovo', 'goPuff'].map((company) => (
                                   <div key={company} className="flex items-center space-x-2">
                                     <Checkbox
                                       id={`gig_${company}`}
@@ -1855,7 +1855,7 @@ const DynamicPublicForm = () => {
                             <div className="space-y-3">
                               <Label>{t('forms:publicForm.logistics.gigEconomyCompaniesSelect')}</Label>
                               <div className="grid grid-cols-2 gap-2">
-                                {['uberEats', 'deliveroo', 'justEat', 'dpd', 'yodel', 'glovo'].map((company) => (
+                                {['uberEats', 'deliveroo', 'justEat', 'dpd', 'yodel', 'glovo', 'goPuff'].map((company) => (
                                   <div key={company} className="flex items-center space-x-2">
                                     <Checkbox
                                       id={`uk_gig_${company}`}

@@ -29,8 +29,8 @@
       "servicesOffered": "Servizi offerti",
       "operatingHours": "Orari di operazione",
       "specializations": "Specializzazioni",
-      "worksForGigEconomyFood": "La vostra azienda lavora per aziende di consegna cibo gig economy?",
-      "worksForQuickCommerce": "La vostra azienda lavora per qualche azienda di commercio veloce?",
+      "worksForGigEconomyFood": "La vostra azienda lavora in servizi di consegna on-demand basati su app?",
+      "worksForQuickCommerce": "La vostra azienda lavora nella consegna di cibo on-demand basata su app?",
       "operatesLastMileLogistics": "La vostra azienda opera nel settore della logistica dell'ultimo miglio?",
       "companyOwnsVehicles": "La tua azienda possiede i veicoli (comprese le biciclette) o i conducenti ne forniscono di propri?",
       "usesCargobikes": "La vostra azienda usa biciclette da carico o rimorchi per trasportare pacchi?",
@@ -128,6 +128,7 @@
     "dpd": "DPD",
     "yodel": "Yodel",
     "glovo": "Glovo",
+    "goPuff": "Go-Puff",
     "other": "Altro"
   },
   "quickCommerceCompanies": {
