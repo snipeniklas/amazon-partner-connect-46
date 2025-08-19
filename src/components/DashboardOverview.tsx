@@ -82,22 +82,25 @@ export function DashboardOverview({ user, contacts }: DashboardOverviewProps) {
       // Count email tracking events from the tracking data
       const emailsDelivered = accessibleContacts.filter(contact => contact.email_delivered).length;
       const emailsOpened = accessibleContacts.filter(contact => contact.email_opened).length;
-      const emailsClicked = accessibleContacts.filter(contact => contact.email_clicked).length;
       
-      // Get detailed tracking events for bounced/delayed from email_tracking table
+      // Get actual click count from email_tracking table (not just unique contacts)
+      let emailsClicked = 0;
       let emailsBounced = 0;
       let emailsDelayed = 0;
       
       if (accessibleContacts.length > 0) {
         const contactIds = accessibleContacts.map(contact => contact.id);
         
+        // Get all tracking events for clicks, bounced, and delayed
         const { data: trackingData } = await supabase
           .from('email_tracking')
           .select('event_type')
           .in('contact_id', contactIds)
-          .in('event_type', ['bounced', 'delayed']);
+          .in('event_type', ['clicked', 'bounced', 'delayed']);
         
         if (trackingData) {
+          // Count total click events (not just unique contacts)
+          emailsClicked = trackingData.filter(row => row.event_type === 'clicked').length;
           emailsBounced = trackingData.filter(row => row.event_type === 'bounced').length;
           emailsDelayed = trackingData.filter(row => row.event_type === 'delayed').length;
         }
