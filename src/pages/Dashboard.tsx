@@ -85,6 +85,39 @@ const Dashboard = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  // Fetch comment counts for contacts
+  const fetchCommentCounts = async (contacts: any[]) => {
+    if (contacts.length === 0) return contacts;
+    
+    try {
+      const contactIds = contacts.map(c => c.id);
+      const { data, error } = await supabase
+        .from('contact_comments')
+        .select('contact_id')
+        .in('contact_id', contactIds);
+
+      if (error) throw error;
+
+      // Count comments per contact
+      const counts: Record<string, number> = {};
+      data?.forEach(comment => {
+        counts[comment.contact_id] = (counts[comment.contact_id] || 0) + 1;
+      });
+      
+      // Add comment_count to each contact
+      return contacts.map(contact => ({
+        ...contact,
+        comment_count: counts[contact.id] || 0
+      }));
+    } catch (error) {
+      console.error('Error fetching comment counts:', error);
+      return contacts.map(contact => ({
+        ...contact,
+        comment_count: 0
+      }));
+    }
+  };
+
   const fetchContacts = async () => {
     try {
       // First, get the total count of contacts
@@ -119,10 +152,7 @@ const Dashboard = () => {
         batchQueries.push(
           supabase
             .from('contacts')
-            .select(`
-              *,
-              comment_count:contact_comments(count)
-            `)
+            .select('*')
             .range(startRange, endRange)
             .order('created_at', { ascending: false })
         );
@@ -176,11 +206,14 @@ const Dashboard = () => {
         };
       });
 
+      // Fetch comment counts for all contacts
+      const contactsWithCommentCounts = await fetchCommentCounts(contactsWithTracking);
+
       // Filter contacts based on user permissions
       console.log('🔍 DEBUG: User permissions:', permissions);
-      console.log('🔍 DEBUG: Contacts before permission filter:', contactsWithTracking.length);
+      console.log('🔍 DEBUG: Contacts before permission filter:', contactsWithCommentCounts.length);
       
-      const filteredContacts = contactsWithTracking.filter((contact, index) => {
+      const filteredContacts = contactsWithCommentCounts.filter((contact, index) => {
         const hasAccess = hasAccessToContact(contact);
         if (index < 5) { // Log first 5 contacts for debugging
           console.log(`🔍 DEBUG: Contact ${index + 1} (${contact.company_name}) - Has Access: ${hasAccess}, Market: ${(contact as any).market}, Market Type: ${(contact as any).market_type}`);
