@@ -1,0 +1,70 @@
+{
+  "sender": {
+    "title": "Envoyer des emails",
+    "statistics": {
+      "total": "Total des contacts",
+      "sent": "Emails envoyés",
+      "ready": "Prêt à envoyer"
+    },
+    "preview": {
+      "title": "Aperçu de l'email",
+      "note": "Note : {{formLink}} sera remplacé par le lien du formulaire réel"
+    },
+    "testEmail": {
+      "title": "Envoyer un email de test",
+      "selectContact": "Sélectionner un contact",
+      "send": "Envoyer le test"
+    },
+    "bulkEmail": {
+      "title": "Envoyer un email groupé",
+      "description": "Envoyer des emails à tous les contacts éligibles :",
+      "send": "Envoyer les emails"
+    }
+  },
+  "tracking": {
+    "title": "Suivi des emails",
+    "titleWithEngagement": "Suivi des emails & Engagement",
+    "noEmailSent": "Aucun email envoyé pour le moment",
+    "noData": "Aucune donnée de suivi disponible pour le moment",
+    "autoCapture": "Les événements sont automatiquement capturés",
+    "engagement": "Engagement",
+    "delivery": "Livraison",
+    "opened": "Ouvert",
+    "notOpened": "Non ouvert",
+    "clicked": "Cliqué",
+    "notClicked": "Non cliqué",
+    "history": "Historique des emails",
+    "events": {
+      "sent": "Envoyé",
+      "delivered": "Livré",
+      "opened": "Ouvert",
+      "clicked": "Lien cliqué",
+      "bounced": "Rejeté",
+      "complained": "Plainte",
+      "delayed": "Retardé"
+    },
+    "details": {
+      "link": "Lien :",
+      "reason": "Raison :",
+      "delayReason": "Raison du retard disponible"
+    }
+  },
+  "templates": {
+    "partnerInvitation": {
+      "subject": "Nouvelles tournées régulières disponibles - Devenez partenaire maintenant !",
+      "greeting": "Bonjour {{name}},",
+      "intro": "nous sommes ravis de vous offrir une opportunité de collaboration passionnante !",
+      "body": "Notre réseau de partenaires sous-traitants s'agrandit et nous recherchons des partenaires logistiques fiables comme vous. En tant que membre de notre réseau, vous bénéficierez de :",
+      "benefits": [
+        "Commandes régulières",
+        "Tarifs compétitifs",
+        "Horaires de travail flexibles",
+        "Support professionnel"
+      ],
+      "action": "Pour en savoir plus et postuler, veuillez remplir notre questionnaire partenaire :",
+      "cta": "Remplir le questionnaire",
+      "closing": "Nous avons hâte d'avoir de vos nouvelles !",
+      "signature": "Cordialement,\nVotre équipe partenaire sous-traitant"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "buttons": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "back": "Retour",
+    "next": "Suivant",
+    "submit": "Soumettre",
+    "close": "Fermer",
+    "yes": "Oui",
+    "no": "Non",
+    "loading": "Chargement...",
+    "signOut": "Se déconnecter",
+    "reset": "Réinitialiser"
+  },
+  "messages": {
+    "success": "Succès",
+    "error": "Erreur",
+    "loading": "Chargement...",
+    "noData": "Aucune donnée disponible",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ceci ?",
+    "active": "actif"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "contacts": "Contacts",
+    "settings": "Paramètres"
+  }
+}

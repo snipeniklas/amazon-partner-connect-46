@@ -1,0 +1,70 @@
+{
+  "sender": {
+    "title": "Send Emails",
+    "statistics": {
+      "total": "Total contacts",
+      "sent": "Emails sent",
+      "ready": "Ready to send"
+    },
+    "preview": {
+      "title": "Email Preview",
+      "note": "Note: {{formLink}} will be replaced with the actual form link"
+    },
+    "testEmail": {
+      "title": "Send Test Email",
+      "selectContact": "Select contact",
+      "send": "Send Test"
+    },
+    "bulkEmail": {
+      "title": "Send Bulk Email",
+      "description": "Send emails to all eligible contacts:",
+      "send": "Send Emails"
+    }
+  },
+  "tracking": {
+    "title": "Email Tracking",
+    "titleWithEngagement": "Email Tracking & Engagement",
+    "noEmailSent": "No email sent yet",
+    "noData": "No tracking data available yet",
+    "autoCapture": "Events are automatically captured",
+    "engagement": "Engagement",
+    "delivery": "Delivery",
+    "opened": "Opened",
+    "notOpened": "Not opened",
+    "clicked": "Clicked",
+    "notClicked": "Not clicked",
+    "history": "Email History",
+    "events": {
+      "sent": "Sent",
+      "delivered": "Delivered",
+      "opened": "Opened",
+      "clicked": "Link clicked",
+      "bounced": "Bounced",
+      "complained": "Complained",
+      "delayed": "Delayed"
+    },
+    "details": {
+      "link": "Link:",
+      "reason": "Reason:",
+      "delayReason": "Delay reason available"
+    }
+  },
+  "templates": {
+    "partnerInvitation": {
+      "subject": "New Regular Tours Available - Become a Partner Now!",
+      "greeting": "Hello {{name}},",
+      "intro": "we are excited to offer you an exciting collaboration opportunity!",
+      "body": "Our Subcontractor Partner Network is expanding and we are looking for reliable logistics partners like you. As part of our network, you will benefit from:",
+      "benefits": [
+        "Regular orders",
+        "Competitive rates",
+        "Flexible working hours",
+        "Professional support"
+      ],
+      "action": "To learn more and apply, please fill out our partner questionnaire:",
+      "cta": "Fill out questionnaire",
+      "closing": "We look forward to hearing from you!",
+      "signature": "Best regards,\nYour Subcontractor Partner Team"
+    }
+  }
+}

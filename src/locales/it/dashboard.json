@@ -1,0 +1,69 @@
+{
+  "title": "Subcontractor Partner Connect",
+  "welcome": "Benvenuto",
+  "tabs": {
+    "dashboard": "Dashboard",
+    "list": "Contatti",
+    "add": "Aggiungi",
+    "upload": "Upload CSV",
+    "email": "Email",
+    "forms": "Formulari",
+    "addContact": "Aggiungi Contatto",
+    "csvUpload": "Importa CSV",
+    "fileUpload": "Importa File",
+    "emailSending": "Invio Email",
+    "formsOverview": "Vedi Formulari"
+  },
+  "contacts": {
+    "added": "Contatto aggiunto con successo!",
+    "uploaded": "CSV caricato con successo!"
+  },
+  "cards": {
+    "addContact": {
+      "title": "Aggiungi Nuovo Contatto",
+      "description": "Aggiungi un nuovo partner logistico"
+    },
+    "csvUpload": {
+      "title": "Importa CSV",
+      "description": "Importa più contatti da un file CSV"
+    },
+    "emailSending": {
+      "title": "Invio Email",
+      "description": "Invia email ai tuoi contatti"
+    }
+  },
+  "errors": {
+    "loadContacts": "Impossibile caricare i contatti."
+  },
+  "languageSelector": {
+    "label": "Lingua",
+    "german": "Deutsch",
+    "english": "English",
+    "french": "Français",
+    "spanish": "Español",
+    "italian": "Italiano"
+  },
+  "metrics": {
+    "totalContacts": "Totale Contatti",
+    "emailsSent": "Email Inviate",
+    "emailsDelivered": "Email Consegnate",
+    "emailsOpened": "Email Aperte",
+    "emailsClicked": "Email Cliccate",
+    "formsCompleted": "Formulari Completati",
+    "awaitingResponse": "In Attesa di Risposta",
+    "conversionRate": "Tasso di Conversione",
+    "emailsBounced": "Email Respinte",
+    "emailsDelayed": "Email Ritardate",
+    "deliveryRate": "Tasso di Consegna",
+    "openRate": "Tasso di Apertura",
+    "clickRate": "Tasso di Click"
+  },
+  "activities": {
+    "title": "Attività Email Recenti",
+    "noData": "Nessuna attività email recente trovata"
+  },
+  "overview": {
+    "title": "Panoramica Dashboard",
+    "subtitle": "Metriche chiave e statistiche per la gestione dei contatti"
+  }
+}

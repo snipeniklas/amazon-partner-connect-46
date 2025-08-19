@@ -1,0 +1,69 @@
+{
+  "title": "Subcontractor Partner Connect",
+  "welcome": "Bienvenue",
+  "tabs": {
+    "dashboard": "Tableau de Bord",
+    "list": "Contacts",
+    "add": "Ajouter",
+    "upload": "Import CSV",
+    "email": "Email",
+    "forms": "Formulaires",
+    "addContact": "Ajouter Contact",
+    "csvUpload": "Import CSV",
+    "fileUpload": "Import de Fichier",
+    "emailSending": "Envoi Email",
+    "formsOverview": "Voir Formulaires"
+  },
+  "contacts": {
+    "added": "Contact ajouté avec succès !",
+    "uploaded": "CSV importé avec succès !"
+  },
+  "cards": {
+    "addContact": {
+      "title": "Ajouter un Nouveau Contact",
+      "description": "Ajouter un nouveau partenaire logistique"
+    },
+    "csvUpload": {
+      "title": "Import CSV",
+      "description": "Importer plusieurs contacts depuis un fichier CSV"
+    },
+    "emailSending": {
+      "title": "Envoi d'Email",
+      "description": "Envoyer des emails à vos contacts"
+    }
+  },
+  "errors": {
+    "loadContacts": "Impossible de charger les contacts."
+  },
+  "languageSelector": {
+    "label": "Langue",
+    "german": "Deutsch",
+    "english": "English",
+    "french": "Français",
+    "spanish": "Español",
+    "italian": "Italiano"
+  },
+  "metrics": {
+    "totalContacts": "Total Contacts",
+    "emailsSent": "Emails Envoyés",
+    "emailsDelivered": "Emails Livrés",
+    "emailsOpened": "Emails Ouverts",
+    "emailsClicked": "Emails Cliqués",
+    "formsCompleted": "Formulaires Complétés",
+    "awaitingResponse": "En Attente de Réponse",
+    "conversionRate": "Taux de Conversion",
+    "emailsBounced": "Emails Rejetés",
+    "emailsDelayed": "Emails Retardés",
+    "deliveryRate": "Taux de Livraison",
+    "openRate": "Taux d'Ouverture",
+    "clickRate": "Taux de Clic"
+  },
+  "activities": {
+    "title": "Activités Email Récentes",
+    "noData": "Aucune activité email récente trouvée"
+  },
+  "overview": {
+    "title": "Vue d'ensemble du Tableau de Bord",
+    "subtitle": "Métriques clés et statistiques pour votre gestion des contacts"
+  }
+}

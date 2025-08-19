@@ -1,0 +1,70 @@
+{
+  "sender": {
+    "title": "Enviar emails",
+    "statistics": {
+      "total": "Total de contactos",
+      "sent": "Emails enviados",
+      "ready": "Listo para enviar"
+    },
+    "preview": {
+      "title": "Vista previa del email",
+      "note": "Nota: {{formLink}} será reemplazado con el enlace del formulario real"
+    },
+    "testEmail": {
+      "title": "Enviar email de prueba",
+      "selectContact": "Seleccionar contacto",
+      "send": "Enviar prueba"
+    },
+    "bulkEmail": {
+      "title": "Enviar email masivo",
+      "description": "Enviar emails a todos los contactos elegibles:",
+      "send": "Enviar emails"
+    }
+  },
+  "tracking": {
+    "title": "Seguimiento de emails",
+    "titleWithEngagement": "Seguimiento de emails y engagement",
+    "noEmailSent": "Aún no se ha enviado ningún email",
+    "noData": "Aún no hay datos de seguimiento disponibles",
+    "autoCapture": "Los eventos se capturan automáticamente",
+    "engagement": "Engagement",
+    "delivery": "Entrega",
+    "opened": "Abierto",
+    "notOpened": "No abierto",
+    "clicked": "Clicado",
+    "notClicked": "No clicado",
+    "history": "Historial de emails",
+    "events": {
+      "sent": "Enviado",
+      "delivered": "Entregado",
+      "opened": "Abierto",
+      "clicked": "Enlace clicado",
+      "bounced": "Rebotado",
+      "complained": "Queja",
+      "delayed": "Retrasado"
+    },
+    "details": {
+      "link": "Enlace:",
+      "reason": "Razón:",
+      "delayReason": "Razón del retraso disponible"
+    }
+  },
+  "templates": {
+    "partnerInvitation": {
+      "subject": "Nuevas rutas regulares disponibles - ¡Conviértete en socio ahora!",
+      "greeting": "Hola {{name}},",
+      "intro": "¡estamos emocionados de ofrecerle una oportunidad de colaboración emocionante!",
+      "body": "Nuestra red de socios subcontratistas se está expandiendo y estamos buscando socios logísticos confiables como usted. Como parte de nuestra red, se beneficiará de:",
+      "benefits": [
+        "Pedidos regulares",
+        "Tarifas competitivas",
+        "Horarios de trabajo flexibles",
+        "Soporte profesional"
+      ],
+      "action": "Para obtener más información y aplicar, complete nuestro cuestionario de socio:",
+      "cta": "Completar cuestionario",
+      "closing": "¡Esperamos saber de usted!",
+      "signature": "Saludos cordiales,\nSu equipo de socios subcontratistas"
+    }
+  }
+}

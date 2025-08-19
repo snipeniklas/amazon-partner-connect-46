@@ -1,0 +1,31 @@
+{
+  "buttons": {
+    "save": "Salva",
+    "cancel": "Annulla",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "add": "Aggiungi",
+    "back": "Indietro",
+    "next": "Avanti",
+    "submit": "Invia",
+    "close": "Chiudi",
+    "yes": "Sì",
+    "no": "No",
+    "loading": "Caricamento...",
+    "signOut": "Disconnetti",
+    "reset": "Reimposta"
+  },
+  "messages": {
+    "success": "Successo",
+    "error": "Errore",
+    "loading": "Caricamento...",
+    "noData": "Nessun dato disponibile",
+    "confirmDelete": "Sei sicuro di voler eliminare questo?"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Pannello",
+    "contacts": "Contatti",
+    "settings": "Impostazioni"
+  }
+}

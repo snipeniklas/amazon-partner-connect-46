@@ -1,0 +1,83 @@
+{
+  "title": "Subcontractor Partner Connect",
+  "welcome": "Bienvenido",
+  "tabs": {
+    "dashboard": "Panel de Control",
+    "list": "Contactos",
+    "add": "Añadir",
+    "upload": "Subir CSV",
+    "email": "Email",
+    "forms": "Formularios",
+    "addContact": "Añadir Contacto", 
+    "csvUpload": "Importar CSV",
+    "fileUpload": "Importar Archivo",
+    "emailSending": "Envío de Email",
+    "formsOverview": "Ver Formularios"
+  },
+  "contacts": {
+    "added": "¡Contacto agregado exitosamente!",
+    "uploaded": "¡CSV subido exitosamente!"
+  },
+  "cards": {
+    "addContact": {
+      "title": "Añadir Nuevo Contacto",
+      "description": "Añadir un nuevo socio logístico"
+    },
+    "csvUpload": {
+      "title": "Importar CSV",
+      "description": "Importar múltiples contactos desde un archivo CSV"
+    },
+    "fileUpload": {
+      "title": "Importar Archivo",
+      "description": "Importar múltiples contactos desde archivos CSV o Excel"
+    },
+    "emailSending": {
+      "title": "Envío de Email",
+      "description": "Enviar emails a sus contactos"
+    },
+    "formsOverview": {
+      "title": "Ver Formularios",
+      "description": "Resumen de todos los formularios disponibles para diferentes mercados"
+    }
+  },
+  "forms": {
+    "markets": "Mercados",
+    "cities": "Ciudades", 
+    "zones": "Zonas",
+    "vehicleTypes": "Tipos de Vehículos",
+    "platforms": "Plataformas",
+    "viewForm": "Ver Formulario",
+    "summary": {
+      "title": "Resumen",
+      "totalMarkets": "Total de Mercados",
+      "marketTypes": "Tipos de Mercado",
+      "vanMarkets": "Mercados de Furgonetas",
+      "bikeMarkets": "Mercados de Bicicletas"
+    }
+  },
+  "errors": {
+    "loadContacts": "No se pudieron cargar los contactos."
+  },
+  "languageSelector": {
+    "label": "Idioma",
+    "german": "Deutsch",
+    "english": "English",
+    "french": "Français",
+    "spanish": "Español",
+    "italian": "Italiano"
+  },
+  "metrics": {
+    "totalContacts": "Total Contactos",
+    "emailsSent": "Emails Enviados",
+    "emailsDelivered": "Emails Entregados",
+    "emailsOpened": "Emails Abiertos",
+    "emailsClicked": "Emails Clicados",
+    "formsCompleted": "Formularios Completados",
+    "awaitingResponse": "Esperando Respuesta",
+    "conversionRate": "Tasa de Conversión"
+  },
+  "overview": {
+    "title": "Resumen del Panel",
+    "subtitle": "Métricas clave y estadísticas para su gestión de contactos"
+  }
+}

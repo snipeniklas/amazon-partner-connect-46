@@ -1,0 +1,83 @@
+{
+  "title": "Subcontractor Partner Connect",
+  "welcome": "Welcome",
+  "tabs": {
+    "dashboard": "Dashboard",
+    "list": "Contacts",
+    "add": "Add",
+    "upload": "CSV Upload",
+    "email": "Email",
+    "forms": "Forms",
+    "addContact": "Add Contact",
+    "csvUpload": "CSV Import",
+    "fileUpload": "File Import", 
+    "emailSending": "Email Sending",
+    "formsOverview": "View Forms"
+  },
+  "contacts": {
+    "added": "Contact successfully added!",
+    "uploaded": "CSV successfully uploaded!"
+  },
+  "cards": {
+    "addContact": {
+      "title": "Add New Contact",
+      "description": "Add a new logistics partner"
+    },
+    "csvUpload": {
+      "title": "CSV Import",
+      "description": "Import multiple contacts from a CSV file"
+    },
+    "fileUpload": {
+      "title": "File Import",
+      "description": "Import multiple contacts from CSV or Excel files"
+    },
+    "emailSending": {
+      "title": "Email Sending",
+      "description": "Send emails to your contacts"
+    },
+    "formsOverview": {
+      "title": "View Forms",
+      "description": "Overview of all available forms for different markets"
+    }
+  },
+  "forms": {
+    "markets": "Markets",
+    "cities": "Cities", 
+    "zones": "Zones",
+    "vehicleTypes": "Vehicle Types",
+    "platforms": "Platforms",
+    "viewForm": "View Form",
+    "summary": {
+      "title": "Summary",
+      "totalMarkets": "Total Markets",
+      "marketTypes": "Market Types",
+      "vanMarkets": "Van Markets",
+      "bikeMarkets": "Bike Markets"
+    }
+  },
+  "errors": {
+    "loadContacts": "Could not load contacts."
+  },
+  "languageSelector": {
+    "label": "Language",
+    "german": "Deutsch",
+    "english": "English",
+    "french": "Français",
+    "spanish": "Español",
+    "italian": "Italiano"
+  },
+  "metrics": {
+    "totalContacts": "Total Contacts",
+    "emailsSent": "Emails Sent",
+    "emailsDelivered": "Emails Delivered", 
+    "emailsOpened": "Emails Opened",
+    "emailsClicked": "Emails Clicked",
+    "formsCompleted": "Forms Completed",
+    "awaitingResponse": "Awaiting Response",
+    "conversionRate": "Conversion Rate"
+  },
+  "overview": {
+    "title": "Dashboard Overview",
+    "subtitle": "Key metrics and statistics for your contact management"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "sender": {
+    "title": "Invia email",
+    "statistics": {
+      "total": "Contatti totali",
+      "sent": "Email inviate",
+      "ready": "Pronto per l'invio"
+    },
+    "preview": {
+      "title": "Anteprima email",
+      "note": "Nota: {{formLink}} sarà sostituito con il link del modulo reale"
+    },
+    "testEmail": {
+      "title": "Invia email di test",
+      "selectContact": "Seleziona contatto",
+      "send": "Invia test"
+    },
+    "bulkEmail": {
+      "title": "Invia email di massa",
+      "description": "Invia email a tutti i contatti idonei:",
+      "send": "Invia email"
+    }
+  },
+  "tracking": {
+    "title": "Monitoraggio email",
+    "titleWithEngagement": "Monitoraggio email e coinvolgimento",
+    "noEmailSent": "Nessuna email inviata ancora",
+    "noData": "Nessun dato di monitoraggio disponibile ancora",
+    "autoCapture": "Gli eventi vengono catturati automaticamente",
+    "engagement": "Coinvolgimento",
+    "delivery": "Consegna",
+    "opened": "Aperto",
+    "notOpened": "Non aperto",
+    "clicked": "Cliccato",
+    "notClicked": "Non cliccato",
+    "history": "Cronologia email",
+    "events": {
+      "sent": "Inviato",
+      "delivered": "Consegnato",
+      "opened": "Aperto",
+      "clicked": "Link cliccato",
+      "bounced": "Rimbalzato",
+      "complained": "Reclamo",
+      "delayed": "Ritardato"
+    },
+    "details": {
+      "link": "Link:",
+      "reason": "Motivo:",
+      "delayReason": "Motivo del ritardo disponibile"
+    }
+  },
+  "templates": {
+    "partnerInvitation": {
+      "subject": "Nuovi tour regolari disponibili - Diventa partner ora!",
+      "greeting": "Ciao {{name}},",
+      "intro": "siamo entusiasti di offrirti un'opportunità di collaborazione entusiasmante!",
+      "body": "La nostra rete di partner subappaltatori si sta espandendo e stiamo cercando partner logistici affidabili come te. Come parte della nostra rete, beneficerai di:",
+      "benefits": [
+        "Ordini regolari",
+        "Tariffe competitive",
+        "Orari di lavoro flessibili",
+        "Supporto professionale"
+      ],
+      "action": "Per saperne di più e candidarti, compila il nostro questionario partner:",
+      "cta": "Compila questionario",
+      "closing": "Non vediamo l'ora di sentirti!",
+      "signature": "Cordiali saluti,\nIl tuo team partner subappaltatori"
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "title": "Subunternehmer Partner Connect",
+  "welcome": "Willkommen",
+  "tabs": {
+    "dashboard": "Dashboard",
+    "list": "Kontakte",
+    "add": "Hinzufügen",
+    "upload": "CSV Upload",
+    "email": "E-Mail",
+    "forms": "Formulare",
+    "addContact": "Kontakt hinzufügen",
+    "csvUpload": "CSV Import",
+    "fileUpload": "Datei Import",
+    "emailSending": "E-Mail Versand", 
+    "formsOverview": "Formulare einsehen"
+  },
+  "contacts": {
+    "added": "Kontakt erfolgreich hinzugefügt!",
+    "uploaded": "CSV erfolgreich hochgeladen!"
+  },
+  "cards": {
+    "addContact": {
+      "title": "Neuen Kontakt hinzufügen",
+      "description": "Fügen Sie einen neuen Logistik-Partner hinzu"
+    },
+    "csvUpload": {
+      "title": "CSV Import", 
+      "description": "Importieren Sie mehrere Kontakte aus einer CSV-Datei"
+    },
+    "fileUpload": {
+      "title": "Datei Import",
+      "description": "Importieren Sie mehrere Kontakte aus CSV- oder Excel-Dateien"
+    },
+    "emailSending": {
+      "title": "E-Mail Versand",
+      "description": "Senden Sie E-Mails an Ihre Kontakte"
+    },
+    "formsOverview": {
+      "title": "Formulare einsehen",
+      "description": "Übersicht aller verfügbaren Formulare für verschiedene Märkte"
+    }
+  },
+  "forms": {
+    "markets": "Märkte",
+    "cities": "Städte",
+    "zones": "Zonen",
+    "vehicleTypes": "Fahrzeugtypen",
+    "platforms": "Plattformen",
+    "viewForm": "Formular ansehen",
+    "summary": {
+      "title": "Zusammenfassung",
+      "totalMarkets": "Gesamte Märkte",
+      "marketTypes": "Markttypen",
+      "vanMarkets": "Van Märkte",
+      "bikeMarkets": "Fahrrad Märkte"
+    }
+  },
+  "errors": {
+    "loadContacts": "Kontakte konnten nicht geladen werden."
+  },
+  "languageSelector": {
+    "label": "Sprache",
+    "german": "Deutsch",
+    "english": "English",
+    "french": "Français",
+    "spanish": "Español",
+    "italian": "Italiano"
+  },
+  "metrics": {
+    "totalContacts": "Gesamt Kontakte",
+    "emailsSent": "E-Mails Versendet",
+    "emailsDelivered": "E-Mails Zugestellt",
+    "emailsOpened": "E-Mails Geöffnet",
+    "emailsClicked": "E-Mails Geklickt",
+    "emailsBounced": "E-Mails Abgelehnt",
+    "emailsDelayed": "E-Mails Verzögert",
+    "deliveryRate": "Zustellungsrate",
+    "openRate": "Öffnungsrate",
+    "clickRate": "Klickrate",
+    "formsCompleted": "Formulare Ausgefüllt",
+    "awaitingResponse": "Warten auf Antwort",
+    "conversionRate": "Konversionsrate"
+  },
+  "activities": {
+    "title": "Letzte E-Mail Aktivitäten",
+    "noData": "Keine E-Mail Aktivitäten gefunden"
+  },
+  "overview": {
+    "title": "Dashboard Übersicht",
+    "subtitle": "Wichtige Kennzahlen und Statistiken für Ihr Kontaktmanagement"
+  }
+}

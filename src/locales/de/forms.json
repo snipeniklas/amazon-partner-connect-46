@@ -1,0 +1,161 @@
+{
+  "publicForm": {
+    "title": "Subunternehmer Partner Fragebogen",
+    "steps": {
+      "company": "Firmendaten",
+      "logistics": "Logistik Grundlagen",
+      "staff": "Personal",
+      "cities": "Stadt-Verfügbarkeit",
+      "summary": "Zusammenfassung"
+    },
+    "companyData": {
+      "title": "Firmendaten",
+      "companyName": "Firmenname",
+      "contactPerson": "Ansprechpartner",
+      "phone": "Telefon",
+      "email": "E-Mail",
+      "address": "Adresse",
+      "website": "Website"
+    },
+    "logistics": {
+      "title": "Logistik Grundlagen",
+      "companyExperienceSection": "Unternehmen & Erfahrung",
+      "logisticsExperience": "Ist Ihr Unternehmen im Last-Mile-Logistics-Bereich tätig?",
+      "experienceSinceYear": "Seit welchem Jahr?",
+      "experienceValidationHint": "Erfahrung kann nicht vor Unternehmensgründung liegen ({{year}})",
+      "yearsExperience": "Jahre Erfahrung",
+      "subcontractorExperience": "Subunternehmer Erfahrung",
+      "hasSubcontractorExperience": "Hat Subunternehmer Erfahrung",
+      "servicesOffered": "Angebotene Dienstleistungen",
+      "operatingHours": "Betriebszeiten",
+      "specializations": "Spezialisierungen",
+      "worksForGigEconomyFood": "Arbeitet Ihr Unternehmen für Gig-Economy-Food-Delivery-Unternehmen?",
+      "worksForQuickCommerce": "Arbeitet Ihr Unternehmen für Quick-Commerce-Unternehmen?",
+      "operatesLastMileLogistics": "Ist Ihr Unternehmen im Last-Mile-Logistik-Bereich tätig?",
+      "companyOwnsVehicles": "Besitzt Ihr Unternehmen die Fahrzeuge (einschließlich Fahrräder) oder stellen die Fahrer ihre eigenen?",
+      "usesCargobikes": "Verwendet Ihr Unternehmen Lastenfahrräder oder Anhänger zum Transport von Paketen?",
+      "employeeType": "Verwendet Ihr Unternehmen Angestellte, selbständige Auftragnehmer oder beides?",
+      "companyEstablishedYear": "In welchem Jahr wurde Ihr Unternehmen gegründet?",
+      "amazonWorkCapacity": "Hat Ihr Unternehmen jemals für Paketdienstleistungen gearbeitet? Wenn ja, in welcher Funktion? (z.B. DPD, GLS)",
+      "bicycleCount": "Wie viele Fahrräder besitzt Ihr Unternehmen?",
+      "cargoBikeCount": "Wie viele Lastenfahrräder besitzt Ihr Unternehmen?",
+      "deliveryDriverCount": "Wie viele Lieferfahrer hat Ihr Unternehmen?",
+      "bicycleDriverCount": "Wie viele Ihrer Lieferfahrer fahren Fahrrad?",
+      "totalVehicleCount": "Wie viele Fahrzeuge besitzt Ihr Unternehmen insgesamt?",
+      "operatesMultipleCountries": "Ist Ihr Unternehmen derzeit in anderen europäischen Ländern tätig?",
+      "operatesMultipleCities": "Ist Ihr Unternehmen in mehr als einer Stadt in Ihrem Land tätig?",
+      "legalStatus": "Wie ist der rechtliche Status Ihres Unternehmens?",
+      "citiesCovered": "Welche Städte decken Sie ab?",
+      "employmentStatus": "Sind Ihre Mitarbeiter Vollzeit-, Teilzeit- oder beides?",
+      "vehicleTypes": "Welche Art von Fahrzeugen verwendet Ihr Unternehmen?",
+      "gigEconomyCompaniesSelect": "Bitte wählen Sie aus, für welche Gig-Economy-Food-Delivery-Unternehmen:",
+      "quickCommerceCompaniesSelect": "Bitte wählen Sie aus, für welche Quick-Commerce-Unternehmen:",
+      "bicycleDeliveryExperience": "Haben Sie Erfahrung mit Fahrradlieferungen?",
+      "bicycleDeliveryExperienceSince": "Seit wann?",
+      
+      "employeeTypeSelect": "Mitarbeitertyp auswählen",
+      "employeeTypeContracted": "Angestellte",
+      "employeeTypeIndependent": "Selbstständige Auftragnehmer",
+      "employeeTypeBoth": "Beide",
+      "amazonExperienceDescription": "Bitte beschreiben Sie Ihre Amazon-Erfahrung im Detail...",
+      "selectZonesInstruction": "Bitte wählen Sie die Zonen aus, in denen Sie tätig sein möchten:",
+      "additionalComments": "Zusätzliche Informationen, die Sie teilen möchten...",
+      "downloadPdf": "PDF herunterladen",
+      "downloadFormData": "Formulardaten herunterladen"
+    },
+    "staffVehicles": {
+      "title": "Personal",
+      "staffCount": "Anzahl Mitarbeiter",
+      "staffTypes": "Mitarbeitertypen",
+      "vehicleCount": "Anzahl Fahrzeuge",
+      "vehicleTypes": "Fahrzeugtypen",
+      "deliveryPlatforms": "Lieferplattformen"
+    },
+    "cities": {
+      "title": "Stadt-Verfügbarkeit",
+      "description": "Bitte wählen Sie die Städte aus, in denen Sie tätig sein möchten:"
+    },
+    "summary": {
+      "title": "Zusammenfassung",
+      "reviewData": "Bitte überprüfen Sie Ihre Angaben:",
+      "submitForm": "Fragebogen abschicken"
+    },
+    "success": {
+      "title": "Vielen Dank!",
+      "message": "Ihr Fragebogen wurde erfolgreich übermittelt. Wir werden uns in Kürze bei Ihnen melden."
+    },
+    "requiredFieldsNotice": "Alle mit * markierten Felder sind Pflichtfelder",
+    "ridersTypes": "Welche Art von Fahrern haben Sie?",
+    "ridersCount": "Anzahl der Fahrer",
+    "bikesVehiclesQuestion": "Welche Art von Fahrrädern/Fahrzeugen verwenden Sie?",
+    "totalBikesVehicles": "Gesamtanzahl der Fahrräder/Fahrzeuge",
+    "employeeTypeSelectPlaceholder": "Mitarbeitertyp auswählen",
+    "employmentStatusPlaceholder": "Beschäftigungsstatus auswählen",
+    "fullTimeOption": "Vollzeit",
+    "partTimeOption": "Teilzeit",
+    "contractedEmployees": "Angestellte Mitarbeiter",
+    "independentContractors": "Freie Mitarbeiter",
+    "bothOption": "Beide",
+    "amazonExperiencePlaceholder": "Bitte beschreiben Sie Ihre Paketdienstleistungserfahrung oder schreiben Sie 'Nein', falls keine vorhanden",
+      "otherGigEconomyCompany": "Bitte beschreiben",
+      "otherQuickCommerceCompany": "Bitte beschreiben",
+    "legalStatusPlaceholder": "z.B. GmbH, Einzelunternehmen, Partnerschaft"
+  },
+  "contactForm": {
+    "title": "Neuen Kontakt hinzufügen",
+    "fields": {
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "company": "Name des Unternehmens",
+      "position": "Position",
+      "notes": "Notizen"
+    }
+  },
+  "validation": {
+    "required": "Dieses Feld ist erforderlich",
+    "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "phone": "Bitte geben Sie eine gültige Telefonnummer ein",
+    "selectAtLeastOnePlatform": "Bitte wählen Sie mindestens eine Plattform aus",
+    "selectAtLeastOneVehicleType": "Bitte wählen Sie mindestens einen Fahrzeugtyp aus",
+    "selectAtLeastOneStaffType": "Bitte wählen Sie mindestens einen Mitarbeitertyp aus",
+    "selectAtLeastOneLocation": "Bitte wählen Sie mindestens eine {{location}} aus"
+  },
+  "gigEconomyCompanies": {
+    "uberEats": "Uber Eats",
+    "deliveroo": "Deliveroo",
+    "justEat": "Just Eat",
+    "dpd": "DPD",
+    "yodel": "Yodel",
+    "glovo": "Glovo",
+    "other": "Andere"
+  },
+  "quickCommerceCompanies": {
+    "getir": "Getir",
+    "gorillas": "Gorillas",
+    "zapp": "Zapp",
+    "other": "Andere"
+  },
+  "marketTypes": {
+    "van_transport": "Van/Transport",
+    "bicycle_delivery": "Fahrrad-Lieferung"
+  },
+  "markets": {
+    "germany": "Deutschland",
+    "uk": "Vereinigtes Königreich",
+    "ireland": "Irland",
+    "milan": "Mailand",
+    "rome": "Rom",
+    "paris": "Paris",
+    "barcelona": "Barcelona",
+    "madrid": "Madrid",
+    "berlin": "Berlin"
+  },
+  "buttons": {
+    "viewDemo": "Demo ansehen",
+    "publicForm": "Öffentliches Formular",
+    "copyLink": "Link kopieren",
+    "linkCopied": "Link kopiert!",
+    "shareWithPartners": "Diesen Link an Partner weiterleiten"
+  }
+}

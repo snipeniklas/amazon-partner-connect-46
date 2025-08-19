@@ -1,0 +1,70 @@
+{
+  "sender": {
+    "title": "E-Mails senden",
+    "statistics": {
+      "total": "Kontakte insgesamt",
+      "sent": "E-Mails gesendet",
+      "ready": "Bereit zum Senden"
+    },
+    "preview": {
+      "title": "E-Mail Vorschau",
+      "note": "Hinweis: {{formLink}} wird durch den echten Formular-Link ersetzt"
+    },
+    "testEmail": {
+      "title": "Test-E-Mail senden",
+      "selectContact": "Kontakt auswählen",
+      "send": "Test senden"
+    },
+    "bulkEmail": {
+      "title": "Massen-E-Mail senden",
+      "description": "E-Mails an alle berechtigten Kontakte senden:",
+      "send": "E-Mails senden"
+    }
+  },
+  "tracking": {
+    "title": "E-Mail Tracking",
+    "titleWithEngagement": "E-Mail Tracking & Engagement",
+    "noEmailSent": "Noch keine E-Mail versendet",
+    "noData": "Noch keine Tracking-Daten verfügbar",
+    "autoCapture": "Events werden automatisch erfasst",
+    "engagement": "Engagement",
+    "delivery": "Zustellung",
+    "opened": "Geöffnet",
+    "notOpened": "Nicht geöffnet",
+    "clicked": "Geklickt",
+    "notClicked": "Nicht geklickt",
+    "history": "E-Mail Verlauf",
+    "events": {
+      "sent": "Gesendet",
+      "delivered": "Zugestellt",
+      "opened": "Geöffnet",
+      "clicked": "Link geklickt",
+      "bounced": "Abgelehnt",
+      "complained": "Beschwerde",
+      "delayed": "Verzögert"
+    },
+    "details": {
+      "link": "Link:",
+      "reason": "Grund:",
+      "delayReason": "Verzögerungsgrund verfügbar"
+    }
+  },
+  "templates": {
+    "partnerInvitation": {
+      "subject": "Neue regelmäßige Touren verfügbar - Jetzt Partner werden!",
+      "greeting": "Hallo {{name}},",
+      "intro": "wir freuen uns, Ihnen eine aufregende Möglichkeit zur Zusammenarbeit anzubieten!",
+      "body": "Unser Subunternehmer Partner Netzwerk erweitert sich und wir suchen zuverlässige Logistikpartner wie Sie. Als Teil unseres Netzwerks profitieren Sie von:",
+      "benefits": [
+        "Regelmäßigen Aufträgen",
+        "Wettbewerbsfähigen Tarifen",
+        "Flexiblen Arbeitszeiten",
+        "Professioneller Unterstützung"
+      ],
+      "action": "Um mehr zu erfahren und sich zu bewerben, füllen Sie bitte unseren Partner-Fragebogen aus:",
+      "cta": "Fragebogen ausfüllen",
+      "closing": "Wir freuen uns darauf, von Ihnen zu hören!",
+      "signature": "Mit freundlichen Grüßen,\nIhr Subunternehmer Partner Team"
+    }
+  }
+}
