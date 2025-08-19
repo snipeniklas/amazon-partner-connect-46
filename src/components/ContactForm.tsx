@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,10 +13,15 @@ interface ContactFormProps {
   onSuccess: () => void;
 }
 
+import { useMetaPixel } from "@/hooks/useMetaPixel";
 export const ContactForm = ({ onSuccess }: ContactFormProps) => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { t } = useTranslation();
+
+  // Meta Pixel tracking - get pixel code for current market combination
+  const [metaPixelCode, setMetaPixelCode] = useState<string | null>(null);
+  const { trackLead, trackContact } = useMetaPixel(metaPixelCode);
 
   const [formData, setFormData] = useState({
     company_name: "",
@@ -33,6 +38,28 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
   });
 
   const availableMarkets = getAvailableMarkets();
+
+  // Fetch Meta Pixel code when market selection changes
+  useEffect(() => {
+    const fetchMetaPixel = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('meta_pixel_settings')
+          .select('pixel_code')
+          .eq('market_type', formData.market_type)
+          .eq('target_market', formData.target_market)
+          .single();
+
+        if (!error && data) {
+          setMetaPixelCode(data.pixel_code);
+        }
+      } catch (error) {
+        console.error('Error fetching Meta Pixel code:', error);
+      }
+    };
+
+    fetchMetaPixel();
+  }, [formData.market_type, formData.target_market]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,6 +90,15 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
       toast({
         title: t('common:messages.success'),
         description: t('dashboard:contacts.added'),
+      });
+
+      // Track successful contact creation
+      trackContact({
+        content_name: `Contact Created - ${formData.company_name}`,
+        content_category: 'contact_creation',
+        value: 1,
+        market_type: formData.market_type,
+        target_market: formData.target_market
       });
 
       // Reset form

@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle, ArrowRight, ArrowLeft, Building, Truck, MapPin, Users, MessageSquare, Bike } from "lucide-react";
 import { getMarketConfig, MarketConfig } from "@/config/marketConfigs";
+import { useMetaPixel } from "@/hooks/useMetaPixel";
 import jsPDF from 'jspdf';
 
 const DynamicPublicForm = () => {
@@ -35,6 +36,9 @@ const DynamicPublicForm = () => {
   const [showSummary, setShowSummary] = useState(false);
   const [marketConfig, setMarketConfig] = useState<MarketConfig | null>(null);
   const [metaPixelCode, setMetaPixelCode] = useState<string | null>(null);
+  
+  // Meta Pixel tracking hook
+  const { trackLead, trackContact, trackCompleteRegistration, trackViewContent } = useMetaPixel(metaPixelCode);
 
   const [formData, setFormData] = useState({
     // Basic Information
@@ -349,12 +353,16 @@ const DynamicPublicForm = () => {
     }
   };
 
-  // Add Meta Pixel tracking events  
-  const trackMetaPixelEvent = (eventName: string, parameters: any = {}) => {
-    if (metaPixelCode && typeof window !== 'undefined' && (window as any).fbq) {
-      (window as any).fbq('track', eventName, parameters);
+  // Track step changes for better analytics
+  useEffect(() => {
+    if (metaPixelCode && currentStep > 1) {
+      trackViewContent({
+        content_name: `Step ${currentStep} - ${formData.market_type}`,
+        content_category: 'form_step',
+        value: currentStep
+      });
     }
-  };
+  }, [currentStep, metaPixelCode]);
 
   const generatePDF = () => {
     try {
@@ -1125,11 +1133,13 @@ const DynamicPublicForm = () => {
       });
 
       // Show success page and track conversion
-      trackMetaPixelEvent('CompleteRegistration', {
+      trackCompleteRegistration({
+        content_name: `Partner Registration - ${formData.company_name}`,
+        content_category: 'partner_registration',
+        value: 1,
         market_type: formData.market_type,
         target_market: formData.target_market,
-        company_name: formData.company_name,
-        content_category: 'partner_registration'
+        company_name: formData.company_name
       });
       
       setCurrentStep(5);
