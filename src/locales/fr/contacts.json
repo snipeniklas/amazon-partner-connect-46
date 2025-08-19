@@ -75,7 +75,9 @@
       "waiting": "En attente",
       "lastMile": "Last-Mile",
       "amazonExperience": "Expérience Amazon",
-      "amazon": "Amazon"
+      "amazon": "Amazon",
+      "hasComments": "Avec Commentaires",
+      "commented": "Commenté"
     },
     "logistics": {
       "citiesCount": "{{count}} villes",
