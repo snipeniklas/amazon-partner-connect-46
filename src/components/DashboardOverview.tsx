@@ -87,43 +87,26 @@ export function DashboardOverview({ user, contacts }: DashboardOverviewProps) {
       if (accessibleContacts.length > 0) {
         const contactIds = accessibleContacts.map(contact => contact.id);
         
-        // Get unique contacts for each event type using DISTINCT count
-        const { data: deliveredData } = await supabase
+        // Get all email tracking events in one query
+        const { data: allTrackingData } = await supabase
           .from('email_tracking')
-          .select('contact_id')
-          .in('contact_id', contactIds)
-          .eq('event_type', 'delivered');
+          .select('contact_id, event_type')
+          .in('contact_id', contactIds);
         
-        const { data: openedData } = await supabase
-          .from('email_tracking')
-          .select('contact_id')
-          .in('contact_id', contactIds)
-          .eq('event_type', 'opened');
-        
-        const { data: clickedData } = await supabase
-          .from('email_tracking')
-          .select('contact_id')
-          .in('contact_id', contactIds)
-          .eq('event_type', 'clicked');
-        
-        const { data: bouncedData } = await supabase
-          .from('email_tracking')
-          .select('contact_id')
-          .in('contact_id', contactIds)
-          .eq('event_type', 'bounced');
-        
-        const { data: delayedData } = await supabase
-          .from('email_tracking')
-          .select('contact_id')
-          .in('contact_id', contactIds)
-          .eq('event_type', 'delayed');
-        
-        // Count unique contacts (not events)
-        emailsDelivered = deliveredData ? new Set(deliveredData.map(r => r.contact_id)).size : 0;
-        emailsOpened = openedData ? new Set(openedData.map(r => r.contact_id)).size : 0;
-        emailsClicked = clickedData ? new Set(clickedData.map(r => r.contact_id)).size : 0;
-        emailsBounced = bouncedData ? new Set(bouncedData.map(r => r.contact_id)).size : 0;
-        emailsDelayed = delayedData ? new Set(delayedData.map(r => r.contact_id)).size : 0;
+        if (allTrackingData) {
+          // Count unique contacts for each event type
+          const deliveredContacts = new Set(allTrackingData.filter(r => r.event_type === 'delivered').map(r => r.contact_id));
+          const openedContacts = new Set(allTrackingData.filter(r => r.event_type === 'opened').map(r => r.contact_id));
+          const clickedContacts = new Set(allTrackingData.filter(r => r.event_type === 'clicked').map(r => r.contact_id));
+          const bouncedContacts = new Set(allTrackingData.filter(r => r.event_type === 'bounced').map(r => r.contact_id));
+          const delayedContacts = new Set(allTrackingData.filter(r => r.event_type === 'delayed').map(r => r.contact_id));
+          
+          emailsDelivered = deliveredContacts.size;
+          emailsOpened = openedContacts.size;
+          emailsClicked = clickedContacts.size;
+          emailsBounced = bouncedContacts.size;
+          emailsDelayed = delayedContacts.size;
+        }
       }
       
       // Rate calculations - use sent emails from contact flags as base
