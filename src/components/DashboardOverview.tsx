@@ -70,80 +70,45 @@ export function DashboardOverview({ user, contacts }: DashboardOverviewProps) {
       // Filter contacts based on user permissions
       const accessibleContacts = contacts.filter(contact => hasAccessToContact(contact));
       
-      // Optimized SQL aggregation instead of fetching all data
-      let emailMetrics = {
-        sent: 0,
-        delivered: 0,
-        opened: 0,
-        clicked: 0,
-        bounced: 0,
-        delayed: 0
-      };
+      // Use the same logic as ContactsList for consistent numbers
+      const totalContacts = accessibleContacts.length;
       
-      // Single optimized query with SQL aggregation
-      if (permissions.is_admin) {
-        // Admin: Get all email tracking aggregated by event_type
-        const { data: trackingData } = await supabase
-          .from('email_tracking')
-          .select('event_type, contact_id');
-        
-        if (trackingData) {
-          const counts: Record<string, number> = {};
-          trackingData.forEach(row => {
-            counts[row.event_type] = (counts[row.event_type] || 0) + 1;
-          });
-          
-          emailMetrics.sent = counts.sent || 0;
-          emailMetrics.delivered = counts.delivered || 0;
-          emailMetrics.opened = counts.opened || 0;
-          emailMetrics.clicked = counts.clicked || 0;
-          emailMetrics.bounced = counts.bounced || 0;
-          emailMetrics.delayed = counts.delayed || 0;
-        }
-      } else if (accessibleContacts.length > 0) {
-        // Non-admin: Get email tracking for accessible contacts only
+      // Count emails sent from contact flags (same as ContactsList)
+      const emailsSent = accessibleContacts.filter(contact => contact.email_sent).length;
+      
+      // Count forms completed from contact flags (same as ContactsList)  
+      const formsCompleted = accessibleContacts.filter(contact => contact.form_completed).length;
+      
+      // Count email tracking events from the tracking data
+      const emailsDelivered = accessibleContacts.filter(contact => contact.email_delivered).length;
+      const emailsOpened = accessibleContacts.filter(contact => contact.email_opened).length;
+      const emailsClicked = accessibleContacts.filter(contact => contact.email_clicked).length;
+      
+      // Get detailed tracking events for bounced/delayed from email_tracking table
+      let emailsBounced = 0;
+      let emailsDelayed = 0;
+      
+      if (accessibleContacts.length > 0) {
         const contactIds = accessibleContacts.map(contact => contact.id);
         
         const { data: trackingData } = await supabase
           .from('email_tracking')
-          .select('event_type, contact_id')
-          .in('contact_id', contactIds);
+          .select('event_type')
+          .in('contact_id', contactIds)
+          .in('event_type', ['bounced', 'delayed']);
         
         if (trackingData) {
-          const counts: Record<string, number> = {};
-          trackingData.forEach(row => {
-            counts[row.event_type] = (counts[row.event_type] || 0) + 1;
-          });
-          
-          emailMetrics.sent = counts.sent || 0;
-          emailMetrics.delivered = counts.delivered || 0;
-          emailMetrics.opened = counts.opened || 0;
-          emailMetrics.clicked = counts.clicked || 0;
-          emailMetrics.bounced = counts.bounced || 0;
-          emailMetrics.delayed = counts.delayed || 0;
+          emailsBounced = trackingData.filter(row => row.event_type === 'bounced').length;
+          emailsDelayed = trackingData.filter(row => row.event_type === 'delayed').length;
         }
       }
-
-      // Calculate metrics
-      const totalContacts = accessibleContacts.length || contacts.length;
-      const emailsSent = emailMetrics.sent || accessibleContacts.filter(contact => contact.email_sent).length;
-      const formsCompleted = accessibleContacts.length > 0 
-        ? accessibleContacts.filter(contact => contact.form_completed).length
-        : contacts.filter(contact => contact.form_completed).length;
       
-      // Email tracking metrics from aggregated data
-      const emailsDelivered = emailMetrics.delivered;
-      const emailsOpened = emailMetrics.opened;
-      const emailsClicked = emailMetrics.clicked;
-      const emailsBounced = emailMetrics.bounced;
-      const emailsDelayed = emailMetrics.delayed;
-      
-      // Rate calculations - use sent emails from tracking data as base
+      // Rate calculations - use sent emails from contact flags as base
       const deliveryRate = emailsSent > 0 ? (emailsDelivered / emailsSent) * 100 : 0;
       const openRate = emailsDelivered > 0 ? (emailsOpened / emailsDelivered) * 100 : 0;
       const clickRate = emailsOpened > 0 ? (emailsClicked / emailsOpened) * 100 : 0;
       
-      // Calculated metrics
+      // Calculated metrics (same as ContactsList)
       const awaitingResponse = totalContacts - formsCompleted;
       const conversionRate = emailsSent > 0 ? (formsCompleted / emailsSent) * 100 : 0;
 
@@ -163,6 +128,7 @@ export function DashboardOverview({ user, contacts }: DashboardOverviewProps) {
         clickRate,
       };
 
+      console.log('📊 Dashboard Metrics (Fixed):', finalMetrics);
       setMetrics(finalMetrics);
     } catch (error) {
       console.error('Error fetching dashboard metrics:', error);
