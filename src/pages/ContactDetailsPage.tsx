@@ -78,7 +78,7 @@ const ContactDetailsPage = () => {
   const { contactId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { t } = useTranslation('contacts');
+  const { t } = useTranslation(['contacts', 'forms', 'common']);
   const [contact, setContact] = useState<Contact | null>(null);
   const [loading, setLoading] = useState(true);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
