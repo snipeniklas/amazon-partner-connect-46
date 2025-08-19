@@ -16,6 +16,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
 import jsPDF from 'jspdf';
+import { ContactDetailsVanTransport } from "./ContactDetailsVanTransport";
+import { ContactDetailsBicycleDelivery } from "./ContactDetailsBicycleDelivery";
 
 interface Contact {
   id: string;
@@ -309,116 +311,209 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         currentY += 10;
       }
 
-      // ============= PAGE 2: DETAILED LOGISTICS & PERSONNEL =============
-      
-      pdf.addPage();
-      currentPage++;
-      currentY = 30;
-      
-      // Page header
-      pdf.setTextColor(35, 47, 62);
-      pdf.setFontSize(18);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text('Logistik & Personal Details', margin, currentY);
-      
-      currentY += 20;
-      
-      // Last-Mile Logistics Section
-      pdf.setTextColor(35, 47, 62);
-      pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text(t('contacts:details.logistics'), margin, currentY);
-      
-      currentY += 15;
-      pdf.setTextColor(85, 85, 85);
-      pdf.setFontSize(11);
-      pdf.setFont('helvetica', 'normal');
-      
-      const logisticsInfo = [
-        [t('contacts:details.lastMileLogistics') + ':', formatBoolean(contact.is_last_mile_logistics)],
-        [t('contacts:details.sincePeriod') + ':', contact.last_mile_since_when || t('common:messages.noData')],
+        // ============= PAGE 2: MARKET-SPECIFIC DETAILS =============
         
-        [t('contacts:details.foodDelivery') + ':', formatBoolean(contact.food_delivery_services)],
-        [t('contacts:details.amazonExperience') + ':', formatBoolean(contact.amazon_experience)],
-        ['Amazon Arbeitskapazität:', contact.amazon_work_capacity || 'Keine Angabe'],
-        ['Quick Commerce:', formatBoolean(contact.works_for_quick_commerce)],
-        ['Gig Economy Food:', formatBoolean(contact.works_for_gig_economy_food)]
-      ];
-      
-      logisticsInfo.forEach(([label, value]) => {
-        checkPageSpace(8);
+        pdf.addPage();
+        currentPage++;
+        currentY = 30;
+        
+        // Page header with market-specific title
+        pdf.setTextColor(35, 47, 62);
+        pdf.setFontSize(18);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(label, margin, currentY);
-        pdf.setFont('helvetica', 'normal');
-        pdf.text(value, margin + 70, currentY);
-        currentY += 8;
-      });
-      
-      currentY += 15;
-      
-      // Personnel Structure Section
-      checkPageSpace(40);
-      pdf.setTextColor(35, 47, 62);
-      pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text('Personal-Struktur', margin, currentY);
-      
-      currentY += 15;
-      pdf.setTextColor(85, 85, 85);
-      pdf.setFontSize(11);
-      pdf.setFont('helvetica', 'normal');
-      
-      const personnelInfo = [
-        [t('contacts:details.staffCount') + ':', contact.delivery_driver_count?.toString() || '0'],
-        ['Delivery Driver:', contact.delivery_driver_count?.toString() || '0'],
-        ['Bicycle Driver:', contact.bicycle_driver_count?.toString() || '0'],
-        [t('contacts:details.vehicleCount') + ':', contact.total_vehicle_count?.toString() || '0'],
-        [t('contacts:details.staffTypes') + ':', formatArray(contact.staff_types)]
-      ];
-      
-      personnelInfo.forEach(([label, value]) => {
-        checkPageSpace(8);
-        pdf.setFont('helvetica', 'bold');
-        pdf.text(label, margin, currentY);
-        pdf.setFont('helvetica', 'normal');
-        const lines = pdf.splitTextToSize(value, maxWidth - 70);
-        pdf.text(lines, margin + 70, currentY);
-        currentY += Math.max(8, lines.length * 6);
-      });
-      
-      currentY += 15;
-      
-      // Advanced Vehicle Information Section
-      checkPageSpace(60);
-      pdf.setTextColor(35, 47, 62);
-      pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text('Fahrzeug-Details', margin, currentY);
-      
-      currentY += 15;
-      pdf.setTextColor(85, 85, 85);
-      pdf.setFontSize(11);
-      pdf.setFont('helvetica', 'normal');
-      
-      const vehicleInfo = [
-        [t('contacts:details.vehicleTypes') + ':', formatArray(contact.vehicle_types)],
-        ['Gesamtfahrzeuge:', contact.total_vehicle_count?.toString() || '0'],
-        ['Fahrräder:', contact.bicycle_count?.toString() || '0'],
-        ['Cargo Bikes:', contact.cargo_bike_count?.toString() || '0'],
-        ['Nutzt Cargo Bikes:', formatBoolean(contact.uses_cargo_bikes)]
-      ];
-      
-      vehicleInfo.forEach(([label, value]) => {
-        checkPageSpace(8);
-        pdf.setFont('helvetica', 'bold');
-        pdf.text(label, margin, currentY);
-        pdf.setFont('helvetica', 'normal');
-        const lines = pdf.splitTextToSize(value, maxWidth - 70);
-        pdf.text(lines, margin + 70, currentY);
-        currentY += Math.max(8, lines.length * 6);
-      });
-      
-      currentY += 15;
+        const pageTitle = isBicycleDelivery ? 'Fahrrad-Lieferdienst Details' : 'Transporter-Logistik Details';
+        pdf.text(pageTitle, margin, currentY);
+        
+        currentY += 20;
+
+        if (isBicycleDelivery) {
+          // BICYCLE DELIVERY SPECIFIC SECTIONS
+          
+          // Personnel Section
+          pdf.setTextColor(35, 47, 62);
+          pdf.setFontSize(16);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Personal & Beschäftigung', margin, currentY);
+          
+          currentY += 15;
+          pdf.setTextColor(85, 85, 85);
+          pdf.setFontSize(11);
+          pdf.setFont('helvetica', 'normal');
+          
+          const bicyclePersonnelInfo = [
+            ['Lieferfahrer:', contact.delivery_driver_count?.toString() || 'Keine Angabe'],
+            ['Fahrradfahrer:', contact.bicycle_driver_count?.toString() || 'Keine Angabe'],
+            ['Beschäftigungsstatus:', contact.employment_status || 'Keine Angabe'],
+            ['Mitarbeitertyp:', contact.employee_type || 'Keine Angabe'],
+            ['Personalarten:', formatArray(contact.staff_types)]
+          ];
+          
+          bicyclePersonnelInfo.forEach(([label, value]) => {
+            checkPageSpace(8);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text(label, margin, currentY);
+            pdf.setFont('helvetica', 'normal');
+            const lines = pdf.splitTextToSize(value, maxWidth - 70);
+            pdf.text(lines, margin + 70, currentY);
+            currentY += Math.max(8, lines.length * 6);
+          });
+          
+          currentY += 15;
+          
+          // Equipment Section
+          checkPageSpace(40);
+          pdf.setTextColor(35, 47, 62);
+          pdf.setFontSize(16);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Fahrzeuge & Ausrüstung', margin, currentY);
+          
+          currentY += 15;
+          pdf.setTextColor(85, 85, 85);
+          pdf.setFontSize(11);
+          pdf.setFont('helvetica', 'normal');
+          
+          const bicycleEquipmentInfo = [
+            ['Fahrräder:', contact.bicycle_count?.toString() || 'Keine Angabe'],
+            ['Cargo Bikes:', contact.cargo_bike_count?.toString() || 'Keine Angabe'],
+            ['Nutzt Cargo Bikes:', formatBoolean(contact.uses_cargo_bikes)],
+            ['Eigene Fahrzeuge:', formatBoolean(contact.company_owns_vehicles)],
+            ['Gesamtfahrzeuge:', contact.total_vehicle_count?.toString() || 'Keine Angabe']
+          ];
+          
+          bicycleEquipmentInfo.forEach(([label, value]) => {
+            checkPageSpace(8);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text(label, margin, currentY);
+            pdf.setFont('helvetica', 'normal');
+            pdf.text(value, margin + 70, currentY);
+            currentY += 8;
+          });
+          
+          currentY += 15;
+          
+          // Platform Experience Section
+          checkPageSpace(60);
+          pdf.setTextColor(35, 47, 62);
+          pdf.setFontSize(16);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Plattform-Erfahrung', margin, currentY);
+          
+          currentY += 15;
+          pdf.setTextColor(85, 85, 85);
+          pdf.setFontSize(11);
+          pdf.setFont('helvetica', 'normal');
+          
+          const platformInfo = [
+            ['Quick Commerce:', formatBoolean(contact.works_for_quick_commerce)],
+            ['Gig Economy Food:', formatBoolean(contact.works_for_gig_economy_food)],
+            ['Quick Commerce Plattformen:', formatArray(contact.quick_commerce_companies)],
+            ['Gig Economy Plattformen:', formatArray(contact.gig_economy_companies)]
+          ];
+          
+          platformInfo.forEach(([label, value]) => {
+            checkPageSpace(12);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text(label, margin, currentY);
+            pdf.setFont('helvetica', 'normal');
+            const lines = pdf.splitTextToSize(value, maxWidth - 80);
+            pdf.text(lines, margin + 80, currentY);
+            currentY += Math.max(8, lines.length * 6);
+          });
+
+        } else {
+          // VAN TRANSPORT SPECIFIC SECTIONS
+          
+          // Personnel Section
+          pdf.setTextColor(35, 47, 62);
+          pdf.setFontSize(16);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Personal & Logistik', margin, currentY);
+          
+          currentY += 15;
+          pdf.setTextColor(85, 85, 85);
+          pdf.setFontSize(11);
+          pdf.setFont('helvetica', 'normal');
+          
+          const vanPersonnelInfo = [
+            ['Vollzeit-Fahrer:', contact.full_time_drivers?.toString() || 'Keine Angabe'],
+            ['Transporter-Anzahl:', contact.transporter_count?.toString() || 'Keine Angabe'],
+            ['Personalarten:', formatArray(contact.staff_types)],
+            ['Last-Mile-Logistik:', formatBoolean(contact.is_last_mile_logistics)],
+            ['Seit wann:', contact.last_mile_since_when || 'Keine Angabe']
+          ];
+          
+          vanPersonnelInfo.forEach(([label, value]) => {
+            checkPageSpace(8);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text(label, margin, currentY);
+            pdf.setFont('helvetica', 'normal');
+            const lines = pdf.splitTextToSize(value, maxWidth - 70);
+            pdf.text(lines, margin + 70, currentY);
+            currentY += Math.max(8, lines.length * 6);
+          });
+          
+          currentY += 15;
+          
+          // Vehicle Section
+          checkPageSpace(40);
+          pdf.setTextColor(35, 47, 62);
+          pdf.setFontSize(16);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Fahrzeuge & Ausrüstung', margin, currentY);
+          
+          currentY += 15;
+          pdf.setTextColor(85, 85, 85);
+          pdf.setFontSize(11);
+          pdf.setFont('helvetica', 'normal');
+          
+          const vanVehicleInfo = [
+            ['Fahrzeugtypen:', formatArray(contact.vehicle_types)],
+            ['Gesamtfahrzeuge:', contact.total_vehicle_count?.toString() || 'Keine Angabe']
+          ];
+          
+          vanVehicleInfo.forEach(([label, value]) => {
+            checkPageSpace(8);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text(label, margin, currentY);
+            pdf.setFont('helvetica', 'normal');
+            const lines = pdf.splitTextToSize(value, maxWidth - 70);
+            pdf.text(lines, margin + 70, currentY);
+            currentY += Math.max(8, lines.length * 6);
+          });
+          
+          currentY += 15;
+          
+          // Platform Experience Section
+          checkPageSpace(60);
+          pdf.setTextColor(35, 47, 62);
+          pdf.setFontSize(16);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Plattform & Amazon Erfahrung', margin, currentY);
+          
+          currentY += 15;
+          pdf.setTextColor(85, 85, 85);
+          pdf.setFontSize(11);
+          pdf.setFont('helvetica', 'normal');
+          
+          const vanPlatformInfo = [
+            ['Food Delivery Services:', formatBoolean(contact.food_delivery_services)],
+            ['Food Delivery Plattformen:', formatArray(contact.food_delivery_platforms)],
+            ['Amazon Erfahrung:', formatBoolean(contact.amazon_experience)],
+            ['Amazon Arbeitskapazität:', contact.amazon_work_capacity || 'Keine Angabe']
+          ];
+          
+          vanPlatformInfo.forEach(([label, value]) => {
+            checkPageSpace(12);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text(label, margin, currentY);
+            pdf.setFont('helvetica', 'normal');
+            const lines = pdf.splitTextToSize(value, maxWidth - 80);
+            pdf.text(lines, margin + 80, currentY);
+            currentY += Math.max(8, lines.length * 6);
+          });
+        }
+        
+        currentY += 15;
       
       // Operational Scope Section
       checkPageSpace(40);
