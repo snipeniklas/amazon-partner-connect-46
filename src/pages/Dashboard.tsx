@@ -119,10 +119,7 @@ const Dashboard = () => {
         batchQueries.push(
           supabase
             .from('contacts')
-            .select(`
-              *,
-              comment_count:contact_comments(count)
-            `)
+            .select('*')
             .range(startRange, endRange)
             .order('created_at', { ascending: false })
         );
@@ -164,7 +161,18 @@ const Dashboard = () => {
         return acc;
       }, {} as Record<string, string[]>);
 
-      // Add tracking data to contacts
+      // Get contacts that have comments (single efficient query)
+      const contactIds = (contactsData || []).map(c => c.id);
+      const { data: contactsWithComments } = await supabase
+        .from('contact_comments')
+        .select('contact_id')
+        .in('contact_id', contactIds);
+
+      const contactsWithCommentsSet = new Set(
+        (contactsWithComments || []).map(c => c.contact_id)
+      );
+
+      // Add tracking data and comment flags to contacts
       const contactsWithTracking = (contactsData || []).map(contact => {
         const events = trackingByContact[contact.id] || [];
         
@@ -173,6 +181,7 @@ const Dashboard = () => {
           email_delivered: events.includes('delivered'),
           email_opened: events.includes('opened'),
           email_clicked: events.includes('clicked'),
+          has_comments: contactsWithCommentsSet.has(contact.id),
         };
       });
 

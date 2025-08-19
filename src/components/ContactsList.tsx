@@ -59,8 +59,8 @@ interface Contact {
   email_delivered?: boolean;
   email_opened?: boolean;
   email_clicked?: boolean;
-  // Comment count
-  comment_count?: number;
+  // Comment flag
+  has_comments?: boolean;
 }
 
 interface ContactsListProps {
@@ -601,7 +601,7 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
                               <span className="sm:hidden">{t('contacts:list.badges.amazon')}</span>
                             </Badge>
                           )}
-                          {contact.comment_count && contact.comment_count > 0 && (
+                          {contact.has_comments && (
                             <Badge variant="outline" className="flex items-center gap-1 text-blue-600 border-blue-200 bg-blue-50 text-xs">
                               <MessageCircle className="h-3 w-3" />
                               <span className="hidden sm:inline">{t('contacts:list.badges.hasComments')}</span>
