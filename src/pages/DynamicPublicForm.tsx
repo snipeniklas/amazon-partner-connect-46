@@ -34,6 +34,7 @@ const DynamicPublicForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showSummary, setShowSummary] = useState(false);
   const [marketConfig, setMarketConfig] = useState<MarketConfig | null>(null);
+  const [metaPixelId, setMetaPixelId] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     // Basic Information
@@ -153,6 +154,9 @@ const DynamicPublicForm = () => {
     // Load market configuration
     const config = getMarketConfig(marketType, targetMarket);
     setMarketConfig(config);
+
+    // Load Meta Pixel configuration
+    fetchMetaPixelId();
   }, [searchParams, i18n, marketType, targetMarket]);
 
   useEffect(() => {
@@ -326,6 +330,30 @@ const DynamicPublicForm = () => {
       
       return newData;
     });
+  };
+
+  const fetchMetaPixelId = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('meta_pixel_settings')
+        .select('pixel_id')
+        .eq('market_type', marketType)
+        .eq('target_market', targetMarket)
+        .single();
+
+      if (!error && data) {
+        setMetaPixelId(data.pixel_id);
+      }
+    } catch (error) {
+      console.error('Error fetching Meta Pixel ID:', error);
+    }
+  };
+
+  // Add Meta Pixel tracking events
+  const trackMetaPixelEvent = (eventName: string, parameters: any = {}) => {
+    if (metaPixelId && typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', eventName, parameters);
+    }
   };
 
   const generatePDF = () => {
@@ -1096,7 +1124,14 @@ const DynamicPublicForm = () => {
         description: t('forms:publicForm.success.message'),
       });
 
-      // Show success page
+      // Show success page and track conversion
+      trackMetaPixelEvent('CompleteRegistration', {
+        market_type: formData.market_type,
+        target_market: formData.target_market,
+        company_name: formData.company_name,
+        content_category: 'partner_registration'
+      });
+      
       setCurrentStep(5);
     } catch (error: any) {
       toast({
@@ -2087,6 +2122,36 @@ const DynamicPublicForm = () => {
           </CardContent>
         </Card>
       </div>
+      
+      {/* Meta Pixel Script */}
+      {metaPixelId && (
+        <>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '${metaPixelId}');
+                fbq('track', 'PageView');
+              `
+            }}
+          />
+          <noscript>
+            <img 
+              height="1" 
+              width="1" 
+              style={{ display: 'none' }} 
+              src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`} 
+            />
+          </noscript>
+        </>
+      )}
     </div>
   );
 };

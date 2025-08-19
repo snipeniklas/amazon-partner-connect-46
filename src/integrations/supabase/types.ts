@@ -261,6 +261,36 @@ export type Database = {
           },
         ]
       }
+      meta_pixel_settings: {
+        Row: {
+          created_at: string
+          id: string
+          market_type: string
+          pixel_id: string
+          target_market: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          market_type: string
+          pixel_id: string
+          target_market: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          market_type?: string
+          pixel_id?: string
+          target_market?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_profiles: {
         Row: {
           allowed_market_types: string[] | null

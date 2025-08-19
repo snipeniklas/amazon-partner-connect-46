@@ -8,7 +8,8 @@ import {
   Mail, 
   FileText,
   List,
-  BarChart3
+  BarChart3,
+  Settings
 } from "lucide-react";
 import {
   Sidebar,
@@ -63,6 +64,11 @@ export function AppSidebar({ contactsCount, isAdmin }: AppSidebarProps) {
       path: '/dashboard/forms',
       title: t('dashboard:tabs.formsOverview'),
       icon: FileText,
+    },
+    {
+      path: '/dashboard/settings',
+      title: 'Settings',
+      icon: Settings,
     },
   ];
 

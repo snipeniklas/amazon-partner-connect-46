@@ -15,6 +15,7 @@ import { FormsOverview } from "@/components/FormsOverview";
 import { UserManagement } from "@/components/UserManagement";
 import { DashboardOverview } from "@/components/DashboardOverview";
 import { LatestEmailActivities } from "@/components/LatestEmailActivities";
+import MetaPixelSettings from "@/components/MetaPixelSettings";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { LogOut, Menu } from "lucide-react";
@@ -50,6 +51,8 @@ const Dashboard = () => {
         return 'forms';
       case '/users':
         return 'users';
+      case '/settings':
+        return 'settings';
       default:
         return 'dashboard';
     }
@@ -358,6 +361,7 @@ const Dashboard = () => {
               {permissions.is_admin && (
                 <Route path="/users" element={<UserManagement />} />
               )}
+              <Route path="/settings" element={<MetaPixelSettings user={user} />} />
             </Routes>
           </main>
         </div>
