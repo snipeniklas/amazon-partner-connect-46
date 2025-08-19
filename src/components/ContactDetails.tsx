@@ -86,7 +86,7 @@ interface ContactDetailsProps {
 
 export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsProps) => {
   const { toast } = useToast();
-  const { t, i18n } = useTranslation('contacts');
+  const { t, i18n } = useTranslation(['contacts', 'forms', 'common']);
 
   // Market identification
   const marketType = contact.market_type || 'van_transport';
@@ -133,11 +133,6 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       const margin = 20;
       const maxWidth = pageWidth - 2 * margin;
       
-      // Set colors matching the platform design
-      const primaryBlue = '#232F3E';
-      const primaryOrange = '#FF9900';
-      const textGray = '#555';
-      
       let currentY = 20;
       let currentPage = 1;
       
@@ -152,16 +147,32 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         return false;
       };
       
-      // Helper function to format boolean values
+      // Helper function to format boolean values with translations
       const formatBoolean = (value: boolean | null | undefined) => {
-        if (value === null || value === undefined) return 'Keine Angabe';
-        return value ? '✓ Ja' : '✗ Nein';
+        if (value === null || value === undefined) return t('details.noData');
+        return value ? t('details.booleanYes') : t('details.booleanNo');
       };
       
-      // Helper function to format arrays
-      const formatArray = (arr: string[] | undefined | null, fallback = 'Keine Angaben') => {
-        if (!arr || !Array.isArray(arr) || arr.length === 0) return fallback;
+      // Helper function to format arrays with translations
+      const formatArray = (arr: string[] | undefined | null, fallback?: string) => {
+        if (!arr || !Array.isArray(arr) || arr.length === 0) return fallback || t('details.noData');
         return arr.join(', ');
+      };
+
+      // Helper function to format date
+      const formatDate = (dateString?: string) => {
+        if (!dateString) return t('details.noData');
+        const locale = i18n.language === 'en' ? 'en-US' : 
+                      i18n.language === 'fr' ? 'fr-FR' :
+                      i18n.language === 'es' ? 'es-ES' :
+                      i18n.language === 'it' ? 'it-IT' : 'de-DE';
+        return new Date(dateString).toLocaleDateString(locale, {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
       };
 
       // ============= PAGE 1: HEADER & COMPANY OVERVIEW =============
@@ -184,7 +195,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       
       // Status and date
       const statusText = getStatusText();
-      pdf.text(`Status: ${statusText}`, pageWidth - 80, 25);
+      pdf.text(`${t('common:labels.status', { defaultValue: 'Status' })}: ${statusText}`, pageWidth - 80, 25);
       
       currentY = 50;
       
@@ -192,7 +203,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       pdf.setTextColor(85, 85, 85);
       pdf.setFontSize(12);
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Profil-Übersicht', margin, currentY);
+      pdf.text(t('details.profileCompleteness'), margin, currentY);
       
       currentY += 15;
       const completionPercentage = getCompletionPercentage();
@@ -204,7 +215,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       
       // Column 1: Completion
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Vollständigkeit:', margin, currentY);
+      pdf.text(t('details.profileCompleteness') + ':', margin, currentY);
       pdf.setFont('helvetica', 'normal');
       pdf.setTextColor(255, 153, 0);
       pdf.text(`${completionPercentage}%`, margin + 45, currentY);
@@ -212,47 +223,18 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       // Column 2: Days since creation
       pdf.setTextColor(85, 85, 85);
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Erstellt vor:', margin + 90, currentY);
+      pdf.text(t('details.daysSinceCreation') + ':', margin + 90, currentY);
       pdf.setFont('helvetica', 'normal');
-      pdf.text(`${daysOld} Tagen`, margin + 135, currentY);
+      pdf.text(`${daysOld} ${t('common:labels.days', { defaultValue: 'days' })}`, margin + 135, currentY);
       
-      currentY += 15;
-      
-      // Market & Target Information Section
-      checkPageSpace(40);
-      pdf.setTextColor(35, 47, 62);
-      pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text('Market & Zielmarkt Information', margin, currentY);
-      
-      currentY += 15;
-      pdf.setTextColor(85, 85, 85);
-      pdf.setFontSize(11);
-      pdf.setFont('helvetica', 'normal');
-      
-      const marketData = [
-        ['Markttyp:', marketType],
-        ['Zielmarkt:', targetMarket],
-        ['Beschäftigungsstatus:', contact.employment_status || 'Keine Angabe'],
-        ['Mitarbeitertyp:', contact.employee_type || 'Keine Angabe']
-      ];
-      
-      marketData.forEach(([label, value]) => {
-        pdf.setFont('helvetica', 'bold');
-        pdf.text(label, margin, currentY);
-        pdf.setFont('helvetica', 'normal');
-        pdf.text(value, margin + 50, currentY);
-        currentY += 8;
-      });
-      
-      currentY += 10;
+      currentY += 20;
       
       // Company Information Section
       checkPageSpace(60);
       pdf.setTextColor(35, 47, 62);
       pdf.setFontSize(16);
       pdf.setFont('helvetica', 'bold');
-      pdf.text(t('contacts:details.companyInfo'), margin, currentY);
+      pdf.text(t('details.companyData'), margin, currentY);
       
       currentY += 15;
       pdf.setTextColor(85, 85, 85);
@@ -260,14 +242,14 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       pdf.setFont('helvetica', 'normal');
       
       const companyInfo = [
-        [t('contacts:details.companyName') + ':', contact.company_name],
-        [t('contacts:details.email') + ':', contact.email_address],
-        [t('contacts:details.phone') + ':', contact.phone_number || t('common:messages.noData')],
-        [t('contacts:details.address') + ':', contact.company_address || t('common:messages.noData')],
-        [t('contacts:details.legalForm') + ':', contact.legal_form || t('common:messages.noData')],
-        [t('contacts:details.website') + ':', contact.website || t('common:messages.noData')],
-        ['Gründungsjahr:', contact.company_established_year?.toString() || 'Keine Angabe'],
-        ['Eigene Fahrzeuge:', formatBoolean(contact.company_owns_vehicles)]
+        [t('details.companyName') + ':', contact.company_name],
+        [t('details.email') + ':', contact.email_address],
+        [t('details.phone') + ':', contact.phone_number || t('details.noData')],
+        [t('details.address') + ':', contact.company_address || t('details.noData')],
+        [t('details.legalForm') + ':', contact.legal_form || t('details.noData')],
+        [t('details.website') + ':', contact.website || t('details.noData')],
+        [t('details.establishedYear') + ':', contact.company_established_year?.toString() || t('details.noData')],
+        [t('details.ownsVehicles') + ':', formatBoolean(contact.company_owns_vehicles)]
       ];
       
       companyInfo.forEach(([label, value]) => {
@@ -288,7 +270,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setTextColor(35, 47, 62);
         pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(t('contacts:details.contactPerson'), margin, currentY);
+        pdf.text(t('details.contactPerson'), margin, currentY);
         
         currentY += 15;
         pdf.setTextColor(85, 85, 85);
@@ -296,8 +278,8 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setFont('helvetica', 'normal');
         
         const contactInfo = [
-          [t('contacts:details.name') + ':', contact.contact_person_name || t('common:messages.noData')],
-          [t('contacts:details.position') + ':', contact.contact_person_position || t('common:messages.noData')]
+          [t('details.name') + ':', contact.contact_person_name || t('details.noData')],
+          [t('details.position') + ':', contact.contact_person_position || t('details.noData')]
         ];
         
         contactInfo.forEach(([label, value]) => {
@@ -321,7 +303,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       pdf.setTextColor(35, 47, 62);
       pdf.setFontSize(18);
       pdf.setFont('helvetica', 'bold');
-      const pageTitle = isBicycleDelivery ? 'Fahrrad-Lieferdienst Details' : 'Transporter-Logistik Details';
+      const pageTitle = isBicycleDelivery ? t('details.bicycleDeliveryDetails') : t('details.vanTransportDetails');
       pdf.text(pageTitle, margin, currentY);
       
       currentY += 20;
@@ -333,7 +315,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setTextColor(35, 47, 62);
         pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Personal & Beschäftigung', margin, currentY);
+        pdf.text(t('details.personnelStructure'), margin, currentY);
         
         currentY += 15;
         pdf.setTextColor(85, 85, 85);
@@ -341,11 +323,11 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setFont('helvetica', 'normal');
         
         const bicyclePersonnelInfo = [
-          ['Lieferfahrer:', contact.delivery_driver_count?.toString() || 'Keine Angabe'],
-          ['Fahrradfahrer:', contact.bicycle_driver_count?.toString() || 'Keine Angabe'],
-          ['Beschäftigungsstatus:', contact.employment_status || 'Keine Angabe'],
-          ['Mitarbeitertyp:', contact.employee_type || 'Keine Angabe'],
-          ['Personalarten:', formatArray(contact.staff_types)]
+          [t('details.deliveryDrivers') + ':', contact.delivery_driver_count?.toString() || t('details.noData')],
+          [t('details.bicycleDrivers') + ':', contact.bicycle_driver_count?.toString() || t('details.noData')],
+          [t('details.employmentStatus') + ':', contact.employment_status || t('details.noData')],
+          [t('details.employeeType') + ':', contact.employee_type || t('details.noData')],
+          [t('details.staffTypes') + ':', formatArray(contact.staff_types)]
         ];
         
         bicyclePersonnelInfo.forEach(([label, value]) => {
@@ -365,7 +347,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setTextColor(35, 47, 62);
         pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Fahrzeuge & Ausrüstung', margin, currentY);
+        pdf.text(t('details.vehiclesEquipment'), margin, currentY);
         
         currentY += 15;
         pdf.setTextColor(85, 85, 85);
@@ -373,11 +355,11 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setFont('helvetica', 'normal');
         
         const bicycleEquipmentInfo = [
-          ['Fahrräder:', contact.bicycle_count?.toString() || 'Keine Angabe'],
-          ['Cargo Bikes:', contact.cargo_bike_count?.toString() || 'Keine Angabe'],
-          ['Nutzt Cargo Bikes:', formatBoolean(contact.uses_cargo_bikes)],
-          ['Eigene Fahrzeuge:', formatBoolean(contact.company_owns_vehicles)],
-          ['Gesamtfahrzeuge:', contact.total_vehicle_count?.toString() || 'Keine Angabe']
+          [t('details.bicycles') + ':', contact.bicycle_count?.toString() || t('details.noData')],
+          [t('details.cargoBikes') + ':', contact.cargo_bike_count?.toString() || t('details.noData')],
+          [t('details.usesCargoBikes') + ':', formatBoolean(contact.uses_cargo_bikes)],
+          [t('details.ownsVehicles') + ':', formatBoolean(contact.company_owns_vehicles)],
+          [t('details.totalVehicles') + ':', contact.total_vehicle_count?.toString() || t('details.noData')]
         ];
         
         bicycleEquipmentInfo.forEach(([label, value]) => {
@@ -396,7 +378,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setTextColor(35, 47, 62);
         pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Plattform-Erfahrung', margin, currentY);
+        pdf.text(t('details.platformExperience'), margin, currentY);
         
         currentY += 15;
         pdf.setTextColor(85, 85, 85);
@@ -404,10 +386,10 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setFont('helvetica', 'normal');
         
         const platformInfo = [
-          ['Quick Commerce:', formatBoolean(contact.works_for_quick_commerce)],
-          ['Gig Economy Food:', formatBoolean(contact.works_for_gig_economy_food)],
-          ['Quick Commerce Plattformen:', formatArray(contact.quick_commerce_companies)],
-          ['Gig Economy Plattformen:', formatArray(contact.gig_economy_companies)]
+          [t('details.quickCommerce') + ':', formatBoolean(contact.works_for_quick_commerce)],
+          [t('details.gigEconomyFood') + ':', formatBoolean(contact.works_for_gig_economy_food)],
+          [t('details.quickCommercePlatforms') + ':', formatArray(contact.quick_commerce_companies)],
+          [t('details.gigEconomyPlatforms') + ':', formatArray(contact.gig_economy_companies)]
         ];
         
         platformInfo.forEach(([label, value]) => {
@@ -427,7 +409,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setTextColor(35, 47, 62);
         pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Personal & Logistik', margin, currentY);
+        pdf.text(t('details.personnelStructure'), margin, currentY);
         
         currentY += 15;
         pdf.setTextColor(85, 85, 85);
@@ -435,11 +417,11 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setFont('helvetica', 'normal');
         
         const vanPersonnelInfo = [
-          ['Vollzeit-Fahrer:', contact.full_time_drivers?.toString() || 'Keine Angabe'],
-          ['Transporter-Anzahl:', contact.transporter_count?.toString() || 'Keine Angabe'],
-          ['Personalarten:', formatArray(contact.staff_types)],
-          ['Last-Mile-Logistik:', formatBoolean(contact.is_last_mile_logistics)],
-          ['Seit wann:', contact.last_mile_since_when || 'Keine Angabe']
+          [t('details.fullTimeDrivers') + ':', contact.full_time_drivers?.toString() || t('details.noData')],
+          [t('details.transporters') + ':', contact.transporter_count?.toString() || t('details.noData')],
+          [t('details.staffTypes') + ':', formatArray(contact.staff_types)],
+          [t('details.lastMileLogistics') + ':', formatBoolean(contact.is_last_mile_logistics)],
+          [t('details.since') + ':', contact.last_mile_since_when || t('details.noData')]
         ];
         
         vanPersonnelInfo.forEach(([label, value]) => {
@@ -454,12 +436,12 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         
         currentY += 15;
         
-        // Vehicle Section
-        checkPageSpace(40);
+        // Vehicle & Amazon Experience Section  
+        checkPageSpace(60);
         pdf.setTextColor(35, 47, 62);
         pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Fahrzeuge & Ausrüstung', margin, currentY);
+        pdf.text(t('details.vehiclesEquipment'), margin, currentY);
         
         currentY += 15;
         pdf.setTextColor(85, 85, 85);
@@ -467,42 +449,13 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setFont('helvetica', 'normal');
         
         const vanVehicleInfo = [
-          ['Fahrzeugtypen:', formatArray(contact.vehicle_types)],
-          ['Gesamtfahrzeuge:', contact.total_vehicle_count?.toString() || 'Keine Angabe']
+          [t('details.vehicleTypes') + ':', formatArray(contact.vehicle_types)],
+          [t('details.totalVehicles') + ':', contact.total_vehicle_count?.toString() || t('details.noData')],
+          [t('details.amazonExperience') + ':', formatBoolean(contact.amazon_experience)],
+          [t('forms:publicForm.logistics.amazonWorkCapacity') + ':', contact.amazon_work_capacity || t('details.noData')]
         ];
         
         vanVehicleInfo.forEach(([label, value]) => {
-          checkPageSpace(8);
-          pdf.setFont('helvetica', 'bold');
-          pdf.text(label, margin, currentY);
-          pdf.setFont('helvetica', 'normal');
-          const lines = pdf.splitTextToSize(value, maxWidth - 70);
-          pdf.text(lines, margin + 70, currentY);
-          currentY += Math.max(8, lines.length * 6);
-        });
-        
-        currentY += 15;
-        
-        // Platform Experience Section
-        checkPageSpace(60);
-        pdf.setTextColor(35, 47, 62);
-        pdf.setFontSize(16);
-        pdf.setFont('helvetica', 'bold');
-        pdf.text('Plattform & Amazon Erfahrung', margin, currentY);
-        
-        currentY += 15;
-        pdf.setTextColor(85, 85, 85);
-        pdf.setFontSize(11);
-        pdf.setFont('helvetica', 'normal');
-        
-        const vanPlatformInfo = [
-          ['Food Delivery Services:', formatBoolean(contact.food_delivery_services)],
-          ['Food Delivery Plattformen:', formatArray(contact.food_delivery_platforms)],
-          ['Amazon Erfahrung:', formatBoolean(contact.amazon_experience)],
-          ['Amazon Arbeitskapazität:', contact.amazon_work_capacity || 'Keine Angabe']
-        ];
-        
-        vanPlatformInfo.forEach(([label, value]) => {
           checkPageSpace(12);
           pdf.setFont('helvetica', 'bold');
           pdf.text(label, margin, currentY);
@@ -521,20 +474,35 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         pdf.setTextColor(35, 47, 62);
         pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Tätige Städte', margin, currentY);
+        pdf.text(t('details.operatingCities'), margin, currentY);
         
         currentY += 15;
         pdf.setTextColor(85, 85, 85);
         pdf.setFontSize(11);
         pdf.setFont('helvetica', 'normal');
         
-        const cities = contact.operating_cities.join(', ');
+        const cities = formatArray(contact.operating_cities);
+        const cityLines = pdf.splitTextToSize(cities, maxWidth);
+        pdf.text(cityLines, margin, currentY);
+        currentY += cityLines.length * 6 + 15;
+      }
+
+      // Additional Comments Section
+      if (contact.additional_comments) {
+        checkPageSpace(40);
+        pdf.setTextColor(35, 47, 62);
+        pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Städte:', margin, currentY);
+        pdf.text(t('common:labels.comments', { defaultValue: 'Comments' }), margin, currentY);
+        
+        currentY += 15;
+        pdf.setTextColor(85, 85, 85);
+        pdf.setFontSize(11);
         pdf.setFont('helvetica', 'normal');
-        const cityLines = pdf.splitTextToSize(cities, maxWidth - 40);
-        pdf.text(cityLines, margin + 40, currentY);
-        currentY += Math.max(8, cityLines.length * 6) + 10;
+        
+        const commentLines = pdf.splitTextToSize(contact.additional_comments, maxWidth);
+        pdf.text(commentLines, margin, currentY);
+        currentY += commentLines.length * 6 + 20;
       }
 
       // Timeline Section
@@ -542,7 +510,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       pdf.setTextColor(35, 47, 62);
       pdf.setFontSize(16);
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Timeline', margin, currentY);
+      pdf.text(t('details.timeline'), margin, currentY);
       
       currentY += 15;
       pdf.setTextColor(85, 85, 85);
@@ -550,9 +518,9 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       pdf.setFont('helvetica', 'normal');
       
       const timelineData = [
-        [t('contacts:details.created') + ':', formatDate(contact.created_at)],
-        ['Email versendet:', contact.email_sent_at ? formatDate(contact.email_sent_at) : 'Noch nicht versendet'],
-        ['Formular ausgefüllt:', contact.form_completed_at ? formatDate(contact.form_completed_at) : 'Noch nicht ausgefüllt']
+        [t('details.contactCreated') + ':', formatDate(contact.created_at)],
+        [t('details.emailSent') + ':', contact.email_sent_at ? formatDate(contact.email_sent_at) : t('details.pending')],
+        [t('details.formCompleted') + ':', contact.form_completed_at ? formatDate(contact.form_completed_at) : t('details.pending')]
       ];
       
       timelineData.forEach(([label, value]) => {
@@ -563,38 +531,43 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         currentY += 8;
       });
 
-      // Add footer on each page
-      const addFooter = (pageNum: number) => {
-        pdf.setFontSize(8);
-        pdf.setTextColor(128, 128, 128);
-        pdf.text(`Seite ${pageNum} - Generiert am ${new Date().toLocaleDateString('de-DE')}`, 
-                 margin, pageHeight - 10);
-        pdf.text(`${contact.company_name} - Kontaktdetails`, 
-                 pageWidth - 80, pageHeight - 10);
-      };
-
+      // ============= FOOTER =============
+      
       // Add footer to all pages
       for (let i = 1; i <= currentPage; i++) {
-        if (i > 1) {
-          pdf.setPage(i);
-        }
-        addFooter(i);
+        pdf.setPage(i);
+        
+        // Footer line
+        pdf.setDrawColor(200, 200, 200);
+        pdf.line(margin, pageHeight - 25, pageWidth - margin, pageHeight - 25);
+        
+        // Footer text
+        pdf.setTextColor(150, 150, 150);
+        pdf.setFontSize(8);
+        pdf.setFont('helvetica', 'normal');
+        pdf.text(t('details.pdfFooter'), margin, pageHeight - 15);
+        
+        // Page number and date
+        const pageInfo = `${t('common:labels.page', { defaultValue: 'Page' })} ${i} ${t('common:labels.of', { defaultValue: 'of' })} ${currentPage}`;
+        const generatedText = `${t('details.generated')}: ${formatDate(new Date().toISOString())}`;
+        pdf.text(pageInfo, pageWidth - margin - 50, pageHeight - 15);
+        pdf.text(generatedText, pageWidth - margin - 80, pageHeight - 5);
       }
 
       // Save the PDF
-      const fileName = `${contact.company_name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_contact_details.pdf`;
+      const fileName = `${contact.company_name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_profile.pdf`;
       pdf.save(fileName);
       
       toast({
-        title: t('contacts:details.pdfCreated'),
-        description: t('contacts:details.pdfDownloaded', { fileName }),
+        title: t('details.pdfCreated'),
+        description: t('details.pdfDownloaded', { fileName }),
       });
       
     } catch (error) {
       console.error('PDF generation error:', error);
       toast({
         title: t('common:messages.error'),
-        description: t('contacts:details.pdfError'),
+        description: t('details.pdfError'),
         variant: "destructive",
       });
     }
