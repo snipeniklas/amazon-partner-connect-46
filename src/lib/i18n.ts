@@ -39,6 +39,12 @@ import emailsFR from '../locales/fr/emails.json';
 import emailsES from '../locales/es/emails.json';
 import emailsIT from '../locales/it/emails.json';
 
+import settingsDE from '../locales/de/settings.json';
+import settingsEN from '../locales/en/settings.json';
+import settingsFR from '../locales/fr/settings.json';
+import settingsES from '../locales/es/settings.json';
+import settingsIT from '../locales/it/settings.json';
+
 const resources = {
   de: {
     common: commonDE,
@@ -47,6 +53,7 @@ const resources = {
     forms: formsDE,
     contacts: contactsDE,
     emails: emailsDE,
+    settings: settingsDE,
   },
   en: {
     common: commonEN,
@@ -55,6 +62,7 @@ const resources = {
     forms: formsEN,
     contacts: contactsEN,
     emails: emailsEN,
+    settings: settingsEN,
   },
   fr: {
     common: commonFR,
@@ -63,6 +71,7 @@ const resources = {
     forms: formsFR,
     contacts: contactsFR,
     emails: emailsFR,
+    settings: settingsFR,
   },
   es: {
     common: commonES,
@@ -71,6 +80,7 @@ const resources = {
     forms: formsES,
     contacts: contactsES,
     emails: emailsES,
+    settings: settingsES,
   },
   it: {
     common: commonIT,
@@ -79,6 +89,7 @@ const resources = {
     forms: formsIT,
     contacts: contactsIT,
     emails: emailsIT,
+    settings: settingsIT,
   },
 };
 
