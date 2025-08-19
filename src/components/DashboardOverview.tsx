@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { User } from '@supabase/supabase-js';
-import { chunkArray } from "@/lib/utils";
 import { 
   Users, 
   Mail, 
@@ -71,47 +70,73 @@ export function DashboardOverview({ user, contacts }: DashboardOverviewProps) {
       // Filter contacts based on user permissions
       const accessibleContacts = contacts.filter(contact => hasAccessToContact(contact));
       
-      let emailTrackingData: any[] = [];
-      let totalEmailsSent = 0;
+      // Optimized SQL aggregation instead of fetching all data
+      let emailMetrics = {
+        sent: 0,
+        delivered: 0,
+        opened: 0,
+        clicked: 0,
+        bounced: 0,
+        delayed: 0
+      };
       
-      // For admin users, fetch all email tracking data directly
+      // Single optimized query with SQL aggregation
       if (permissions.is_admin) {
+        // Admin: Get all email tracking aggregated by event_type
         const { data: trackingData } = await supabase
           .from('email_tracking')
-          .select('*');
+          .select('event_type, contact_id');
         
-        emailTrackingData = trackingData || [];
+        if (trackingData) {
+          const counts: Record<string, number> = {};
+          trackingData.forEach(row => {
+            counts[row.event_type] = (counts[row.event_type] || 0) + 1;
+          });
+          
+          emailMetrics.sent = counts.sent || 0;
+          emailMetrics.delivered = counts.delivered || 0;
+          emailMetrics.opened = counts.opened || 0;
+          emailMetrics.clicked = counts.clicked || 0;
+          emailMetrics.bounced = counts.bounced || 0;
+          emailMetrics.delayed = counts.delayed || 0;
+        }
       } else if (accessibleContacts.length > 0) {
+        // Non-admin: Get email tracking for accessible contacts only
         const contactIds = accessibleContacts.map(contact => contact.id);
         
-        // Split contact IDs into chunks to avoid URL length limits
-        const chunks = chunkArray(contactIds, 100);
-        const promises = chunks.map(chunk =>
-          supabase
-            .from('email_tracking')
-            .select('*')
-            .in('contact_id', chunk)
-        );
+        const { data: trackingData } = await supabase
+          .from('email_tracking')
+          .select('event_type, contact_id')
+          .in('contact_id', contactIds);
         
-        const results = await Promise.all(promises);
-        emailTrackingData = results.flatMap(result => result.data || []);
+        if (trackingData) {
+          const counts: Record<string, number> = {};
+          trackingData.forEach(row => {
+            counts[row.event_type] = (counts[row.event_type] || 0) + 1;
+          });
+          
+          emailMetrics.sent = counts.sent || 0;
+          emailMetrics.delivered = counts.delivered || 0;
+          emailMetrics.opened = counts.opened || 0;
+          emailMetrics.clicked = counts.clicked || 0;
+          emailMetrics.bounced = counts.bounced || 0;
+          emailMetrics.delayed = counts.delayed || 0;
+        }
       }
-      
-      totalEmailsSent = emailTrackingData.filter(event => event.event_type === 'sent').length;
 
       // Calculate metrics
       const totalContacts = accessibleContacts.length || contacts.length;
-      const emailsSent = totalEmailsSent || accessibleContacts.filter(contact => contact.email_sent).length;
+      const emailsSent = emailMetrics.sent || accessibleContacts.filter(contact => contact.email_sent).length;
       const formsCompleted = accessibleContacts.length > 0 
         ? accessibleContacts.filter(contact => contact.form_completed).length
         : contacts.filter(contact => contact.form_completed).length;
       
-      // Email tracking metrics
-      const emailsDelivered = emailTrackingData.filter(event => event.event_type === 'delivered').length;
-      const emailsOpened = emailTrackingData.filter(event => event.event_type === 'opened').length;
-      const emailsClicked = emailTrackingData.filter(event => event.event_type === 'clicked').length;
-      const emailsBounced = emailTrackingData.filter(event => event.event_type === 'bounced').length;
-      const emailsDelayed = emailTrackingData.filter(event => event.event_type === 'delayed').length;
+      // Email tracking metrics from aggregated data
+      const emailsDelivered = emailMetrics.delivered;
+      const emailsOpened = emailMetrics.opened;
+      const emailsClicked = emailMetrics.clicked;
+      const emailsBounced = emailMetrics.bounced;
+      const emailsDelayed = emailMetrics.delayed;
       
       // Rate calculations - use sent emails from tracking data as base
       const deliveryRate = emailsSent > 0 ? (emailsDelivered / emailsSent) * 100 : 0;
