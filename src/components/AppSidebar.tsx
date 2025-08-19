@@ -43,7 +43,6 @@ export function AppSidebar({ contactsCount, isAdmin }: AppSidebarProps) {
       path: '/dashboard/contacts',
       title: t('dashboard:tabs.list'),
       icon: List,
-      count: contactsCount,
     },
     {
       path: '/dashboard/add-contact',
@@ -98,14 +97,7 @@ export function AppSidebar({ contactsCount, isAdmin }: AppSidebarProps) {
                       }
                     >
                        <item.icon className="h-4 w-4 text-inherit" />
-                      <span className="flex items-center justify-between w-full">
-                        {item.title}
-                        {item.count !== undefined && (
-                          <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-full ml-2">
-                            {item.count}
-                          </span>
-                        )}
-                      </span>
+                       <span>{item.title}</span>
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
