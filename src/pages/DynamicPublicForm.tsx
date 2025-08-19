@@ -34,7 +34,7 @@ const DynamicPublicForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showSummary, setShowSummary] = useState(false);
   const [marketConfig, setMarketConfig] = useState<MarketConfig | null>(null);
-  const [metaPixelId, setMetaPixelId] = useState<string | null>(null);
+  const [metaPixelCode, setMetaPixelCode] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     // Basic Information
@@ -156,7 +156,7 @@ const DynamicPublicForm = () => {
     setMarketConfig(config);
 
     // Load Meta Pixel configuration
-    fetchMetaPixelId();
+    fetchMetaPixelCode();
   }, [searchParams, i18n, marketType, targetMarket]);
 
   useEffect(() => {
@@ -332,26 +332,26 @@ const DynamicPublicForm = () => {
     });
   };
 
-  const fetchMetaPixelId = async () => {
+  const fetchMetaPixelCode = async () => {
     try {
       const { data, error } = await supabase
         .from('meta_pixel_settings')
-        .select('pixel_id')
+        .select('pixel_code')
         .eq('market_type', marketType)
         .eq('target_market', targetMarket)
         .single();
 
       if (!error && data) {
-        setMetaPixelId(data.pixel_id);
+        setMetaPixelCode(data.pixel_code);
       }
     } catch (error) {
-      console.error('Error fetching Meta Pixel ID:', error);
+      console.error('Error fetching Meta Pixel Code:', error);
     }
   };
 
-  // Add Meta Pixel tracking events
+  // Add Meta Pixel tracking events  
   const trackMetaPixelEvent = (eventName: string, parameters: any = {}) => {
-    if (metaPixelId && typeof window !== 'undefined' && (window as any).fbq) {
+    if (metaPixelCode && typeof window !== 'undefined' && (window as any).fbq) {
       (window as any).fbq('track', eventName, parameters);
     }
   };
@@ -2124,33 +2124,8 @@ const DynamicPublicForm = () => {
       </div>
       
       {/* Meta Pixel Script */}
-      {metaPixelId && (
-        <>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                !function(f,b,e,v,n,t,s)
-                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)}(window, document,'script',
-                'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '${metaPixelId}');
-                fbq('track', 'PageView');
-              `
-            }}
-          />
-          <noscript>
-            <img 
-              height="1" 
-              width="1" 
-              style={{ display: 'none' }} 
-              src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`} 
-            />
-          </noscript>
-        </>
+      {metaPixelCode && (
+        <div dangerouslySetInnerHTML={{ __html: metaPixelCode }} />
       )}
     </div>
   );

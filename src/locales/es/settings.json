@@ -1,0 +1,32 @@
+{
+  "metaPixel": {
+    "title": "Configuración de Meta Pixel",
+    "subtitle": "Configure códigos de Meta Pixel para el seguimiento en sus formularios públicos",
+    "infoMessage": "Los códigos de Meta Pixel se insertan automáticamente en los formularios públicos basados en el Tipo de Mercado y Mercado Objetivo. Cada combinación solo se puede configurar una vez.",
+    "addNew": "Agregar Nueva Configuración de Meta Pixel",
+    "current": "Configuraciones Actuales de Meta Pixel",
+    "noConfigurations": "No se encontraron configuraciones de Meta Pixel",
+    "addFirst": "Agregue su primera configuración arriba",
+    "marketType": "Tipo de Mercado",
+    "targetMarket": "Mercado Objetivo",
+    "pixelCode": "Código de Meta Pixel",
+    "pixelCodePlaceholder": "Pegue aquí su código completo de Meta Pixel...",
+    "pixelCodeHelp": "Código completo de Meta Pixel de su Meta Business Manager",
+    "selectMarketType": "Seleccionar tipo de mercado",
+    "selectTargetMarket": "Seleccionar mercado objetivo",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "delete": "Eliminar",
+    "errors": {
+      "fillAllFields": "Por favor complete todos los campos",
+      "invalidPixelCode": "Formato de código de Meta Pixel inválido",
+      "duplicateConfiguration": "Ya existe una configuración para este tipo de mercado y mercado objetivo",
+      "saveFailed": "Error al guardar la configuración de Meta Pixel",
+      "deleteFailed": "Error al eliminar la configuración de Meta Pixel"
+    },
+    "success": {
+      "saved": "Configuración de Meta Pixel guardada exitosamente",
+      "deleted": "Configuración de Meta Pixel eliminada exitosamente"
+    }
+  }
+}

@@ -266,7 +266,7 @@ export type Database = {
           created_at: string
           id: string
           market_type: string
-          pixel_id: string
+          pixel_code: string
           target_market: string
           updated_at: string
           user_id: string
@@ -275,7 +275,7 @@ export type Database = {
           created_at?: string
           id?: string
           market_type: string
-          pixel_id: string
+          pixel_code?: string
           target_market: string
           updated_at?: string
           user_id: string
@@ -284,7 +284,7 @@ export type Database = {
           created_at?: string
           id?: string
           market_type?: string
-          pixel_id?: string
+          pixel_code?: string
           target_market?: string
           updated_at?: string
           user_id?: string

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
@@ -20,13 +20,13 @@ interface MetaPixelSetting {
   id: string;
   market_type: string;
   target_market: string;
-  pixel_id: string;
+  pixel_code: string;
   created_at: string;
   updated_at: string;
 }
 
 const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
-  const { t } = useTranslation(['dashboard', 'common']);
+  const { t } = useTranslation(['settings', 'common']);
   const { toast } = useToast();
   const [settings, setSettings] = useState<MetaPixelSetting[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,27 +36,27 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
   const [newSetting, setNewSetting] = useState({
     market_type: '',
     target_market: '',
-    pixel_id: ''
+    pixel_code: ''
   });
 
   const marketTypes = [
-    { value: 'van_transport', label: 'Van Transport' },
-    { value: 'bicycle_delivery', label: 'Bicycle Delivery' }
+    { value: 'van_transport', label: t('settings:metaPixel.marketTypes.vanTransport', 'Van Transport') },
+    { value: 'bicycle_delivery', label: t('settings:metaPixel.marketTypes.bicycleDelivery', 'Bicycle Delivery') }
   ];
 
   const targetMarkets = [
-    { value: 'germany', label: 'Germany' },
-    { value: 'uk', label: 'UK' },
-    { value: 'ireland', label: 'Ireland' },
-    { value: 'france', label: 'France' },
-    { value: 'italy', label: 'Italy' },
-    { value: 'spain', label: 'Spain' },
-    { value: 'paris', label: 'Paris' },
-    { value: 'milan', label: 'Milan' },
-    { value: 'rome', label: 'Rome' },
-    { value: 'berlin', label: 'Berlin' },
-    { value: 'barcelona', label: 'Barcelona' },
-    { value: 'madrid', label: 'Madrid' }
+    { value: 'germany', label: t('settings:metaPixel.targetMarkets.germany', 'Germany') },
+    { value: 'uk', label: t('settings:metaPixel.targetMarkets.uk', 'UK') },
+    { value: 'ireland', label: t('settings:metaPixel.targetMarkets.ireland', 'Ireland') },
+    { value: 'france', label: t('settings:metaPixel.targetMarkets.france', 'France') },
+    { value: 'italy', label: t('settings:metaPixel.targetMarkets.italy', 'Italy') },
+    { value: 'spain', label: t('settings:metaPixel.targetMarkets.spain', 'Spain') },
+    { value: 'paris', label: t('settings:metaPixel.targetMarkets.paris', 'Paris') },
+    { value: 'milan', label: t('settings:metaPixel.targetMarkets.milan', 'Milan') },
+    { value: 'rome', label: t('settings:metaPixel.targetMarkets.rome', 'Rome') },
+    { value: 'berlin', label: t('settings:metaPixel.targetMarkets.berlin', 'Berlin') },
+    { value: 'barcelona', label: t('settings:metaPixel.targetMarkets.barcelona', 'Barcelona') },
+    { value: 'madrid', label: t('settings:metaPixel.targetMarkets.madrid', 'Madrid') }
   ];
 
   const fetchSettings = async () => {
@@ -73,7 +73,7 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
         console.error('Error fetching meta pixel settings:', error);
         toast({
           title: t('common:messages.error'),
-          description: 'Failed to load Meta Pixel settings',
+          description: t('settings:metaPixel.errors.loadFailed', 'Failed to load Meta Pixel settings'),
           variant: 'destructive'
         });
         return;
@@ -91,25 +91,25 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
     fetchSettings();
   }, [user]);
 
-  const validatePixelId = (pixelId: string) => {
-    // Basic validation for Meta Pixel ID format
-    return /^\d{15,16}$/.test(pixelId);
+  const validatePixelCode = (pixelCode: string) => {
+    // Basic validation for Meta Pixel Code - should contain fbq and init
+    return pixelCode.includes('fbq') && pixelCode.includes('init') && pixelCode.trim().length > 50;
   };
 
   const handleSaveNewSetting = async () => {
-    if (!user || !newSetting.market_type || !newSetting.target_market || !newSetting.pixel_id) {
+    if (!user || !newSetting.market_type || !newSetting.target_market || !newSetting.pixel_code) {
       toast({
         title: t('common:messages.error'),
-        description: 'Please fill in all fields',
+        description: t('settings:metaPixel.errors.fillAllFields'),
         variant: 'destructive'
       });
       return;
     }
 
-    if (!validatePixelId(newSetting.pixel_id)) {
+    if (!validatePixelCode(newSetting.pixel_code)) {
       toast({
         title: t('common:messages.error'),
-        description: 'Invalid Meta Pixel ID format. It should be 15-16 digits.',
+        description: t('settings:metaPixel.errors.invalidPixelCode'),
         variant: 'destructive'
       });
       return;
@@ -124,7 +124,7 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
           user_id: user.id,
           market_type: newSetting.market_type,
           target_market: newSetting.target_market,
-          pixel_id: newSetting.pixel_id
+          pixel_code: newSetting.pixel_code
         });
 
       if (error) {
@@ -132,8 +132,8 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
         toast({
           title: t('common:messages.error'),
           description: error.message.includes('duplicate key') 
-            ? 'A setting for this market type and target market already exists'
-            : 'Failed to save Meta Pixel setting',
+            ? t('settings:metaPixel.errors.duplicateConfiguration')
+            : t('settings:metaPixel.errors.saveFailed'),
           variant: 'destructive'
         });
         return;
@@ -141,11 +141,11 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
 
       toast({
         title: t('common:messages.success'),
-        description: 'Meta Pixel setting saved successfully'
+        description: t('settings:metaPixel.success.saved')
       });
 
       // Reset form
-      setNewSetting({ market_type: '', target_market: '', pixel_id: '' });
+      setNewSetting({ market_type: '', target_market: '', pixel_code: '' });
       
       // Refresh settings
       fetchSettings();
@@ -167,7 +167,7 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
         console.error('Error deleting Meta Pixel setting:', error);
         toast({
           title: t('common:messages.error'),
-          description: 'Failed to delete Meta Pixel setting',
+          description: t('settings:metaPixel.errors.deleteFailed'),
           variant: 'destructive'
         });
         return;
@@ -175,7 +175,7 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
 
       toast({
         title: t('common:messages.success'),
-        description: 'Meta Pixel setting deleted successfully'
+        description: t('settings:metaPixel.success.deleted')
       });
 
       // Refresh settings
@@ -196,17 +196,16 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold text-foreground mb-2">Meta Pixel Settings</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-2">{t('settings:metaPixel.title')}</h2>
         <p className="text-muted-foreground">
-          Configure Meta Pixel IDs for tracking on your public forms
+          {t('settings:metaPixel.subtitle')}
         </p>
       </div>
 
       <Alert>
         <Settings className="h-4 w-4" />
         <AlertDescription>
-          Meta Pixel IDs werden automatisch in die öffentlichen Formulare eingefügt basierend auf Market Type und Target Market. 
-          Jede Kombination kann nur einmal konfiguriert werden.
+          {t('settings:metaPixel.infoMessage')}
         </AlertDescription>
       </Alert>
 
@@ -215,70 +214,73 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Plus className="h-5 w-5" />
-            Add New Meta Pixel Configuration
+            {t('settings:metaPixel.addNew')}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
-              <Label htmlFor="market_type">Market Type</Label>
-              <Select
-                value={newSetting.market_type}
-                onValueChange={(value) => setNewSetting(prev => ({ ...prev, market_type: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select market type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {marketTypes.map(type => (
-                    <SelectItem key={type.value} value={type.value}>
-                      {type.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="market_type">{t('settings:metaPixel.marketType')}</Label>
+                <Select
+                  value={newSetting.market_type}
+                  onValueChange={(value) => setNewSetting(prev => ({ ...prev, market_type: value }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('settings:metaPixel.selectMarketType')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {marketTypes.map(type => (
+                      <SelectItem key={type.value} value={type.value}>
+                        {type.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="target_market">{t('settings:metaPixel.targetMarket')}</Label>
+                <Select
+                  value={newSetting.target_market}
+                  onValueChange={(value) => setNewSetting(prev => ({ ...prev, target_market: value }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('settings:metaPixel.selectTargetMarket')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {targetMarkets.map(market => (
+                      <SelectItem key={market.value} value={market.value}>
+                        {market.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div>
-              <Label htmlFor="target_market">Target Market</Label>
-              <Select
-                value={newSetting.target_market}
-                onValueChange={(value) => setNewSetting(prev => ({ ...prev, target_market: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select target market" />
-                </SelectTrigger>
-                <SelectContent>
-                  {targetMarkets.map(market => (
-                    <SelectItem key={market.value} value={market.value}>
-                      {market.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="pixel_id">Meta Pixel ID</Label>
-              <Input
-                id="pixel_id"
-                placeholder="123456789012345"
-                value={newSetting.pixel_id}
-                onChange={(e) => setNewSetting(prev => ({ ...prev, pixel_id: e.target.value }))}
+              <Label htmlFor="pixel_code">{t('settings:metaPixel.pixelCode')}</Label>
+              <Textarea
+                id="pixel_code"
+                placeholder={t('settings:metaPixel.pixelCodePlaceholder')}
+                value={newSetting.pixel_code}
+                onChange={(e) => setNewSetting(prev => ({ ...prev, pixel_code: e.target.value }))}
+                rows={8}
+                className="font-mono text-sm"
               />
               <p className="text-xs text-muted-foreground mt-1">
-                15-16 digits from your Meta Business Manager
+                {t('settings:metaPixel.pixelCodeHelp')}
               </p>
             </div>
 
-            <div className="flex items-end">
+            <div className="flex justify-end">
               <Button 
                 onClick={handleSaveNewSetting} 
                 disabled={saving}
-                className="w-full"
               >
                 <Save className="h-4 w-4 mr-2" />
-                {saving ? 'Saving...' : 'Save'}
+                {saving ? t('settings:metaPixel.saving') : t('settings:metaPixel.save')}
               </Button>
             </div>
           </div>
@@ -288,33 +290,36 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
       {/* Existing Settings */}
       <Card>
         <CardHeader>
-          <CardTitle>Current Meta Pixel Configurations</CardTitle>
+          <CardTitle>{t('settings:metaPixel.current')}</CardTitle>
         </CardHeader>
         <CardContent>
           {settings.length === 0 ? (
             <div className="text-center py-8">
               <Settings className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">No Meta Pixel configurations found</p>
-              <p className="text-sm text-muted-foreground">Add your first configuration above</p>
+              <p className="text-muted-foreground">{t('settings:metaPixel.noConfigurations')}</p>
+              <p className="text-sm text-muted-foreground">{t('settings:metaPixel.addFirst')}</p>
             </div>
           ) : (
             <div className="space-y-4">
               {settings.map((setting) => (
                 <div
                   key={setting.id}
-                  className="flex items-center justify-between p-4 border rounded-lg"
+                  className="flex items-start justify-between p-4 border rounded-lg"
                 >
-                  <div className="flex items-center gap-4">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <Badge variant="secondary">{setting.market_type}</Badge>
-                        <Badge variant="outline">{setting.target_market}</Badge>
-                      </div>
-                      <p className="font-mono text-sm">{setting.pixel_id}</p>
+                  <div className="flex-1 mr-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge variant="secondary">{setting.market_type}</Badge>
+                      <Badge variant="outline">{setting.target_market}</Badge>
+                    </div>
+                    <div className="bg-muted p-3 rounded-md">
+                      <pre className="text-xs text-muted-foreground whitespace-pre-wrap font-mono max-h-32 overflow-y-auto">
+                        {setting.pixel_code.substring(0, 200)}
+                        {setting.pixel_code.length > 200 && '...'}
+                      </pre>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     <Badge variant="outline" className="text-xs">
                       {new Date(setting.updated_at).toLocaleDateString()}
                     </Badge>

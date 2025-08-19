@@ -1,0 +1,32 @@
+{
+  "metaPixel": {
+    "title": "Impostazioni Meta Pixel",
+    "subtitle": "Configura i codici Meta Pixel per il tracciamento sui tuoi moduli pubblici",
+    "infoMessage": "I codici Meta Pixel vengono inseriti automaticamente nei moduli pubblici in base al Tipo di Mercato e Mercato di Destinazione. Ogni combinazione può essere configurata solo una volta.",
+    "addNew": "Aggiungi Nuova Configurazione Meta Pixel",
+    "current": "Configurazioni Meta Pixel Attuali",
+    "noConfigurations": "Nessuna configurazione Meta Pixel trovata",
+    "addFirst": "Aggiungi la tua prima configurazione sopra",
+    "marketType": "Tipo di Mercato",
+    "targetMarket": "Mercato di Destinazione",
+    "pixelCode": "Codice Meta Pixel",
+    "pixelCodePlaceholder": "Incolla qui il tuo codice Meta Pixel completo...",
+    "pixelCodeHelp": "Codice Meta Pixel completo dal tuo Meta Business Manager",
+    "selectMarketType": "Seleziona tipo di mercato",
+    "selectTargetMarket": "Seleziona mercato di destinazione",
+    "save": "Salva",
+    "saving": "Salvando...",
+    "delete": "Elimina",
+    "errors": {
+      "fillAllFields": "Si prega di compilare tutti i campi",
+      "invalidPixelCode": "Formato del codice Meta Pixel non valido",
+      "duplicateConfiguration": "Esiste già una configurazione per questo tipo di mercato e mercato di destinazione",
+      "saveFailed": "Errore nel salvare la configurazione Meta Pixel",
+      "deleteFailed": "Errore nell'eliminare la configurazione Meta Pixel"
+    },
+    "success": {
+      "saved": "Configurazione Meta Pixel salvata con successo",
+      "deleted": "Configurazione Meta Pixel eliminata con successo"
+    }
+  }
+}

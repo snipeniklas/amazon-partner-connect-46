@@ -29,7 +29,7 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ contactsCount, isAdmin }: AppSidebarProps) {
-  const { t } = useTranslation(['dashboard']);
+  const { t } = useTranslation(['dashboard', 'settings']);
   const { state } = useSidebar();
   const isCollapsed = state === 'collapsed';
   const location = useLocation();
@@ -67,7 +67,7 @@ export function AppSidebar({ contactsCount, isAdmin }: AppSidebarProps) {
     },
     {
       path: '/dashboard/settings',
-      title: 'Settings',
+      title: t('settings:metaPixel.title', 'Settings'),
       icon: Settings,
     },
   ];
