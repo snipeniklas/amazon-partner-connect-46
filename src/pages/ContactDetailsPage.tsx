@@ -13,11 +13,13 @@ import { EmailTracking } from "@/components/EmailTracking";
 import { EditContact } from "@/components/EditContact";
 import { ContactComments } from "@/components/ContactComments";
 import { generateFormUrl } from "@/config/emailTemplates";
+import { ContactDetailsVanTransport } from "@/components/ContactDetailsVanTransport";
+import { ContactDetailsBicycleDelivery } from "@/components/ContactDetailsBicycleDelivery";
 import { 
   Mail, Phone, Globe, Building, User, CheckCircle, XCircle, 
   MapPin, Calendar, Truck, Users2, Package, Shield, Star,
   Building2, FileText, Clock, Award, ExternalLink, Copy,
-  ArrowLeft, Eye, Send, Edit, Trash2, MessageSquare, Download, FileDown
+  ArrowLeft, Eye, Send, Edit, Trash2, MessageSquare, Download, FileDown, Bike, Target
 } from "lucide-react";
 import jsPDF from 'jspdf';
 

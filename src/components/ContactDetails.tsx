@@ -179,7 +179,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       // Market type and target market info
       pdf.setFontSize(10);
       pdf.setFont('helvetica', 'normal');
-      const marketInfo = `${(contact as any).market_type || 'van_transport'} | ${(contact as any).target_market || 'germany'}`.toUpperCase();
+      const marketInfo = `${marketType} | ${targetMarket}`.toUpperCase();
       pdf.text(marketInfo, pageWidth - 80, 15);
       
       // Status and date
@@ -231,8 +231,8 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       pdf.setFont('helvetica', 'normal');
       
       const marketData = [
-        ['Markttyp:', (contact as any).market_type || 'van_transport'],
-        ['Zielmarkt:', (contact as any).target_market || 'germany'],
+        ['Markttyp:', marketType],
+        ['Zielmarkt:', targetMarket],
         ['Beschäftigungsstatus:', contact.employment_status || 'Keine Angabe'],
         ['Mitarbeitertyp:', contact.employee_type || 'Keine Angabe']
       ];
@@ -311,330 +311,232 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
         currentY += 10;
       }
 
-        // ============= PAGE 2: MARKET-SPECIFIC DETAILS =============
-        
-        pdf.addPage();
-        currentPage++;
-        currentY = 30;
-        
-        // Page header with market-specific title
-        pdf.setTextColor(35, 47, 62);
-        pdf.setFontSize(18);
-        pdf.setFont('helvetica', 'bold');
-        const pageTitle = isBicycleDelivery ? 'Fahrrad-Lieferdienst Details' : 'Transporter-Logistik Details';
-        pdf.text(pageTitle, margin, currentY);
-        
-        currentY += 20;
-
-        if (isBicycleDelivery) {
-          // BICYCLE DELIVERY SPECIFIC SECTIONS
-          
-          // Personnel Section
-          pdf.setTextColor(35, 47, 62);
-          pdf.setFontSize(16);
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Personal & Beschäftigung', margin, currentY);
-          
-          currentY += 15;
-          pdf.setTextColor(85, 85, 85);
-          pdf.setFontSize(11);
-          pdf.setFont('helvetica', 'normal');
-          
-          const bicyclePersonnelInfo = [
-            ['Lieferfahrer:', contact.delivery_driver_count?.toString() || 'Keine Angabe'],
-            ['Fahrradfahrer:', contact.bicycle_driver_count?.toString() || 'Keine Angabe'],
-            ['Beschäftigungsstatus:', contact.employment_status || 'Keine Angabe'],
-            ['Mitarbeitertyp:', contact.employee_type || 'Keine Angabe'],
-            ['Personalarten:', formatArray(contact.staff_types)]
-          ];
-          
-          bicyclePersonnelInfo.forEach(([label, value]) => {
-            checkPageSpace(8);
-            pdf.setFont('helvetica', 'bold');
-            pdf.text(label, margin, currentY);
-            pdf.setFont('helvetica', 'normal');
-            const lines = pdf.splitTextToSize(value, maxWidth - 70);
-            pdf.text(lines, margin + 70, currentY);
-            currentY += Math.max(8, lines.length * 6);
-          });
-          
-          currentY += 15;
-          
-          // Equipment Section
-          checkPageSpace(40);
-          pdf.setTextColor(35, 47, 62);
-          pdf.setFontSize(16);
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Fahrzeuge & Ausrüstung', margin, currentY);
-          
-          currentY += 15;
-          pdf.setTextColor(85, 85, 85);
-          pdf.setFontSize(11);
-          pdf.setFont('helvetica', 'normal');
-          
-          const bicycleEquipmentInfo = [
-            ['Fahrräder:', contact.bicycle_count?.toString() || 'Keine Angabe'],
-            ['Cargo Bikes:', contact.cargo_bike_count?.toString() || 'Keine Angabe'],
-            ['Nutzt Cargo Bikes:', formatBoolean(contact.uses_cargo_bikes)],
-            ['Eigene Fahrzeuge:', formatBoolean(contact.company_owns_vehicles)],
-            ['Gesamtfahrzeuge:', contact.total_vehicle_count?.toString() || 'Keine Angabe']
-          ];
-          
-          bicycleEquipmentInfo.forEach(([label, value]) => {
-            checkPageSpace(8);
-            pdf.setFont('helvetica', 'bold');
-            pdf.text(label, margin, currentY);
-            pdf.setFont('helvetica', 'normal');
-            pdf.text(value, margin + 70, currentY);
-            currentY += 8;
-          });
-          
-          currentY += 15;
-          
-          // Platform Experience Section
-          checkPageSpace(60);
-          pdf.setTextColor(35, 47, 62);
-          pdf.setFontSize(16);
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Plattform-Erfahrung', margin, currentY);
-          
-          currentY += 15;
-          pdf.setTextColor(85, 85, 85);
-          pdf.setFontSize(11);
-          pdf.setFont('helvetica', 'normal');
-          
-          const platformInfo = [
-            ['Quick Commerce:', formatBoolean(contact.works_for_quick_commerce)],
-            ['Gig Economy Food:', formatBoolean(contact.works_for_gig_economy_food)],
-            ['Quick Commerce Plattformen:', formatArray(contact.quick_commerce_companies)],
-            ['Gig Economy Plattformen:', formatArray(contact.gig_economy_companies)]
-          ];
-          
-          platformInfo.forEach(([label, value]) => {
-            checkPageSpace(12);
-            pdf.setFont('helvetica', 'bold');
-            pdf.text(label, margin, currentY);
-            pdf.setFont('helvetica', 'normal');
-            const lines = pdf.splitTextToSize(value, maxWidth - 80);
-            pdf.text(lines, margin + 80, currentY);
-            currentY += Math.max(8, lines.length * 6);
-          });
-
-        } else {
-          // VAN TRANSPORT SPECIFIC SECTIONS
-          
-          // Personnel Section
-          pdf.setTextColor(35, 47, 62);
-          pdf.setFontSize(16);
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Personal & Logistik', margin, currentY);
-          
-          currentY += 15;
-          pdf.setTextColor(85, 85, 85);
-          pdf.setFontSize(11);
-          pdf.setFont('helvetica', 'normal');
-          
-          const vanPersonnelInfo = [
-            ['Vollzeit-Fahrer:', contact.full_time_drivers?.toString() || 'Keine Angabe'],
-            ['Transporter-Anzahl:', contact.transporter_count?.toString() || 'Keine Angabe'],
-            ['Personalarten:', formatArray(contact.staff_types)],
-            ['Last-Mile-Logistik:', formatBoolean(contact.is_last_mile_logistics)],
-            ['Seit wann:', contact.last_mile_since_when || 'Keine Angabe']
-          ];
-          
-          vanPersonnelInfo.forEach(([label, value]) => {
-            checkPageSpace(8);
-            pdf.setFont('helvetica', 'bold');
-            pdf.text(label, margin, currentY);
-            pdf.setFont('helvetica', 'normal');
-            const lines = pdf.splitTextToSize(value, maxWidth - 70);
-            pdf.text(lines, margin + 70, currentY);
-            currentY += Math.max(8, lines.length * 6);
-          });
-          
-          currentY += 15;
-          
-          // Vehicle Section
-          checkPageSpace(40);
-          pdf.setTextColor(35, 47, 62);
-          pdf.setFontSize(16);
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Fahrzeuge & Ausrüstung', margin, currentY);
-          
-          currentY += 15;
-          pdf.setTextColor(85, 85, 85);
-          pdf.setFontSize(11);
-          pdf.setFont('helvetica', 'normal');
-          
-          const vanVehicleInfo = [
-            ['Fahrzeugtypen:', formatArray(contact.vehicle_types)],
-            ['Gesamtfahrzeuge:', contact.total_vehicle_count?.toString() || 'Keine Angabe']
-          ];
-          
-          vanVehicleInfo.forEach(([label, value]) => {
-            checkPageSpace(8);
-            pdf.setFont('helvetica', 'bold');
-            pdf.text(label, margin, currentY);
-            pdf.setFont('helvetica', 'normal');
-            const lines = pdf.splitTextToSize(value, maxWidth - 70);
-            pdf.text(lines, margin + 70, currentY);
-            currentY += Math.max(8, lines.length * 6);
-          });
-          
-          currentY += 15;
-          
-          // Platform Experience Section
-          checkPageSpace(60);
-          pdf.setTextColor(35, 47, 62);
-          pdf.setFontSize(16);
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Plattform & Amazon Erfahrung', margin, currentY);
-          
-          currentY += 15;
-          pdf.setTextColor(85, 85, 85);
-          pdf.setFontSize(11);
-          pdf.setFont('helvetica', 'normal');
-          
-          const vanPlatformInfo = [
-            ['Food Delivery Services:', formatBoolean(contact.food_delivery_services)],
-            ['Food Delivery Plattformen:', formatArray(contact.food_delivery_platforms)],
-            ['Amazon Erfahrung:', formatBoolean(contact.amazon_experience)],
-            ['Amazon Arbeitskapazität:', contact.amazon_work_capacity || 'Keine Angabe']
-          ];
-          
-          vanPlatformInfo.forEach(([label, value]) => {
-            checkPageSpace(12);
-            pdf.setFont('helvetica', 'bold');
-            pdf.text(label, margin, currentY);
-            pdf.setFont('helvetica', 'normal');
-            const lines = pdf.splitTextToSize(value, maxWidth - 80);
-            pdf.text(lines, margin + 80, currentY);
-            currentY += Math.max(8, lines.length * 6);
-          });
-        }
-        
-        currentY += 15;
-      
-      // Operational Scope Section
-      checkPageSpace(40);
-      pdf.setTextColor(35, 47, 62);
-      pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text('Operativer Bereich', margin, currentY);
-      
-      currentY += 15;
-      pdf.setTextColor(85, 85, 85);
-      pdf.setFontSize(11);
-      pdf.setFont('helvetica', 'normal');
-      
-      const operationalInfo = [
-        ['Mehrere Länder:', formatBoolean(contact.operates_multiple_countries)],
-        ['Mehrere Städte:', formatBoolean(contact.operates_multiple_cities)]
-      ];
-      
-      operationalInfo.forEach(([label, value]) => {
-        pdf.setFont('helvetica', 'bold');
-        pdf.text(label, margin, currentY);
-        pdf.setFont('helvetica', 'normal');
-        pdf.text(value, margin + 70, currentY);
-        currentY += 8;
-      });
-
-      // ============= PAGE 3: PLATFORMS, CITIES & TIMELINE =============
+      // ============= PAGE 2: MARKET-SPECIFIC DETAILS =============
       
       pdf.addPage();
       currentPage++;
       currentY = 30;
       
-      // Page header
+      // Page header with market-specific title
       pdf.setTextColor(35, 47, 62);
       pdf.setFontSize(18);
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Plattformen, Städte & Timeline', margin, currentY);
+      const pageTitle = isBicycleDelivery ? 'Fahrrad-Lieferdienst Details' : 'Transporter-Logistik Details';
+      pdf.text(pageTitle, margin, currentY);
       
       currentY += 20;
-      
-      // Platform Experience Section
-      pdf.setTextColor(35, 47, 62);
-      pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text('Plattform-Erfahrung', margin, currentY);
-      
-      currentY += 15;
-      pdf.setTextColor(85, 85, 85);
-      pdf.setFontSize(11);
-      pdf.setFont('helvetica', 'normal');
-      
-      const platformData = [
-        ['Food Delivery Platforms:', formatArray(contact.food_delivery_platforms)],
-        ['Quick Commerce:', formatArray(contact.quick_commerce_companies)],
-        ['Gig Economy:', formatArray(contact.gig_economy_companies)]
-      ];
-      
-      platformData.forEach(([label, value]) => {
-        checkPageSpace(12);
-        pdf.setFont('helvetica', 'bold');
-        pdf.text(label, margin, currentY);
-        pdf.setFont('helvetica', 'normal');
-        const lines = pdf.splitTextToSize(value, maxWidth - 80);
-        pdf.text(lines, margin + 80, currentY);
-        currentY += Math.max(8, lines.length * 6);
-      });
-      
-      currentY += 15;
-      
-      // Operating Cities Section
-      if (contact.operating_cities && contact.operating_cities.length > 0) {
-        checkPageSpace(30);
+
+      if (isBicycleDelivery) {
+        // BICYCLE DELIVERY SPECIFIC SECTIONS
+        
+        // Personnel Section
         pdf.setTextColor(35, 47, 62);
         pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Aktive Städte', margin, currentY);
+        pdf.text('Personal & Beschäftigung', margin, currentY);
         
         currentY += 15;
         pdf.setTextColor(85, 85, 85);
         pdf.setFontSize(11);
         pdf.setFont('helvetica', 'normal');
         
+        const bicyclePersonnelInfo = [
+          ['Lieferfahrer:', contact.delivery_driver_count?.toString() || 'Keine Angabe'],
+          ['Fahrradfahrer:', contact.bicycle_driver_count?.toString() || 'Keine Angabe'],
+          ['Beschäftigungsstatus:', contact.employment_status || 'Keine Angabe'],
+          ['Mitarbeitertyp:', contact.employee_type || 'Keine Angabe'],
+          ['Personalarten:', formatArray(contact.staff_types)]
+        ];
+        
+        bicyclePersonnelInfo.forEach(([label, value]) => {
+          checkPageSpace(8);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text(label, margin, currentY);
+          pdf.setFont('helvetica', 'normal');
+          const lines = pdf.splitTextToSize(value, maxWidth - 70);
+          pdf.text(lines, margin + 70, currentY);
+          currentY += Math.max(8, lines.length * 6);
+        });
+        
+        currentY += 15;
+        
+        // Equipment Section
+        checkPageSpace(40);
+        pdf.setTextColor(35, 47, 62);
+        pdf.setFontSize(16);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(t('contacts:details.operatingCities') + ':', margin, currentY);
+        pdf.text('Fahrzeuge & Ausrüstung', margin, currentY);
+        
+        currentY += 15;
+        pdf.setTextColor(85, 85, 85);
+        pdf.setFontSize(11);
         pdf.setFont('helvetica', 'normal');
-        const cities = Array.isArray(contact.operating_cities) 
-          ? contact.operating_cities.join(', ')
-          : contact.operating_cities;
-        const cityLines = pdf.splitTextToSize(cities, maxWidth - 80);
-        pdf.text(cityLines, margin + 80, currentY);
+        
+        const bicycleEquipmentInfo = [
+          ['Fahrräder:', contact.bicycle_count?.toString() || 'Keine Angabe'],
+          ['Cargo Bikes:', contact.cargo_bike_count?.toString() || 'Keine Angabe'],
+          ['Nutzt Cargo Bikes:', formatBoolean(contact.uses_cargo_bikes)],
+          ['Eigene Fahrzeuge:', formatBoolean(contact.company_owns_vehicles)],
+          ['Gesamtfahrzeuge:', contact.total_vehicle_count?.toString() || 'Keine Angabe']
+        ];
+        
+        bicycleEquipmentInfo.forEach(([label, value]) => {
+          checkPageSpace(8);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text(label, margin, currentY);
+          pdf.setFont('helvetica', 'normal');
+          pdf.text(value, margin + 70, currentY);
+          currentY += 8;
+        });
+        
+        currentY += 15;
+        
+        // Platform Experience Section
+        checkPageSpace(60);
+        pdf.setTextColor(35, 47, 62);
+        pdf.setFontSize(16);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Plattform-Erfahrung', margin, currentY);
+        
+        currentY += 15;
+        pdf.setTextColor(85, 85, 85);
+        pdf.setFontSize(11);
+        pdf.setFont('helvetica', 'normal');
+        
+        const platformInfo = [
+          ['Quick Commerce:', formatBoolean(contact.works_for_quick_commerce)],
+          ['Gig Economy Food:', formatBoolean(contact.works_for_gig_economy_food)],
+          ['Quick Commerce Plattformen:', formatArray(contact.quick_commerce_companies)],
+          ['Gig Economy Plattformen:', formatArray(contact.gig_economy_companies)]
+        ];
+        
+        platformInfo.forEach(([label, value]) => {
+          checkPageSpace(12);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text(label, margin, currentY);
+          pdf.setFont('helvetica', 'normal');
+          const lines = pdf.splitTextToSize(value, maxWidth - 80);
+          pdf.text(lines, margin + 80, currentY);
+          currentY += Math.max(8, lines.length * 6);
+        });
+
+      } else {
+        // VAN TRANSPORT SPECIFIC SECTIONS
+        
+        // Personnel Section
+        pdf.setTextColor(35, 47, 62);
+        pdf.setFontSize(16);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Personal & Logistik', margin, currentY);
+        
+        currentY += 15;
+        pdf.setTextColor(85, 85, 85);
+        pdf.setFontSize(11);
+        pdf.setFont('helvetica', 'normal');
+        
+        const vanPersonnelInfo = [
+          ['Vollzeit-Fahrer:', contact.full_time_drivers?.toString() || 'Keine Angabe'],
+          ['Transporter-Anzahl:', contact.transporter_count?.toString() || 'Keine Angabe'],
+          ['Personalarten:', formatArray(contact.staff_types)],
+          ['Last-Mile-Logistik:', formatBoolean(contact.is_last_mile_logistics)],
+          ['Seit wann:', contact.last_mile_since_when || 'Keine Angabe']
+        ];
+        
+        vanPersonnelInfo.forEach(([label, value]) => {
+          checkPageSpace(8);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text(label, margin, currentY);
+          pdf.setFont('helvetica', 'normal');
+          const lines = pdf.splitTextToSize(value, maxWidth - 70);
+          pdf.text(lines, margin + 70, currentY);
+          currentY += Math.max(8, lines.length * 6);
+        });
+        
+        currentY += 15;
+        
+        // Vehicle Section
+        checkPageSpace(40);
+        pdf.setTextColor(35, 47, 62);
+        pdf.setFontSize(16);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Fahrzeuge & Ausrüstung', margin, currentY);
+        
+        currentY += 15;
+        pdf.setTextColor(85, 85, 85);
+        pdf.setFontSize(11);
+        pdf.setFont('helvetica', 'normal');
+        
+        const vanVehicleInfo = [
+          ['Fahrzeugtypen:', formatArray(contact.vehicle_types)],
+          ['Gesamtfahrzeuge:', contact.total_vehicle_count?.toString() || 'Keine Angabe']
+        ];
+        
+        vanVehicleInfo.forEach(([label, value]) => {
+          checkPageSpace(8);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text(label, margin, currentY);
+          pdf.setFont('helvetica', 'normal');
+          const lines = pdf.splitTextToSize(value, maxWidth - 70);
+          pdf.text(lines, margin + 70, currentY);
+          currentY += Math.max(8, lines.length * 6);
+        });
+        
+        currentY += 15;
+        
+        // Platform Experience Section
+        checkPageSpace(60);
+        pdf.setTextColor(35, 47, 62);
+        pdf.setFontSize(16);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Plattform & Amazon Erfahrung', margin, currentY);
+        
+        currentY += 15;
+        pdf.setTextColor(85, 85, 85);
+        pdf.setFontSize(11);
+        pdf.setFont('helvetica', 'normal');
+        
+        const vanPlatformInfo = [
+          ['Food Delivery Services:', formatBoolean(contact.food_delivery_services)],
+          ['Food Delivery Plattformen:', formatArray(contact.food_delivery_platforms)],
+          ['Amazon Erfahrung:', formatBoolean(contact.amazon_experience)],
+          ['Amazon Arbeitskapazität:', contact.amazon_work_capacity || 'Keine Angabe']
+        ];
+        
+        vanPlatformInfo.forEach(([label, value]) => {
+          checkPageSpace(12);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text(label, margin, currentY);
+          pdf.setFont('helvetica', 'normal');
+          const lines = pdf.splitTextToSize(value, maxWidth - 80);
+          pdf.text(lines, margin + 80, currentY);
+          currentY += Math.max(8, lines.length * 6);
+        });
+      }
+      
+      currentY += 15;
+
+      // Operating Cities Section (Common for both)
+      if (contact.operating_cities && contact.operating_cities.length > 0) {
+        checkPageSpace(40);
+        pdf.setTextColor(35, 47, 62);
+        pdf.setFontSize(16);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Tätige Städte', margin, currentY);
+        
+        currentY += 15;
+        pdf.setTextColor(85, 85, 85);
+        pdf.setFontSize(11);
+        pdf.setFont('helvetica', 'normal');
+        
+        const cities = contact.operating_cities.join(', ');
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Städte:', margin, currentY);
+        pdf.setFont('helvetica', 'normal');
+        const cityLines = pdf.splitTextToSize(cities, maxWidth - 40);
+        pdf.text(cityLines, margin + 40, currentY);
         currentY += Math.max(8, cityLines.length * 6) + 10;
       }
-      
-      // Available Cities/Zones Section
-      if (contact.city_availability && Object.keys(contact.city_availability).length > 0) {
-        checkPageSpace(30);
-        pdf.setTextColor(35, 47, 62);
-        pdf.setFontSize(16);
-        pdf.setFont('helvetica', 'bold');
-        pdf.text('Verfügbare Gebiete', margin, currentY);
-        
-        currentY += 15;
-        pdf.setTextColor(85, 85, 85);
-        pdf.setFontSize(11);
-        pdf.setFont('helvetica', 'normal');
-        
-        const availableCities = Object.entries(contact.city_availability)
-          .filter(([_, available]) => available === true)
-          .map(([city, _]) => city)
-          .join(', ');
-          
-        if (availableCities) {
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Verfügbare Bereiche:', margin, currentY);
-          pdf.setFont('helvetica', 'normal');
-          const availableLines = pdf.splitTextToSize(availableCities, maxWidth - 80);
-          pdf.text(availableLines, margin + 80, currentY);
-          currentY += Math.max(8, availableLines.length * 6) + 10;
-        }
-      }
-      
+
       // Timeline Section
       checkPageSpace(50);
       pdf.setTextColor(35, 47, 62);
@@ -649,55 +551,38 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
       
       const timelineData = [
         [t('contacts:details.created') + ':', formatDate(contact.created_at)],
-        ['Aktualisiert:', formatDate((contact as any).updated_at)],
-        ['Email gesendet:', contact.email_sent_at ? formatDate(contact.email_sent_at) : 'Nicht gesendet'],
-        ['Formular ausgefüllt:', contact.form_completed_at ? formatDate(contact.form_completed_at) : 'Nicht ausgefüllt']
+        ['Email versendet:', contact.email_sent_at ? formatDate(contact.email_sent_at) : 'Noch nicht versendet'],
+        ['Formular ausgefüllt:', contact.form_completed_at ? formatDate(contact.form_completed_at) : 'Noch nicht ausgefüllt']
       ];
       
       timelineData.forEach(([label, value]) => {
         pdf.setFont('helvetica', 'bold');
         pdf.text(label, margin, currentY);
         pdf.setFont('helvetica', 'normal');
-        pdf.text(value, margin + 80, currentY);
+        pdf.text(value, margin + 70, currentY);
         currentY += 8;
       });
-      
-      currentY += 15;
-      
-      // Comments Section
-      if ((contact as any).additional_comments) {
-        checkPageSpace(30);
-        pdf.setTextColor(35, 47, 62);
-        pdf.setFontSize(16);
-        pdf.setFont('helvetica', 'bold');
-        pdf.text('Zusätzliche Kommentare', margin, currentY);
-        
-        currentY += 15;
-        pdf.setTextColor(85, 85, 85);
-        pdf.setFontSize(11);
-        pdf.setFont('helvetica', 'normal');
-        
-        const commentLines = pdf.splitTextToSize((contact as any).additional_comments, maxWidth);
-        pdf.text(commentLines, margin, currentY);
-        currentY += commentLines.length * 6;
-      }
-      
-      // Footer on all pages
-      for (let i = 1; i <= currentPage; i++) {
-        if (i > 1) pdf.setPage(i);
+
+      // Add footer on each page
+      const addFooter = (pageNum: number) => {
         pdf.setFontSize(8);
-        pdf.setTextColor(150, 150, 150);
-        const currentDate = new Date();
-        const locale = i18n.language === 'en' ? 'en-US' : 
-                      i18n.language === 'fr' ? 'fr-FR' :
-                      i18n.language === 'es' ? 'es-ES' :
-                      i18n.language === 'it' ? 'it-IT' : 'de-DE';
-        pdf.text(`${t('contacts:details.generated')} ${currentDate.toLocaleDateString(locale)} ${currentDate.toLocaleTimeString(locale)}`, margin, pageHeight - 20);
-        pdf.text(`Seite ${i} von ${currentPage} | ${t('contacts:details.pdfFooter')}`, pageWidth - 120, pageHeight - 20);
+        pdf.setTextColor(128, 128, 128);
+        pdf.text(`Seite ${pageNum} - Generiert am ${new Date().toLocaleDateString('de-DE')}`, 
+                 margin, pageHeight - 10);
+        pdf.text(`${contact.company_name} - Kontaktdetails`, 
+                 pageWidth - 80, pageHeight - 10);
+      };
+
+      // Add footer to all pages
+      for (let i = 1; i <= currentPage; i++) {
+        if (i > 1) {
+          pdf.setPage(i);
+        }
+        addFooter(i);
       }
-      
-      // Save PDF
-      const fileName = `kontakt_${contact.company_name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${new Date().toISOString().split('T')[0]}.pdf`;
+
+      // Save the PDF
+      const fileName = `${contact.company_name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_contact_details.pdf`;
       pdf.save(fileName);
       
       toast({
@@ -1025,7 +910,7 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => copyToClipboard(contact.phone_number!, t('contacts:details.phoneNumber'))}
+                            onClick={() => copyToClipboard(contact.phone_number!, t('contacts:details.phone'))}
                             className="opacity-0 group-hover:opacity-100 transition-opacity"
                           >
                             <Copy className="h-4 w-4" />
@@ -1034,549 +919,70 @@ export const ContactDetails = ({ contact, onClose, onUpdate }: ContactDetailsPro
                       )}
                     </div>
                   ) : (
-                    <p className="text-muted-foreground">{t('contacts:details.noContactPerson')}</p>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Timeline */}
-              <Card className="h-fit">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-primary" />
-                    {t('contacts:details.timeline')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <p className="text-sm font-medium">{t('contacts:details.contactCreated')}</p>
-                        <p className="text-xs text-muted-foreground">{formatDate(contact.created_at)}</p>
-                      </div>
-                    </div>
-
-                    {contact.email_sent && contact.email_sent_at && (
-                      <div className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-amazon-orange rounded-full mt-2 flex-shrink-0"></div>
-                        <div>
-                          <p className="text-sm font-medium">{t('contacts:details.emailSent')}</p>
-                          <p className="text-xs text-muted-foreground">{formatDate(contact.email_sent_at)}</p>
-                        </div>
-                      </div>
-                    )}
-
-                    {contact.form_completed && contact.form_completed_at && (
-                      <div className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                        <div>
-                          <p className="text-sm font-medium">{t('contacts:details.formCompleted')}</p>
-                          <p className="text-xs text-muted-foreground">{formatDate(contact.form_completed_at)}</p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Market Information */}
-              <Card className="h-fit">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    {isBicycleDelivery ? (
-                      <Bike className="h-5 w-5 text-primary" />
-                    ) : (
-                      <Car className="h-5 w-5 text-primary" />
-                    )}
-                    Market & Target
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center gap-3">
-                      <Target className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Market Type</p>
-                        <Badge variant="outline" className="text-xs font-medium">
-                          {marketType === 'bicycle_delivery' ? 'Bicycle Delivery' : 'Van Transport'}
-                        </Badge>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">Target Market</p>
-                        <Badge variant="secondary" className="text-xs font-medium capitalize">
-                          {targetMarket}
-                        </Badge>
-                      </div>
-                    </div>
-                  </div>
-
-                  {(contact.employment_status || contact.employee_type) && (
-                    <div className="space-y-3">
-                      <Separator />
-                      {contact.employment_status && (
-                        <div className="flex items-center gap-3">
-                          <Users2 className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm font-medium">Employment Status</p>
-                            <Badge variant="secondary" className="text-xs">{contact.employment_status}</Badge>
-                          </div>
-                        </div>
-                      )}
-                      {contact.employee_type && (
-                        <div className="flex items-center gap-3">
-                          <Users2 className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm font-medium">Employee Type</p>
-                            <Badge variant="secondary" className="text-xs">{contact.employee_type}</Badge>
-                          </div>
-                        </div>
-                      )}
+                    <div className="text-center py-8 text-muted-foreground">
+                      <User className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                      <div className="text-sm">No contact person information available</div>
                     </div>
                   )}
                 </CardContent>
               </Card>
 
-              {/* Logistics Information */}
-              {contact.form_completed && (
-                <Card className="h-fit">
+              {/* Market Type Badge */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5" />
+                    Market & Zielmarkt
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="flex items-center gap-1">
+                      {isBicycleDelivery ? <Bike className="h-3 w-3" /> : <Car className="h-3 w-3" />}
+                      {isBicycleDelivery ? 'Bicycle Delivery' : 'Van Transport'}
+                    </Badge>
+                    <Badge variant="outline">{targetMarket}</Badge>
+                  </div>
+                  {contact.employment_status && (
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">Beschäftigungsstatus: </span>
+                      <span className="text-muted-foreground">{contact.employment_status}</span>
+                    </div>
+                  )}
+                  {contact.employee_type && (
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">Mitarbeitertyp: </span>
+                      <span className="text-muted-foreground">{contact.employee_type}</span>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Market-Specific Content */}
+              {isBicycleDelivery ? (
+                <ContactDetailsBicycleDelivery contact={contact} />
+              ) : (
+                <ContactDetailsVanTransport contact={contact} />
+              )}
+
+              {/* Cities (Common for both market types) */}
+              {contact.operating_cities && contact.operating_cities.length > 0 && (
+                <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Truck className="h-5 w-5 text-primary" />
-                      {t('contacts:details.logistics')}
+                      <MapPin className="h-5 w-5" />
+                      {t('contacts:details.cities')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
-                      {/* Core Logistics */}
-                      {(contact.is_last_mile_logistics !== undefined || contact.operates_last_mile_logistics !== undefined) && (
-                        <div className="flex items-center gap-3">
-                          <Package className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm font-medium">{t('contacts:details.lastMileLogistics')}</p>
-                            <div className="flex items-center gap-2">
-                              {(contact.is_last_mile_logistics || contact.operates_last_mile_logistics) ? (
-                                <Badge className="bg-green-100 text-green-800">{t('common:buttons.yes')}</Badge>
-                              ) : (
-                                <Badge variant="outline">{t('common:buttons.no')}</Badge>
-                              )}
-                              {contact.last_mile_since_when && (
-                                <span className="text-xs text-muted-foreground">
-                                  {t('contacts:details.since')} {contact.last_mile_since_when}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {contact.food_delivery_services !== undefined && (
-                        <div className="flex items-center gap-3">
-                          <Package className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm font-medium">{t('contacts:details.foodDelivery')}</p>
-                            <Badge className={contact.food_delivery_services ? "bg-green-100 text-green-800" : ""}
-                                   variant={contact.food_delivery_services ? "default" : "outline"}>
-                              {contact.food_delivery_services ? t('common:buttons.yes') : t('common:buttons.no')}
-                            </Badge>
-                          </div>
-                        </div>
-                      )}
-
-                      {contact.amazon_experience !== undefined && (
-                        <div className="flex items-center gap-3">
-                          <Shield className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm font-medium">{t('contacts:details.amazonExperience')}</p>
-                            <div className="flex items-center gap-2">
-                              {contact.amazon_experience ? (
-                                <Badge className="bg-amazon-orange text-white">
-                                  <Star className="h-3 w-3 mr-1" />
-                                  {t('contacts:details.available')}
-                                </Badge>
-                              ) : (
-                                <Badge variant="outline">{t('contacts:details.noExperience')}</Badge>
-                              )}
-                              {contact.amazon_work_capacity && (
-                                <span className="text-xs text-muted-foreground ml-2">
-                                  {contact.amazon_work_capacity}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Market-specific Services */}
-                      {isBicycleDelivery && (
-                        <div className="space-y-3">
-                          <Separator />
-                          <div className="text-sm font-medium text-primary">Service Experience</div>
-                          
-                          {contact.works_for_quick_commerce !== undefined && (
-                            <div className="flex items-center gap-3">
-                              <Package className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">Quick Commerce</p>
-                                <Badge className={contact.works_for_quick_commerce ? "bg-green-100 text-green-800" : ""}
-                                       variant={contact.works_for_quick_commerce ? "default" : "outline"}>
-                                  {contact.works_for_quick_commerce ? 'Yes' : 'No'}
-                                </Badge>
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.works_for_gig_economy_food !== undefined && (
-                            <div className="flex items-center gap-3">
-                              <Package className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">Gig Economy Food Delivery</p>
-                                <Badge className={contact.works_for_gig_economy_food ? "bg-green-100 text-green-800" : ""}
-                                       variant={contact.works_for_gig_economy_food ? "default" : "outline"}>
-                                  {contact.works_for_gig_economy_food ? 'Yes' : 'No'}
-                                </Badge>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Company Assets */}
-                      <div className="space-y-3">
-                        <Separator />
-                        <div className="text-sm font-medium text-primary">Company Assets</div>
-                        
-                        {contact.company_owns_vehicles !== undefined && (
-                          <div className="flex items-center gap-3">
-                            <Truck className="h-4 w-4 text-muted-foreground" />
-                            <div>
-                              <p className="text-sm font-medium">Company Owns Vehicles</p>
-                              <Badge className={contact.company_owns_vehicles ? "bg-green-100 text-green-800" : ""}
-                                     variant={contact.company_owns_vehicles ? "default" : "outline"}>
-                                {contact.company_owns_vehicles ? 'Yes' : 'No'}
-                              </Badge>
-                            </div>
-                          </div>
-                        )}
-
-                        {contact.company_established_year && (
-                          <div className="flex items-center gap-3">
-                            <Calendar className="h-4 w-4 text-muted-foreground" />
-                            <div>
-                              <p className="text-sm font-medium">Company Established</p>
-                              <div className="text-lg font-semibold text-primary">
-                                {contact.company_established_year}
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Personnel Counts */}
-                      <div className="space-y-3">
-                        <Separator />
-                        <div className="text-sm font-medium text-primary">Personnel</div>
-                        
-                        <div className="grid grid-cols-2 gap-4">
-                          {contact.delivery_driver_count !== undefined && contact.delivery_driver_count > 0 && (
-                            <div className="flex items-center gap-3">
-                              <Users2 className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">{t('contacts:details.fullTimeDrivers')}</p>
-                                <div className="text-lg font-semibold text-primary">
-                                  {contact.delivery_driver_count}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.delivery_driver_count !== undefined && contact.delivery_driver_count > 0 && (
-                            <div className="flex items-center gap-3">
-                              <Users2 className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">Delivery Drivers</p>
-                                <div className="text-lg font-semibold text-primary">
-                                  {contact.delivery_driver_count}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.bicycle_driver_count !== undefined && contact.bicycle_driver_count > 0 && (
-                            <div className="flex items-center gap-3">
-                              <Bike className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">Bicycle Drivers</p>
-                                <div className="text-lg font-semibold text-primary">
-                                  {contact.bicycle_driver_count}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {contact.staff_types && contact.staff_types.length > 0 && (
-                          <div>
-                            <p className="text-sm font-medium mb-2">Staff Types</p>
-                            <div className="flex flex-wrap gap-1">
-                              {contact.staff_types.map((type, index) => (
-                                <Badge key={index} variant="secondary" className="text-xs">
-                                  {type}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Vehicle Information */}
-                      <div className="space-y-3">
-                        <Separator />
-                        <div className="text-sm font-medium text-primary">Vehicles & Equipment</div>
-                        
-                        <div className="grid grid-cols-2 gap-4">
-                          {contact.total_vehicle_count !== undefined && contact.total_vehicle_count > 0 && (
-                            <div className="flex items-center gap-3">
-                              <Truck className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">{t('contacts:details.transporters')}</p>
-                                <div className="text-lg font-semibold text-primary">
-                                  {contact.total_vehicle_count}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.bicycle_count !== undefined && contact.bicycle_count > 0 && (
-                            <div className="flex items-center gap-3">
-                              <Bike className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">Bicycles</p>
-                                <div className="text-lg font-semibold text-primary">
-                                  {contact.bicycle_count}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.cargo_bike_count !== undefined && contact.cargo_bike_count > 0 && (
-                            <div className="flex items-center gap-3">
-                              <Truck className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">Cargo Bikes</p>
-                                <div className="text-lg font-semibold text-primary">
-                                  {contact.cargo_bike_count}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.total_vehicle_count !== undefined && contact.total_vehicle_count > 0 && (
-                            <div className="flex items-center gap-3">
-                              <Truck className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">Total Vehicles</p>
-                                <div className="text-lg font-semibold text-primary">
-                                  {contact.total_vehicle_count}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {contact.uses_cargo_bikes !== undefined && (
-                          <div className="flex items-center gap-3">
-                            <Package className="h-4 w-4 text-muted-foreground" />
-                            <div>
-                              <p className="text-sm font-medium">Uses Cargo Bikes</p>
-                              <Badge className={contact.uses_cargo_bikes ? "bg-green-100 text-green-800" : ""}
-                                     variant={contact.uses_cargo_bikes ? "default" : "outline"}>
-                                {contact.uses_cargo_bikes ? 'Yes' : 'No'}
-                              </Badge>
-                            </div>
-                          </div>
-                        )}
-
-                        {contact.vehicle_types && contact.vehicle_types.length > 0 && (
-                          <div>
-                            <p className="text-sm font-medium mb-2">{t('contacts:details.vehicleTypes')}</p>
-                            <div className="flex flex-wrap gap-1">
-                              {contact.vehicle_types.map((type, index) => (
-                                <Badge key={index} variant="secondary" className="text-xs">
-                                  {type}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Operating Scope */}
-                      <div className="space-y-3">
-                        <Separator />
-                        <div className="text-sm font-medium text-primary">Operating Scope</div>
-                        
-                        <div className="grid grid-cols-2 gap-4">
-                          {contact.operates_multiple_countries !== undefined && (
-                            <div className="flex items-center gap-3">
-                              <MapPin className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">Multiple Countries</p>
-                                <Badge className={contact.operates_multiple_countries ? "bg-green-100 text-green-800" : ""}
-                                       variant={contact.operates_multiple_countries ? "default" : "outline"}>
-                                  {contact.operates_multiple_countries ? 'Yes' : 'No'}
-                                </Badge>
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.operates_multiple_cities !== undefined && (
-                            <div className="flex items-center gap-3">
-                              <MapPin className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">Multiple Cities</p>
-                                <Badge className={contact.operates_multiple_cities ? "bg-green-100 text-green-800" : ""}
-                                       variant={contact.operates_multiple_cities ? "default" : "outline"}>
-                                  {contact.operates_multiple_cities ? 'Yes' : 'No'}
-                                </Badge>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {contact.operating_cities && contact.operating_cities.length > 0 && (
-                          <div>
-                            <p className="text-sm font-medium mb-2">{t('contacts:details.operatingCities')}</p>
-                            <div className="flex flex-wrap gap-1">
-                              {contact.operating_cities.slice(0, 5).map((city, index) => (
-                                <Badge key={index} variant="outline" className="text-xs">
-                                  {city}
-                                </Badge>
-                              ))}
-                              {contact.operating_cities.length > 5 && (
-                                <Badge variant="outline" className="text-xs">
-                                  +{contact.operating_cities.length - 5} {t('contacts:details.more')}
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Platform Experience */}
-                      {((contact.quick_commerce_companies && contact.quick_commerce_companies.length > 0) ||
-                        (contact.gig_economy_companies && contact.gig_economy_companies.length > 0) ||
-                        (contact.food_delivery_platforms && contact.food_delivery_platforms.length > 0) ||
-                        contact.gig_economy_other ||
-                        contact.quick_commerce_other) && (
-                        <div className="space-y-3">
-                          <Separator />
-                          <div className="text-sm font-medium text-primary">Platform Experience</div>
-                          
-                          {contact.quick_commerce_companies && contact.quick_commerce_companies.length > 0 && (
-                            <div>
-                              <p className="text-sm font-medium mb-2">Quick Commerce Companies</p>
-                              <div className="flex flex-wrap gap-1">
-                                {contact.quick_commerce_companies.map((company, index) => (
-                                  <Badge key={index} variant="secondary" className="text-xs">
-                                    {company}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.gig_economy_companies && contact.gig_economy_companies.length > 0 && (
-                            <div>
-                              <p className="text-sm font-medium mb-2">Gig Economy Companies</p>
-                              <div className="flex flex-wrap gap-1">
-                                {contact.gig_economy_companies.map((company, index) => (
-                                  <Badge key={index} variant="secondary" className="text-xs">
-                                    {company}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.food_delivery_platforms && contact.food_delivery_platforms.length > 0 && (
-                            <div>
-                              <p className="text-sm font-medium mb-2">Food Delivery Platforms</p>
-                              <div className="flex flex-wrap gap-1">
-                                {contact.food_delivery_platforms.map((platform, index) => (
-                                  <Badge key={index} variant="secondary" className="text-xs">
-                                    {platform}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.gig_economy_other && (
-                            <div className="flex items-start gap-3">
-                              <Package className="h-4 w-4 text-muted-foreground mt-1" />
-                              <div>
-                                <p className="text-sm font-medium">Other Gig Economy Platforms</p>
-                                <div className="text-sm text-muted-foreground bg-muted/50 rounded p-2 mt-1">
-                                  {contact.gig_economy_other}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {contact.quick_commerce_other && (
-                            <div className="flex items-start gap-3">
-                              <Package className="h-4 w-4 text-muted-foreground mt-1" />
-                              <div>
-                                <p className="text-sm font-medium">Other Quick Commerce Platforms</p>
-                                <div className="text-sm text-muted-foreground bg-muted/50 rounded p-2 mt-1">
-                                  {contact.quick_commerce_other}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Additional Comments */}
-                      {contact.additional_comments && (
-                        <div className="space-y-3">
-                          <Separator />
-                          <div className="flex items-start gap-3">
-                            <FileText className="h-4 w-4 text-muted-foreground mt-1" />
-                            <div>
-                              <p className="text-sm font-medium">Additional Comments</p>
-                              <div className="text-sm text-muted-foreground bg-muted/50 rounded p-3 mt-1">
-                                {contact.additional_comments}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                    <div className="flex flex-wrap gap-2">
+                      {contact.operating_cities.map((city, index) => (
+                        <Badge key={index} variant="outline">{city}</Badge>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
               )}
-            </div>
-
-            {/* Footer Actions */}
-            <div className="flex justify-between items-center mt-8 pt-6 border-t">
-              <div className="text-sm text-muted-foreground">
-                {t('contacts:details.contactId')}: {contact.id}
-              </div>
-              <div className="flex gap-3">
-                <Button variant="outline" onClick={onClose}>
-                  {t('contacts:details.close')}
-                </Button>
-                {contact.email_sent && !contact.form_completed && (
-                  <Button variant="default" className="bg-amazon-orange hover:bg-amazon-orange/90">
-                    {t('contacts:details.resendEmail')}
-                  </Button>
-                )}
-              </div>
             </div>
           </div>
         </ScrollArea>
