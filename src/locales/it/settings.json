@@ -3,7 +3,13 @@
     "title": "Impostazioni Meta Pixel",
     "subtitle": "Configura i codici Meta Pixel per il tracciamento sui tuoi moduli pubblici",
     "infoMessage": "I codici Meta Pixel vengono inseriti automaticamente nei moduli pubblici in base al Tipo di Mercato e Mercato di Destinazione. Ogni combinazione può essere configurata solo una volta.",
+    "globalSetting": "Meta Pixel Globale per tutte le combinazioni",
+    "globalDescription": "Imposta un codice Meta Pixel per tutte le combinazioni di Tipo di Mercato e Mercato di Destinazione in una volta. Questo sovrascriverà tutte le impostazioni individuali esistenti.",
+    "globalPixelHelp": "Questo codice sarà utilizzato per TUTTE le combinazioni di Tipo di Mercato e Mercato di Destinazione",
+    "saveGlobal": "Salva Globale",
     "addNew": "Aggiungi Nuova Configurazione Meta Pixel",
+    "editSingle": "Modifica Configurazione Meta Pixel",
+    "editingExisting": "Stai modificando una configurazione esistente. Il codice è stato caricato automaticamente.",
     "current": "Configurazioni Meta Pixel Attuali",
     "noConfigurations": "Nessuna configurazione Meta Pixel trovata",
     "addFirst": "Aggiungi la tua prima configurazione sopra",
@@ -15,6 +21,8 @@
     "selectMarketType": "Seleziona tipo di mercato",
     "selectTargetMarket": "Seleziona mercato di destinazione",
     "save": "Salva",
+    "update": "Aggiorna",
+    "cancel": "Annulla",
     "saving": "Salvando...",
     "delete": "Elimina",
     "marketTypes": {
@@ -37,14 +45,19 @@
     },
     "errors": {
       "fillAllFields": "Si prega di compilare tutti i campi",
+      "fillPixelCode": "Si prega di inserire il codice Meta Pixel",
       "invalidPixelCode": "Formato del codice Meta Pixel non valido",
       "duplicateConfiguration": "Esiste già una configurazione per questo tipo di mercato e mercato di destinazione",
       "saveFailed": "Errore nel salvare la configurazione Meta Pixel",
-      "deleteFailed": "Errore nell'eliminare la configurazione Meta Pixel"
+      "updateFailed": "Errore nell'aggiornare la configurazione Meta Pixel",
+      "deleteFailed": "Errore nell'eliminare la configurazione Meta Pixel",
+      "globalSaveFailed": "Errore nel salvare la configurazione globale Meta Pixel"
     },
     "success": {
       "saved": "Configurazione Meta Pixel salvata con successo",
-      "deleted": "Configurazione Meta Pixel eliminata con successo"
+      "updated": "Configurazione Meta Pixel aggiornata con successo",
+      "deleted": "Configurazione Meta Pixel eliminata con successo",
+      "globalSaved": "Codice Meta Pixel globale salvato con successo per tutte le combinazioni"
     }
   }
 }

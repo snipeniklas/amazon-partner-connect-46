@@ -39,6 +39,14 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
     pixel_code: ''
   });
 
+  // Global setting form  
+  const [globalSetting, setGlobalSetting] = useState({
+    pixel_code: ''
+  });
+
+  // Edit mode tracking
+  const [editingSettingId, setEditingSettingId] = useState<string | null>(null);
+
   // Get translated market types
   const getMarketTypes = () => {
     const currentLang = i18n.language;
@@ -183,6 +191,26 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
     fetchSettings();
   }, [user]);
 
+  // Check if combination exists and load existing code
+  useEffect(() => {
+    if (newSetting.market_type && newSetting.target_market) {
+      const existingSetting = settings.find(
+        s => s.market_type === newSetting.market_type && s.target_market === newSetting.target_market
+      );
+      
+      if (existingSetting && existingSetting.pixel_code !== newSetting.pixel_code) {
+        setNewSetting(prev => ({ 
+          ...prev, 
+          pixel_code: existingSetting.pixel_code 
+        }));
+        setEditingSettingId(existingSetting.id);
+      } else if (!existingSetting && editingSettingId) {
+        setNewSetting(prev => ({ ...prev, pixel_code: '' }));
+        setEditingSettingId(null);
+      }
+    }
+  }, [newSetting.market_type, newSetting.target_market, settings]);
+
   const validatePixelCode = (pixelCode: string) => {
     // Basic validation for Meta Pixel Code - should contain fbq and init
     return pixelCode.includes('fbq') && pixelCode.includes('init') && pixelCode.trim().length > 50;
@@ -210,39 +238,144 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
     try {
       setSaving(true);
 
-      const { error } = await supabase
-        .from('meta_pixel_settings')
-        .insert({
-          user_id: user.id,
-          market_type: newSetting.market_type,
-          target_market: newSetting.target_market,
-          pixel_code: newSetting.pixel_code
-        });
+      if (editingSettingId) {
+        // Update existing setting
+        const { error } = await supabase
+          .from('meta_pixel_settings')
+          .update({
+            pixel_code: newSetting.pixel_code
+          })
+          .eq('id', editingSettingId);
 
-      if (error) {
-        console.error('Error saving Meta Pixel setting:', error);
+        if (error) {
+          console.error('Error updating Meta Pixel setting:', error);
+          toast({
+            title: t('common:messages.error'),
+            description: t('settings:metaPixel.errors.updateFailed'),
+            variant: 'destructive'
+          });
+          return;
+        }
+
         toast({
-          title: t('common:messages.error'),
-          description: error.message.includes('duplicate key') 
-            ? t('settings:metaPixel.errors.duplicateConfiguration')
-            : t('settings:metaPixel.errors.saveFailed'),
-          variant: 'destructive'
+          title: t('common:messages.success'),
+          description: t('settings:metaPixel.success.updated')
         });
-        return;
-      }
+      } else {
+        // Create new setting
+        const { error } = await supabase
+          .from('meta_pixel_settings')
+          .insert({
+            user_id: user.id,
+            market_type: newSetting.market_type,
+            target_market: newSetting.target_market,
+            pixel_code: newSetting.pixel_code
+          });
 
-      toast({
-        title: t('common:messages.success'),
-        description: t('settings:metaPixel.success.saved')
-      });
+        if (error) {
+          console.error('Error saving Meta Pixel setting:', error);
+          toast({
+            title: t('common:messages.error'),
+            description: error.message.includes('duplicate key') 
+              ? t('settings:metaPixel.errors.duplicateConfiguration')
+              : t('settings:metaPixel.errors.saveFailed'),
+            variant: 'destructive'
+          });
+          return;
+        }
+
+        toast({
+          title: t('common:messages.success'),
+          description: t('settings:metaPixel.success.saved')
+        });
+      }
 
       // Reset form
       setNewSetting({ market_type: '', target_market: '', pixel_code: '' });
+      setEditingSettingId(null);
       
       // Refresh settings
       fetchSettings();
     } catch (error) {
       console.error('Error in handleSaveNewSetting:', error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSaveGlobalSetting = async () => {
+    if (!user || !globalSetting.pixel_code) {
+      toast({
+        title: t('common:messages.error'),
+        description: t('settings:metaPixel.errors.fillPixelCode'),
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    if (!validatePixelCode(globalSetting.pixel_code)) {
+      toast({
+        title: t('common:messages.error'),
+        description: t('settings:metaPixel.errors.invalidPixelCode'),
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    try {
+      setSaving(true);
+
+      // Get all combinations of market types and target markets
+      const marketTypes = getMarketTypes();
+      const targetMarkets = getTargetMarkets();
+      
+      const allCombinations = marketTypes.flatMap(mt => 
+        targetMarkets.map(tm => ({
+          user_id: user.id,
+          market_type: mt.value,
+          target_market: tm.value,
+          pixel_code: globalSetting.pixel_code
+        }))
+      );
+
+      // Delete all existing settings for this user
+      const { error: deleteError } = await supabase
+        .from('meta_pixel_settings')
+        .delete()
+        .eq('user_id', user.id);
+
+      if (deleteError) {
+        console.error('Error deleting existing settings:', deleteError);
+        throw deleteError;
+      }
+
+      // Insert all new combinations
+      const { error: insertError } = await supabase
+        .from('meta_pixel_settings')
+        .insert(allCombinations);
+
+      if (insertError) {
+        console.error('Error inserting global settings:', insertError);
+        throw insertError;
+      }
+
+      toast({
+        title: t('common:messages.success'),
+        description: t('settings:metaPixel.success.globalSaved')
+      });
+
+      // Reset form
+      setGlobalSetting({ pixel_code: '' });
+      
+      // Refresh settings
+      fetchSettings();
+    } catch (error) {
+      console.error('Error in handleSaveGlobalSetting:', error);
+      toast({
+        title: t('common:messages.error'),
+        description: t('settings:metaPixel.errors.globalSaveFailed'),
+        variant: 'destructive'
+      });
     } finally {
       setSaving(false);
     }
@@ -304,13 +437,61 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
         </AlertDescription>
       </Alert>
 
+      {/* Global Meta Pixel Setting */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-orange-600">
+            <Settings className="h-5 w-5" />
+            {t('settings:metaPixel.globalSetting')}
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            {t('settings:metaPixel.globalDescription')}
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="global_pixel_code">{t('settings:metaPixel.pixelCode')}</Label>
+              <Textarea
+                id="global_pixel_code"
+                placeholder={t('settings:metaPixel.pixelCodePlaceholder')}
+                value={globalSetting.pixel_code}
+                onChange={(e) => setGlobalSetting({ pixel_code: e.target.value })}
+                rows={8}
+                className="font-mono text-sm"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                {t('settings:metaPixel.globalPixelHelp')}
+              </p>
+            </div>
+
+            <div className="flex justify-end">
+              <Button 
+                onClick={handleSaveGlobalSetting} 
+                disabled={saving}
+                variant="default"
+                className="bg-orange-600 hover:bg-orange-700"
+              >
+                <Save className="h-4 w-4 mr-2" />
+                {saving ? t('settings:metaPixel.saving') : t('settings:metaPixel.saveGlobal')}
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Add New Setting */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Plus className="h-5 w-5" />
-            {t('settings:metaPixel.addNew')}
+            {editingSettingId ? t('settings:metaPixel.editSingle') : t('settings:metaPixel.addNew')}
           </CardTitle>
+          {editingSettingId && (
+            <p className="text-sm text-muted-foreground">
+              {t('settings:metaPixel.editingExisting')}
+            </p>
+          )}
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-4">
@@ -369,13 +550,29 @@ const MetaPixelSettings = ({ user }: MetaPixelSettingsProps) => {
               </p>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-2">
+              {editingSettingId && (
+                <Button 
+                  onClick={() => {
+                    setNewSetting({ market_type: '', target_market: '', pixel_code: '' });
+                    setEditingSettingId(null);
+                  }}
+                  variant="outline"
+                >
+                  {t('settings:metaPixel.cancel')}
+                </Button>
+              )}
               <Button 
                 onClick={handleSaveNewSetting} 
                 disabled={saving}
               >
                 <Save className="h-4 w-4 mr-2" />
-                {saving ? t('settings:metaPixel.saving') : t('settings:metaPixel.save')}
+                {saving 
+                  ? t('settings:metaPixel.saving') 
+                  : editingSettingId 
+                    ? t('settings:metaPixel.update') 
+                    : t('settings:metaPixel.save')
+                }
               </Button>
             </div>
           </div>
