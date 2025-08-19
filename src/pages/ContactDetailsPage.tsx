@@ -41,21 +41,37 @@ interface Contact {
   form_completed_at?: string;
   market_type?: string;
   target_market?: string;
-  // Logistics fields
+  // Van Transport fields
+  full_time_drivers?: number;
+  transporter_count?: number;
+  vehicle_types?: string[];
+  // Bicycle Delivery fields
+  delivery_driver_count?: number;
+  bicycle_driver_count?: number;
+  bicycle_count?: number;
+  cargo_bike_count?: number;
+  uses_cargo_bikes?: boolean;
+  company_owns_vehicles?: boolean;
+  employee_type?: string;
+  employment_status?: string;
+  works_for_quick_commerce?: boolean;
+  works_for_gig_economy_food?: boolean;
+  quick_commerce_companies?: string[];
+  gig_economy_companies?: string[];
+  // Common fields
   is_last_mile_logistics?: boolean;
   last_mile_since_when?: string;
-  operating_cities?: string[] | string;
+  operating_cities?: string[];
   food_delivery_services?: boolean;
   food_delivery_platforms?: string[];
   staff_types?: string[];
-  full_time_drivers?: number;
-  delivery_driver_count?: number;
-  vehicle_types?: string[];
-  transporter_count?: number;
   total_vehicle_count?: number;
   amazon_experience?: boolean;
+  amazon_work_capacity?: string;
   city_availability?: any;
   additional_comments?: string;
+  operates_multiple_countries?: boolean;
+  operates_multiple_cities?: boolean;
 }
 
 const ContactDetailsPage = () => {
@@ -197,7 +213,7 @@ const ContactDetailsPage = () => {
     const questionnaireFields = [
       contact.is_last_mile_logistics !== null && contact.is_last_mile_logistics !== undefined,
       contact.last_mile_since_when,
-      contact.operating_cities && ((Array.isArray(contact.operating_cities) && contact.operating_cities.length > 0) || (typeof contact.operating_cities === 'string' && contact.operating_cities.length > 0)),
+      contact.operating_cities && contact.operating_cities.length > 0,
       contact.food_delivery_services !== null && contact.food_delivery_services !== undefined,
       contact.food_delivery_platforms && contact.food_delivery_platforms.length > 0,
       contact.staff_types && contact.staff_types.length > 0,
@@ -266,6 +282,9 @@ const ContactDetailsPage = () => {
     return t('details.created');
   };
 
+  // Determine if it's bicycle delivery market type
+  const isBicycleDelivery = contact.market_type === 'bicycle_delivery';
+
   const generatePDF = async () => {
     try {
       const pdf = new jsPDF('p', 'mm', 'a4');
@@ -320,7 +339,7 @@ const ContactDetailsPage = () => {
       // Market type and target market info
       pdf.setFontSize(10);
       pdf.setFont('helvetica', 'normal');
-      const marketInfo = `${(contact as any).market_type || 'van_transport'} | ${(contact as any).target_market || 'germany'}`.toUpperCase();
+      const marketInfo = `${contact.market_type || 'van_transport'} | ${contact.target_market || 'germany'}`.toUpperCase();
       pdf.text(marketInfo, pageWidth - 80, 15);
       
       // Status and date
@@ -372,8 +391,8 @@ const ContactDetailsPage = () => {
       pdf.setFont('helvetica', 'normal');
       
       const marketData = [
-        ['Markttyp:', (contact as any).market_type || 'van_transport'],
-        ['Zielmarkt:', (contact as any).target_market || 'germany'],
+        ['Markttyp:', contact.market_type || 'van_transport'],
+        ['Zielmarkt:', contact.target_market || 'germany'],
         ['Beschäftigungsstatus:', (contact as any).employment_status || 'Keine Angabe'],
         ['Mitarbeitertyp:', (contact as any).employee_type || 'Keine Angabe']
       ];
@@ -502,23 +521,27 @@ const ContactDetailsPage = () => {
       
       currentY += 15;
       
-      // Personnel Structure Section
+      // Personnel Structure Section (Market-specific)
       checkPageSpace(40);
       pdf.setTextColor(35, 47, 62);
       pdf.setFontSize(16);
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Personal-Struktur', margin, currentY);
+      pdf.text(isBicycleDelivery ? 'Personal & Beschäftigung' : 'Personal-Struktur', margin, currentY);
       
       currentY += 15;
       pdf.setTextColor(85, 85, 85);
       pdf.setFontSize(11);
       pdf.setFont('helvetica', 'normal');
       
-      const personnelInfo = [
-        ['Vollzeit-Fahrer:', contact.delivery_driver_count?.toString() || '0'],
-        ['Delivery Driver:', (contact as any).delivery_driver_count?.toString() || '0'],
-        ['Bicycle Driver:', (contact as any).bicycle_driver_count?.toString() || '0'],
-        ['Transporter:', contact.total_vehicle_count?.toString() || '0'],
+      const personnelInfo = isBicycleDelivery ? [
+        ['Lieferfahrer:', contact.delivery_driver_count?.toString() || 'Keine Angabe'],
+        ['Fahrradfahrer:', (contact as any).bicycle_driver_count?.toString() || 'Keine Angabe'],
+        ['Beschäftigungsstatus:', (contact as any).employment_status || 'Keine Angabe'],
+        ['Mitarbeitertyp:', (contact as any).employee_type || 'Keine Angabe'],
+        ['Personal-Typen:', formatArray(contact.staff_types)]
+      ] : [
+        ['Vollzeit-Fahrer:', (contact as any).full_time_drivers?.toString() || 'Keine Angabe'],
+        ['Transporter-Anzahl:', (contact as any).transporter_count?.toString() || 'Keine Angabe'],
         ['Personal-Typen:', formatArray(contact.staff_types)]
       ];
       
@@ -534,24 +557,27 @@ const ContactDetailsPage = () => {
       
       currentY += 15;
       
-      // Advanced Vehicle Information Section
+      // Vehicle Information Section (Market-specific)
       checkPageSpace(60);
       pdf.setTextColor(35, 47, 62);
       pdf.setFontSize(16);
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Fahrzeug-Details', margin, currentY);
+      pdf.text('Fahrzeuge & Ausrüstung', margin, currentY);
       
       currentY += 15;
       pdf.setTextColor(85, 85, 85);
       pdf.setFontSize(11);
       pdf.setFont('helvetica', 'normal');
       
-      const vehicleInfo = [
+      const vehicleInfo = isBicycleDelivery ? [
+        ['Fahrräder:', (contact as any).bicycle_count?.toString() || 'Keine Angabe'],
+        ['Cargo Bikes:', (contact as any).cargo_bike_count?.toString() || 'Keine Angabe'],
+        ['Nutzt Cargo Bikes:', formatBoolean((contact as any).uses_cargo_bikes)],
+        ['Eigene Fahrzeuge:', formatBoolean((contact as any).company_owns_vehicles)],
+        ['Gesamtfahrzeuge:', (contact as any).total_vehicle_count?.toString() || 'Keine Angabe']
+      ] : [
         ['Fahrzeug-Typen:', formatArray(contact.vehicle_types)],
-        ['Gesamtfahrzeuge:', (contact as any).total_vehicle_count?.toString() || '0'],
-        ['Fahrräder:', (contact as any).bicycle_count?.toString() || '0'],
-        ['Cargo Bikes:', (contact as any).cargo_bike_count?.toString() || '0'],
-        ['Nutzt Cargo Bikes:', formatBoolean((contact as any).uses_cargo_bikes)]
+        ['Gesamtfahrzeuge:', (contact as any).total_vehicle_count?.toString() || 'Keine Angabe']
       ];
       
       vehicleInfo.forEach(([label, value]) => {
@@ -605,21 +631,27 @@ const ContactDetailsPage = () => {
       
       currentY += 20;
       
-      // Platform Experience Section
+      // Platform Experience Section (Market-specific)
       pdf.setTextColor(35, 47, 62);
       pdf.setFontSize(16);
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Plattform-Erfahrung', margin, currentY);
+      pdf.text(isBicycleDelivery ? 'Plattform-Erfahrung' : 'Plattform & Amazon Erfahrung', margin, currentY);
       
       currentY += 15;
       pdf.setTextColor(85, 85, 85);
       pdf.setFontSize(11);
       pdf.setFont('helvetica', 'normal');
       
-      const platformData = [
+      const platformData = isBicycleDelivery ? [
+        ['Quick Commerce:', formatBoolean((contact as any).works_for_quick_commerce)],
+        ['Gig Economy Food:', formatBoolean((contact as any).works_for_gig_economy_food)],
+        ['Quick Commerce Plattformen:', formatArray((contact as any).quick_commerce_companies)],
+        ['Gig Economy Plattformen:', formatArray((contact as any).gig_economy_companies)]
+      ] : [
+        ['Food Delivery Services:', formatBoolean(contact.food_delivery_services)],
         ['Food Delivery Platforms:', formatArray((contact as any).food_delivery_platforms)],
-        ['Quick Commerce:', formatArray((contact as any).quick_commerce_companies)],
-        ['Gig Economy:', formatArray((contact as any).gig_economy_companies)]
+        ['Amazon Erfahrung:', formatBoolean(contact.amazon_experience)],
+        ['Amazon Arbeitskapazität:', (contact as any).amazon_work_capacity || 'Keine Angabe']
       ];
       
       platformData.forEach(([label, value]) => {
@@ -635,8 +667,7 @@ const ContactDetailsPage = () => {
       currentY += 15;
       
       // Operating Cities Section
-      if (contact.operating_cities && ((Array.isArray(contact.operating_cities) && contact.operating_cities.length > 0) || 
-          (typeof contact.operating_cities === 'string' && contact.operating_cities.length > 0))) {
+      if (contact.operating_cities && contact.operating_cities.length > 0) {
         checkPageSpace(30);
         pdf.setTextColor(35, 47, 62);
         pdf.setFontSize(16);
@@ -651,9 +682,7 @@ const ContactDetailsPage = () => {
         pdf.setFont('helvetica', 'bold');
         pdf.text('Operating Cities:', margin, currentY);
         pdf.setFont('helvetica', 'normal');
-        const cities = Array.isArray(contact.operating_cities) 
-          ? contact.operating_cities.join(', ')
-          : contact.operating_cities;
+        const cities = contact.operating_cities.join(', ');
         const cityLines = pdf.splitTextToSize(cities, maxWidth - 80);
         pdf.text(cityLines, margin + 80, currentY);
         currentY += Math.max(8, cityLines.length * 6) + 10;
@@ -850,7 +879,7 @@ const ContactDetailsPage = () => {
               </Avatar>
               <div className="min-w-0 flex-1">
                 <h1 className="text-xl sm:text-2xl font-bold mb-2 break-words">{contact.company_name}</h1>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-white/80">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-white/80 mb-2">
                   <div className="flex items-center gap-1 min-w-0">
                     <Mail className="h-4 w-4 shrink-0" />
                     <span className="truncate">{contact.email_address}</span>
@@ -861,6 +890,16 @@ const ContactDetailsPage = () => {
                       <span>{contact.phone_number}</span>
                     </div>
                   )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                    {isBicycleDelivery ? <Bike className="h-3 w-3 mr-1" /> : <Truck className="h-3 w-3 mr-1" />}
+                    {isBicycleDelivery ? 'Bicycle Delivery' : 'Van Transport'}
+                  </Badge>
+                  <Badge variant="outline" className="bg-white/10 text-white border-white/30">
+                    <Target className="h-3 w-3 mr-1" />
+                    {contact.target_market?.toUpperCase() || 'GERMANY'}
+                  </Badge>
                 </div>
               </div>
             </div>
@@ -1155,167 +1194,14 @@ const ContactDetailsPage = () => {
             </CardContent>
           </Card>
 
-          {/* Logistics Information (wenn verfügbar) */}
+          {/* Market-Specific Details (wenn verfügbar) */}
           {contact.form_completed && (
             <>
-              <Card className="h-fit">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Truck className="h-5 w-5 text-amazon-blue" />
-                    {t('details.logistics')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {contact.is_last_mile_logistics !== undefined && (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <Package className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <div className="text-sm font-medium">{t('details.lastMileLogistics')}</div>
-                            <div className="text-sm text-muted-foreground">
-                              {contact.is_last_mile_logistics ? (
-                                <Badge className="bg-green-100 text-green-800">{t('common:buttons.yes')}</Badge>
-                              ) : (
-                                <Badge variant="outline">{t('common:buttons.no')}</Badge>
-                              )}
-                              {contact.last_mile_since_when && (
-                                <span className="ml-2 text-xs">{t('details.since')} {contact.last_mile_since_when}</span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {contact.amazon_experience !== undefined && (
-                      <div className="flex items-center gap-3">
-                        <Shield className="h-4 w-4 text-muted-foreground" />
-                        <div>
-                          <div className="text-sm font-medium">{t('details.amazonExperience')}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {contact.amazon_experience ? (
-                              <Badge className="bg-amazon-orange text-white">
-                                <Star className="h-3 w-3 mr-1" />
-                                {t('details.available')}
-                              </Badge>
-                            ) : (
-                              <Badge variant="outline">{t('details.noExperience')}</Badge>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {contact.food_delivery_services !== undefined && (
-                      <div className="flex items-center gap-3">
-                        <Package className="h-4 w-4 text-muted-foreground" />
-                        <div>
-                          <div className="text-sm font-medium">{t('filter.foodDelivery')}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {contact.food_delivery_services ? (
-                              <Badge className="bg-green-100 text-green-800">{t('common:buttons.yes')}</Badge>
-                            ) : (
-                              <Badge variant="outline">{t('common:buttons.no')}</Badge>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {contact.delivery_driver_count !== undefined && (
-                        <div className="flex items-center gap-3">
-                          <Users2 className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <div className="text-sm font-medium">{t('details.fullTimeDrivers')}</div>
-                            <div className="text-lg font-semibold text-amazon-blue">
-                              {contact.delivery_driver_count || 0}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {contact.total_vehicle_count !== undefined && (
-                        <div className="flex items-center gap-3">
-                          <Truck className="h-4 w-4 text-muted-foreground" />
-                          <div>
-                            <div className="text-sm font-medium">{t('details.transporters')}</div>
-                            <div className="text-lg font-semibold text-amazon-blue">
-                              {contact.total_vehicle_count || 0}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {contact.operating_cities && ((Array.isArray(contact.operating_cities) && contact.operating_cities.length > 0) || (typeof contact.operating_cities === 'string' && contact.operating_cities.length > 0)) && (
-                      <div>
-                        <div className="text-sm font-medium mb-2">{t('details.operatingCities')}</div>
-                        <div className="flex flex-wrap gap-1">
-                          {Array.isArray(contact.operating_cities) ? (
-                            <>
-                              {contact.operating_cities.slice(0, 5).map((city, index) => (
-                                <Badge key={index} variant="outline" className="text-xs">
-                                  {city}
-                                </Badge>
-                              ))}
-                              {contact.operating_cities.length > 5 && (
-                                <Badge variant="outline" className="text-xs">
-                                  +{contact.operating_cities.length - 5} {t('details.more')}
-                                </Badge>
-                              )}
-                            </>
-                          ) : (
-                            <Badge variant="outline" className="text-xs">
-                              {contact.operating_cities}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {contact.vehicle_types && contact.vehicle_types.length > 0 && (
-                      <div>
-                        <div className="text-sm font-medium mb-2">{t('details.vehicleTypes')}</div>
-                        <div className="flex flex-wrap gap-1">
-                          {contact.vehicle_types.map((type, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs">
-                              {type}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {contact.staff_types && contact.staff_types.length > 0 && (
-                      <div>
-                        <div className="text-sm font-medium mb-2">{t('details.staffTypes')}</div>
-                        <div className="flex flex-wrap gap-1">
-                          {contact.staff_types.map((type, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs">
-                              {type}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {contact.food_delivery_platforms && contact.food_delivery_platforms.length > 0 && (
-                      <div>
-                        <div className="text-sm font-medium mb-2">{t('filter.foodDeliveryPlatforms')}</div>
-                        <div className="flex flex-wrap gap-1">
-                          {contact.food_delivery_platforms.map((platform, index) => (
-                            <Badge key={index} variant="outline" className="text-xs">
-                              {platform}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+              {isBicycleDelivery ? (
+                <ContactDetailsBicycleDelivery contact={contact} />
+              ) : (
+                <ContactDetailsVanTransport contact={contact} />
+              )}
 
               {/* Stadt-Verfügbarkeit Details */}
               {contact.city_availability && Object.keys(contact.city_availability).length > 0 && (
