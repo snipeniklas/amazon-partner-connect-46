@@ -17,6 +17,24 @@
     "save": "Speichern",
     "saving": "Speichert...",
     "delete": "Löschen",
+    "marketTypes": {
+      "vanTransport": "Van Transport",
+      "bicycleDelivery": "Fahrrad Lieferung"
+    },
+    "targetMarkets": {
+      "germany": "Deutschland",
+      "uk": "Vereinigtes Königreich",
+      "ireland": "Irland",
+      "france": "Frankreich",
+      "italy": "Italien",
+      "spain": "Spanien",
+      "paris": "Paris",
+      "milan": "Mailand",
+      "rome": "Rom",
+      "berlin": "Berlin",
+      "barcelona": "Barcelona",
+      "madrid": "Madrid"
+    },
     "errors": {
       "fillAllFields": "Bitte füllen Sie alle Felder aus",
       "invalidPixelCode": "Ungültiger Meta Pixel Code Format",

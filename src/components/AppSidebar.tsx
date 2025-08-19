@@ -29,7 +29,7 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ contactsCount, isAdmin }: AppSidebarProps) {
-  const { t } = useTranslation(['dashboard', 'settings']);
+  const { t } = useTranslation(['dashboard', 'settings', 'common']);
   const { state } = useSidebar();
   const isCollapsed = state === 'collapsed';
   const location = useLocation();
@@ -67,7 +67,7 @@ export function AppSidebar({ contactsCount, isAdmin }: AppSidebarProps) {
     },
     {
       path: '/dashboard/settings',
-      title: t('settings:metaPixel.title', 'Settings'),
+      title: t('common:navigation.settings'),
       icon: Settings,
     },
   ];
@@ -75,7 +75,7 @@ export function AppSidebar({ contactsCount, isAdmin }: AppSidebarProps) {
   const adminItems = isAdmin ? [
     {
       path: '/dashboard/users',
-      title: 'Users',
+      title: t('common:navigation.users'),
       icon: Users,
     }
   ] : [];

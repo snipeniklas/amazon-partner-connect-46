@@ -17,6 +17,24 @@
     "save": "Salva",
     "saving": "Salvando...",
     "delete": "Elimina",
+    "marketTypes": {
+      "vanTransport": "Trasporto Furgonato",
+      "bicycleDelivery": "Consegna in Bicicletta"
+    },
+    "targetMarkets": {
+      "germany": "Germania",
+      "uk": "Regno Unito",
+      "ireland": "Irlanda",
+      "france": "Francia",
+      "italy": "Italia",
+      "spain": "Spagna",
+      "paris": "Parigi",
+      "milan": "Milano",
+      "rome": "Roma",
+      "berlin": "Berlino",
+      "barcelona": "Barcellona",
+      "madrid": "Madrid"
+    },
     "errors": {
       "fillAllFields": "Si prega di compilare tutti i campi",
       "invalidPixelCode": "Formato del codice Meta Pixel non valido",

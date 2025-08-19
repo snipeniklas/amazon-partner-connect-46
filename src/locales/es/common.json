@@ -20,12 +20,14 @@
     "error": "Error",
     "loading": "Cargando...",
     "noData": "No hay datos disponibles",
-    "confirmDelete": "¿Está seguro de que desea eliminar esto?"
+    "confirmDelete": "¿Está seguro de que desea eliminar esto?",
+    "active": "activo"
   },
   "navigation": {
     "home": "Inicio",
     "dashboard": "Panel",
     "contacts": "Contactos",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "users": "Usuarios"
   }
 }
