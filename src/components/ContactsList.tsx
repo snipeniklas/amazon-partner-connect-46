@@ -55,6 +55,12 @@ interface Contact {
   amazon_experience?: boolean;
   city_availability?: any;
   additional_comments?: string;
+  // Bicycle delivery fields
+  company_owns_vehicles?: boolean;
+  uses_cargo_bikes?: boolean;
+  bicycle_count?: number;
+  cargo_bike_count?: number;
+  bicycle_driver_count?: number;
   // Email tracking fields
   email_delivered?: boolean;
   email_opened?: boolean;
@@ -183,6 +189,12 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
       [t('contacts:list.export.vehicleTypes')]: (contact.vehicle_types || []).join(', '),
       [t('contacts:list.export.staffTypes')]: (contact.staff_types || []).join(', '),
       [t('contacts:list.export.foodDeliveryPlatforms')]: (contact.food_delivery_platforms || []).join(', '),
+      // Bicycle delivery specific fields
+      [t('contacts:list.export.companyOwnsVehicles')]: contact.company_owns_vehicles ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+      [t('contacts:list.export.usesCargoBikes')]: contact.uses_cargo_bikes ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+      [t('contacts:list.export.bicycleCount')]: contact.bicycle_count || 0,
+      [t('contacts:list.export.cargoBikeCount')]: contact.cargo_bike_count || 0,
+      [t('contacts:list.export.bicycleDriverCount')]: contact.bicycle_driver_count || 0,
       [t('contacts:list.export.additionalComments')]: contact.additional_comments || '',
       [t('contacts:list.export.createdAt')]: new Date(contact.created_at).toLocaleDateString(),
     }));

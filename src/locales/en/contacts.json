@@ -58,6 +58,11 @@
       "vehicleTypes": "Vehicle Types",
       "staffTypes": "Staff Types",
       "foodDeliveryPlatforms": "Food Delivery Platforms",
+      "companyOwnsVehicles": "Company Owns Vehicles",
+      "usesCargoBikes": "Uses Cargo Bikes",
+      "bicycleCount": "Number of Bicycles",
+      "cargoBikeCount": "Number of Cargo Bikes",
+      "bicycleDriverCount": "Number of Bicycle Drivers",
       "additionalComments": "Additional Comments",
       "createdAt": "Created At"
     },

@@ -58,6 +58,11 @@
       "vehicleTypes": "Types de véhicules",
       "staffTypes": "Types de personnel",
       "foodDeliveryPlatforms": "Plateformes de livraison alimentaire",
+      "companyOwnsVehicles": "L'entreprise possède des véhicules",
+      "usesCargoBikes": "Utilise des vélos cargo",
+      "bicycleCount": "Nombre de vélos",
+      "cargoBikeCount": "Nombre de vélos cargo",
+      "bicycleDriverCount": "Nombre de cyclistes livreurs",
       "additionalComments": "Commentaires supplémentaires",
       "createdAt": "Créé le"
     },

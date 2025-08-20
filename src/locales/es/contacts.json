@@ -58,6 +58,11 @@
       "vehicleTypes": "Tipos de vehículos",
       "staffTypes": "Tipos de personal",
       "foodDeliveryPlatforms": "Plataformas de entrega de comida",
+      "companyOwnsVehicles": "La empresa posee vehículos",
+      "usesCargoBikes": "Usa bicicletas de carga",
+      "bicycleCount": "Número de bicicletas",
+      "cargoBikeCount": "Número de bicicletas de carga",
+      "bicycleDriverCount": "Número de conductores de bicicleta",
       "additionalComments": "Comentarios adicionales",
       "createdAt": "Creado el"
     },
