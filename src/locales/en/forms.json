@@ -53,7 +53,7 @@
       "quickCommerceCompaniesSelect": "Please select which quick commerce companies:",
       "bicycleDeliveryExperience": "Do you have bicycle delivery experience?",
       "bicycleDeliveryExperienceSince": "Since when?",
-      "bicycleTypes": "Which bicycle types are used?",
+      "bicycleTypes": "Which bicycle types are used? *",
       
       "employeeTypeSelect": "Select employee type",
       "employeeTypeContracted": "Contracted",

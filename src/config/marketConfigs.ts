@@ -183,9 +183,9 @@ export const marketConfigs: MarketConfigs = {
         "Other"
       ],
       bicycleTypes: [
-        "elettrica",
-        "manuale",
-        "altra"
+        "electric",
+        "manual",
+        "other"
       ]
     },
     rome: {
@@ -223,9 +223,9 @@ export const marketConfigs: MarketConfigs = {
         "Other"
       ],
       bicycleTypes: [
-        "elettrica",
-        "manuale",
-        "altra"
+        "electric",
+        "manual",
+        "other"
       ]
     },
     paris: {
@@ -265,9 +265,9 @@ export const marketConfigs: MarketConfigs = {
         "Other"
       ],
       bicycleTypes: [
-        "électrique",
-        "manuel",
-        "autre"
+        "electric",
+        "manual",
+        "other"
       ]
     },
     barcelona: {
@@ -305,9 +305,9 @@ export const marketConfigs: MarketConfigs = {
         "Other"
       ],
       bicycleTypes: [
-        "eléctrica",
+        "electric",
         "manual",
-        "otra"
+        "other"
       ]
     },
     madrid: {
@@ -345,9 +345,9 @@ export const marketConfigs: MarketConfigs = {
         "Other"
       ],
       bicycleTypes: [
-        "eléctrica",
+        "electric",
         "manual",
-        "otra"
+        "other"
       ]
     },
     berlin: {
@@ -385,9 +385,9 @@ export const marketConfigs: MarketConfigs = {
         "Other"
       ],
       bicycleTypes: [
-        "elektrisch",
-        "manuell",
-        "andere"
+        "electric",
+        "manual",
+        "other"
       ]
     }
   }

@@ -52,7 +52,7 @@
       "quickCommerceCompaniesSelect": "Veuillez sélectionner pour quelles entreprises de commerce rapide:",
       "bicycleDeliveryExperience": "Avez-vous de l'expérience dans la livraison à vélo ?",
       "bicycleDeliveryExperienceSince": "Depuis quand ?",
-      "bicycleTypes": "Quels types de vélos sont utilisés ?",
+      "bicycleTypes": "Quels types de vélos sont utilisés ? *",
       
       "employeeTypeSelect": "Sélectionner le type d'employé",
       "employeeTypeContracted": "Employés sous contrat",
@@ -124,7 +124,8 @@
     "selectAtLeastOnePlatform": "Veuillez sélectionner au moins une plateforme",
     "selectAtLeastOneVehicleType": "Veuillez sélectionner au moins un type de véhicule",
     "selectAtLeastOneStaffType": "Veuillez sélectionner au moins un type de personnel",
-    "selectAtLeastOneLocation": "Veuillez sélectionner au moins une {{location}}"
+    "selectAtLeastOneLocation": "Veuillez sélectionner au moins une {{location}}",
+    "bicycleTypesRequired": "Veuillez sélectionner au moins un type de vélo"
   },
   "gigEconomyCompanies": {
     "uberEats": "Uber Eats",
