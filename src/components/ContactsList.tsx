@@ -68,6 +68,7 @@ interface Contact {
   gig_economy_companies?: string[];
   gig_economy_other?: string;
   works_for_gig_economy_food?: boolean;
+  works_for_quick_commerce?: boolean;
   // Email tracking fields
   email_delivered?: boolean;
   email_opened?: boolean;
@@ -209,6 +210,7 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
       [t('contacts:list.export.gigEconomyCompanies')]: (contact.gig_economy_companies || []).join(', '),
       [t('contacts:list.export.gigEconomyOther')]: contact.gig_economy_other || '',
       [t('contacts:list.export.worksForGigEconomyFood')]: contact.works_for_gig_economy_food ? t('contacts:common.yes') : t('contacts:common.no'),
+      [t('contacts:list.export.worksForQuickCommerce')]: contact.works_for_quick_commerce ? t('contacts:common.yes') : t('contacts:common.no'),
       [t('contacts:list.export.quickCommerceCompanies')]: (contact.quick_commerce_companies || []).join(', '),
       [t('contacts:list.export.employeeType')]: contact.employee_type || '',
       [t('contacts:list.export.employmentStatus')]: contact.employment_status || '',
