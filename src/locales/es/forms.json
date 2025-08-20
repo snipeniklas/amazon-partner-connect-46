@@ -145,6 +145,11 @@
     "van_transport": "Furgoneta/Transporte",
     "bicycle_delivery": "Entrega en Bicicleta"
   },
+  "bicycleTypeOptions": {
+    "electric": "Eléctrica",
+    "manual": "Manual",
+    "other": "Otra"
+  },
   "markets": {
     "germany": "Alemania",
     "uk": "Reino Unido",

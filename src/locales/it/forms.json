@@ -52,6 +52,7 @@
       "quickCommerceCompaniesSelect": "Per favore selezionate per quali aziende di commercio veloce:",
       "bicycleDeliveryExperience": "Hai esperienza nelle consegne in bicicletta?",
       "bicycleDeliveryExperienceSince": "Da quando?",
+      "bicycleTypes": "Quali tipi di biciclette vengono utilizzati?",
       
       "employeeTypeSelect": "Seleziona tipo di dipendente",
       "employeeTypeContracted": "Dipendenti a contratto",
@@ -144,6 +145,11 @@
   "marketTypes": {
     "van_transport": "Furgone/Trasporto",
     "bicycle_delivery": "Consegna in Bicicletta"
+  },
+  "bicycleTypeOptions": {
+    "electric": "Elettrica",
+    "manual": "Manuale",
+    "other": "Altra"
   },
   "markets": {
     "germany": "Germania",

@@ -52,6 +52,7 @@
       "quickCommerceCompaniesSelect": "Bitte wählen Sie aus, für welche Quick-Commerce-Unternehmen:",
       "bicycleDeliveryExperience": "Haben Sie Erfahrung mit Fahrradlieferungen?",
       "bicycleDeliveryExperienceSince": "Seit wann?",
+      "bicycleTypes": "Welche Fahrradtypen werden verwendet?",
       
       "employeeTypeSelect": "Mitarbeitertyp auswählen",
       "employeeTypeContracted": "Angestellte",
@@ -144,6 +145,11 @@
   "marketTypes": {
     "van_transport": "Van/Transport",
     "bicycle_delivery": "Fahrrad-Lieferung"
+  },
+  "bicycleTypeOptions": {
+    "electric": "Elektrisch",
+    "manual": "Manuell",
+    "other": "Andere"
   },
   "markets": {
     "germany": "Deutschland",

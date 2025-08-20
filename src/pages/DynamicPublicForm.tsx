@@ -1747,7 +1747,7 @@ const DynamicPublicForm = () => {
                                         }
                                       }}
                                     />
-                                    <Label htmlFor={`bicycle_type_${type}`}>{t(`forms:${type}`)}</Label>
+                                    <Label htmlFor={`bicycle_type_${type}`}>{t(`forms:bicycleTypeOptions.${type}`)}</Label>
                                   </div>
                                 ))}
                               </div>
