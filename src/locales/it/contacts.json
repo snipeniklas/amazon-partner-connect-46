@@ -43,6 +43,8 @@
       "companyAddress": "Indirizzo aziendale",
       "legalForm": "Forma giuridica",
       "website": "Sito web",
+      "marketType": "Tipo di mercato",
+      "targetMarket": "Mercato target",
       "emailSent": "Email inviata",
       "formCompleted": "Modulo completato",
       "emailDelivered": "Email consegnata",

@@ -172,6 +172,8 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
       [t('contacts:list.columns.phone')]: contact.phone_number || '',
       [t('contacts:list.export.companyAddress')]: contact.company_address || '',
       [t('contacts:list.export.legalForm')]: contact.legal_form || '',
+      [t('contacts:list.export.marketType')]: contact.market_type || '',
+      [t('contacts:list.export.targetMarket')]: contact.target_market || '',
       [t('contacts:list.export.website')]: contact.website || '',
       [t('contacts:list.export.emailSent')]: contact.email_sent ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
       [t('contacts:list.export.formCompleted')]: contact.form_completed ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
