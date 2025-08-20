@@ -63,6 +63,9 @@
       "bicycleCount": "Anzahl Fahrräder",
       "cargoBikeCount": "Anzahl Lastenräder",
       "bicycleDriverCount": "Anzahl Fahrradfahrer",
+      "quickCommerceCompanies": "Quick Commerce Unternehmen",
+      "employeeType": "Mitarbeitertyp",
+      "employmentStatus": "Beschäftigungsstatus",
       "additionalComments": "Zusätzliche Kommentare",
       "createdAt": "Erstellt am"
     },

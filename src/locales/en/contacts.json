@@ -63,6 +63,9 @@
       "bicycleCount": "Number of Bicycles",
       "cargoBikeCount": "Number of Cargo Bikes",
       "bicycleDriverCount": "Number of Bicycle Drivers",
+      "quickCommerceCompanies": "Quick Commerce Companies",
+      "employeeType": "Employee Type",
+      "employmentStatus": "Employment Status",
       "additionalComments": "Additional Comments",
       "createdAt": "Created At"
     },

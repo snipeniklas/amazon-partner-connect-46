@@ -61,6 +61,10 @@ interface Contact {
   bicycle_count?: number;
   cargo_bike_count?: number;
   bicycle_driver_count?: number;
+  // Missing export fields
+  quick_commerce_companies?: string[];
+  employee_type?: string;
+  employment_status?: string;
   // Email tracking fields
   email_delivered?: boolean;
   email_opened?: boolean;
@@ -195,6 +199,9 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
       [t('contacts:list.export.bicycleCount')]: contact.bicycle_count || 0,
       [t('contacts:list.export.cargoBikeCount')]: contact.cargo_bike_count || 0,
       [t('contacts:list.export.bicycleDriverCount')]: contact.bicycle_driver_count || 0,
+      [t('contacts:list.export.quickCommerceCompanies')]: (contact.quick_commerce_companies || []).join(', '),
+      [t('contacts:list.export.employeeType')]: contact.employee_type || '',
+      [t('contacts:list.export.employmentStatus')]: contact.employment_status || '',
       [t('contacts:list.export.additionalComments')]: contact.additional_comments || '',
       [t('contacts:list.export.createdAt')]: new Date(contact.created_at).toLocaleDateString(),
     }));
