@@ -67,6 +67,10 @@
       "title": "Personal",
       "staffCount": "Anzahl Mitarbeiter",
       "staffTypes": "Mitarbeitertypen",
+      "staffEmploymentTypes": "Beschäftigungsart",
+      "staffEmploymentTypesDescription": "Wie sind Ihre Mitarbeiter beschäftigt?",
+      "workingHours": "Arbeitszeiten",
+      "workingHoursDescription": "Welche Arbeitszeiten haben Ihre Mitarbeiter?",
       "vehicleCount": "Anzahl Fahrzeuge",
       "vehicleTypes": "Fahrzeugtypen",
       "deliveryPlatforms": "Lieferplattformen"

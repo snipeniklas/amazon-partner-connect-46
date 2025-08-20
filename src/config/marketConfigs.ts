@@ -5,6 +5,8 @@ export interface MarketConfig {
   staffTypes: string[];
   platforms: string[];
   specialFields?: string[];
+  employeeTypes?: string[];
+  employmentStatuses?: string[];
 }
 
 export interface MarketConfigs {
@@ -80,6 +82,15 @@ export const marketConfigs: MarketConfigs = {
         "Self-employed",
         "Subcontractor"
       ],
+      employeeTypes: [
+        "Contracted",
+        "Subcontracted"
+      ],
+      employmentStatuses: [
+        "Full-Time",
+        "Part-Time", 
+        "Both"
+      ],
       platforms: [
         "Uber Eats",
         "Deliveroo",
@@ -115,6 +126,15 @@ export const marketConfigs: MarketConfigs = {
         "Part-time",
         "Self-employed",
         "Subcontractor"
+      ],
+      employeeTypes: [
+        "Contracted",
+        "Subcontracted"
+      ],
+      employmentStatuses: [
+        "Full-Time",
+        "Part-Time",
+        "Both"
       ],
       platforms: [
         "Uber Eats",

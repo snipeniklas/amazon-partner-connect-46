@@ -929,22 +929,29 @@ const DynamicPublicForm = () => {
            }
            
            return step2Fields;
-         case 3:
-            const step3Fields: any = {
-               staff_types: 'Mitarbeitertypen (mindestens einer)'
-            };
-           
-           // Add employee/staff questions moved from step 2
-           if (marketType === 'van_transport') {
-             step3Fields.delivery_driver_count = 'Anzahl Lieferfahrer';
-           }
-           
-           if (marketType === 'bicycle_delivery') {
-             step3Fields.delivery_driver_count = 'Anzahl Lieferfahrer';
-             step3Fields.bicycle_driver_count = 'Anzahl Fahrrad-Fahrer';
-           }
-           
-           return step3Fields;
+          case 3:
+             const step3Fields: any = {};
+            
+            // UK/Ireland: Validate split staff questions
+            if (targetMarket === 'uk' || targetMarket === 'ireland') {
+              step3Fields.employee_type = 'Staff Employment Type';
+              step3Fields.employment_status = 'Working Hours';
+            } else {
+              // Other markets: Original staff types validation
+              step3Fields.staff_types = 'Mitarbeitertypen (mindestens einer)';
+            }
+            
+            // Add employee/staff questions moved from step 2
+            if (marketType === 'van_transport') {
+              step3Fields.delivery_driver_count = 'Anzahl Lieferfahrer';
+            }
+            
+            if (marketType === 'bicycle_delivery') {
+              step3Fields.delivery_driver_count = 'Anzahl Lieferfahrer';
+              step3Fields.bicycle_driver_count = 'Anzahl Fahrrad-Fahrer';
+            }
+            
+            return step3Fields;
         case 4:
           const step4Fields: any = {
             city_availability: 'Standortverfügbarkeit (mindestens eine Stadt/Zone)'
@@ -1980,29 +1987,93 @@ const DynamicPublicForm = () => {
                       <p className="text-sm text-muted-foreground mt-2">{t('forms:publicForm.requiredFieldsNotice')}</p>
                     </div>
 
-                    <div className="space-y-6">
-                      <div className="space-y-4">
-                        <fieldset>
-                          <legend className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${hasFieldError('staff_types') ? 'text-destructive' : ''}`}>
-                            {marketType === 'bicycle_delivery' ? t('forms:publicForm.ridersTypes') : t('forms:publicForm.staffVehicles.staffTypes')} *
-                          </legend>
-                        {hasFieldError('staff_types') && (
-                          <p className="text-sm text-destructive">{t('forms:validation.selectAtLeastOneStaffType')}</p>
-                        )}
-                        <div className="grid grid-cols-2 gap-3">
-                          {marketConfig.staffTypes.map((type) => (
-                            <div key={type} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`staff_${type}`}
-                                checked={formData.staff_types.includes(type)}
-                                onCheckedChange={() => toggleArrayItem('staff_types', type)}
-                              />
-                              <Label htmlFor={`staff_${type}`} className="text-sm">{type}</Label>
-                            </div>
-                          ))}
-                        </div>
-                        </fieldset>
-                      </div>
+                     <div className="space-y-6">
+                       {/* UK/Ireland: Split staff questions */}
+                       {(targetMarket === 'uk' || targetMarket === 'ireland') ? (
+                         <div className="space-y-6">
+                           {/* Staff Employment Type */}
+                           <div className="space-y-4">
+                             <fieldset>
+                               <legend className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${hasFieldError('employee_type') ? 'text-destructive' : ''}`}>
+                                 {t('forms:publicForm.staffVehicles.staffEmploymentTypes')} *
+                               </legend>
+                               <p className="text-sm text-muted-foreground">{t('forms:publicForm.staffVehicles.staffEmploymentTypesDescription')}</p>
+                               {hasFieldError('employee_type') && (
+                                 <p className="text-sm text-destructive">{t('forms:validation.selectAtLeastOneStaffType')}</p>
+                               )}
+                               <div className="grid grid-cols-2 gap-3">
+                                 {marketConfig.employeeTypes?.map((type) => (
+                                   <div key={type} className="flex items-center space-x-2">
+                                     <Checkbox
+                                       id={`employee_type_${type}`}
+                                       checked={formData.employee_type === type}
+                                       onCheckedChange={(checked) => {
+                                         if (checked) {
+                                           updateFormData('employee_type', type);
+                                         }
+                                       }}
+                                     />
+                                     <Label htmlFor={`employee_type_${type}`} className="text-sm">{type}</Label>
+                                   </div>
+                                 ))}
+                               </div>
+                             </fieldset>
+                           </div>
+
+                           {/* Working Hours */}
+                           <div className="space-y-4">
+                             <fieldset>
+                               <legend className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${hasFieldError('employment_status') ? 'text-destructive' : ''}`}>
+                                 {t('forms:publicForm.staffVehicles.workingHours')} *
+                               </legend>
+                               <p className="text-sm text-muted-foreground">{t('forms:publicForm.staffVehicles.workingHoursDescription')}</p>
+                               {hasFieldError('employment_status') && (
+                                 <p className="text-sm text-destructive">{t('forms:validation.selectAtLeastOneStaffType')}</p>
+                               )}
+                               <div className="grid grid-cols-2 gap-3">
+                                 {marketConfig.employmentStatuses?.map((status) => (
+                                   <div key={status} className="flex items-center space-x-2">
+                                     <Checkbox
+                                       id={`employment_status_${status}`}
+                                       checked={formData.employment_status === status}
+                                       onCheckedChange={(checked) => {
+                                         if (checked) {
+                                           updateFormData('employment_status', status);
+                                         }
+                                       }}
+                                     />
+                                     <Label htmlFor={`employment_status_${status}`} className="text-sm">{status}</Label>
+                                   </div>
+                                 ))}
+                               </div>
+                             </fieldset>
+                           </div>
+                         </div>
+                       ) : (
+                         /* Other markets: Original staff types */
+                         <div className="space-y-4">
+                           <fieldset>
+                             <legend className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${hasFieldError('staff_types') ? 'text-destructive' : ''}`}>
+                               {marketType === 'bicycle_delivery' ? t('forms:publicForm.ridersTypes') : t('forms:publicForm.staffVehicles.staffTypes')} *
+                             </legend>
+                             {hasFieldError('staff_types') && (
+                               <p className="text-sm text-destructive">{t('forms:validation.selectAtLeastOneStaffType')}</p>
+                             )}
+                             <div className="grid grid-cols-2 gap-3">
+                               {marketConfig.staffTypes.map((type) => (
+                                 <div key={type} className="flex items-center space-x-2">
+                                   <Checkbox
+                                     id={`staff_${type}`}
+                                     checked={formData.staff_types.includes(type)}
+                                     onCheckedChange={() => toggleArrayItem('staff_types', type)}
+                                   />
+                                   <Label htmlFor={`staff_${type}`} className="text-sm">{type}</Label>
+                                 </div>
+                               ))}
+                             </div>
+                           </fieldset>
+                         </div>
+                       )}
 
                         {/* Employee/Staff questions moved from Step 2 */}
                         {marketType === 'van_transport' && (

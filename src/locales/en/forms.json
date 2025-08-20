@@ -68,6 +68,10 @@
       "title": "Staff",
       "staffCount": "Number of Staff",
       "staffTypes": "Staff Types",
+      "staffEmploymentTypes": "Staff Employment Type",
+      "staffEmploymentTypesDescription": "How are your staff employed?",
+      "workingHours": "Working Hours",
+      "workingHoursDescription": "What working hours do your staff work?",
       "vehicleCount": "Number of Vehicles",
       "vehicleTypes": "Vehicle Types",
       "deliveryPlatforms": "Delivery Platforms"

@@ -67,6 +67,10 @@
       "title": "Personnel",
       "staffCount": "Nombre d'employés",
       "staffTypes": "Types d'employés",
+      "staffEmploymentTypes": "Type d'Emploi du Personnel",
+      "staffEmploymentTypesDescription": "Comment vos employés sont-ils employés ?",
+      "workingHours": "Heures de Travail",
+      "workingHoursDescription": "Quels sont les horaires de travail de vos employés ?",
       "vehicleCount": "Nombre de véhicules",
       "vehicleTypes": "Types de véhicules",
       "deliveryPlatforms": "Plateformes de livraison"
