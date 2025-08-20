@@ -7,6 +7,7 @@ export interface MarketConfig {
   specialFields?: string[];
   employeeTypes?: string[];
   employmentStatuses?: string[];
+  bicycleTypes?: string[];
 }
 
 export interface MarketConfigs {
@@ -180,6 +181,11 @@ export const marketConfigs: MarketConfigs = {
         "Glovo",
         "Foodinho",
         "Other"
+      ],
+      bicycleTypes: [
+        "elettrica",
+        "manuale",
+        "altra"
       ]
     },
     rome: {
@@ -215,6 +221,11 @@ export const marketConfigs: MarketConfigs = {
         "Glovo",
         "Foodinho",
         "Other"
+      ],
+      bicycleTypes: [
+        "elettrica",
+        "manuale",
+        "altra"
       ]
     },
     paris: {
@@ -252,6 +263,11 @@ export const marketConfigs: MarketConfigs = {
         "Glovo",
         "Stuart",
         "Other"
+      ],
+      bicycleTypes: [
+        "électrique",
+        "manuel",
+        "autre"
       ]
     },
     barcelona: {
@@ -287,6 +303,11 @@ export const marketConfigs: MarketConfigs = {
         "Glovo",
         "Stuart",
         "Other"
+      ],
+      bicycleTypes: [
+        "eléctrica",
+        "manual",
+        "otra"
       ]
     },
     madrid: {
@@ -322,6 +343,11 @@ export const marketConfigs: MarketConfigs = {
         "Glovo",
         "Stuart",
         "Other"
+      ],
+      bicycleTypes: [
+        "eléctrica",
+        "manual",
+        "otra"
       ]
     },
     berlin: {
@@ -357,6 +383,11 @@ export const marketConfigs: MarketConfigs = {
         "Wolt",
         "Gorillas",
         "Other"
+      ],
+      bicycleTypes: [
+        "elektrisch",
+        "manuell",
+        "andere"
       ]
     }
   }

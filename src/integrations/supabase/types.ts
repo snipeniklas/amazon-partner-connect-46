@@ -56,6 +56,7 @@ export type Database = {
           amazon_work_capacity: string | null
           bicycle_count: number | null
           bicycle_driver_count: number | null
+          bicycle_types: string[] | null
           cargo_bike_count: number | null
           city_availability: Json | null
           company_address: string | null
@@ -111,6 +112,7 @@ export type Database = {
           amazon_work_capacity?: string | null
           bicycle_count?: number | null
           bicycle_driver_count?: number | null
+          bicycle_types?: string[] | null
           cargo_bike_count?: number | null
           city_availability?: Json | null
           company_address?: string | null
@@ -166,6 +168,7 @@ export type Database = {
           amazon_work_capacity?: string | null
           bicycle_count?: number | null
           bicycle_driver_count?: number | null
+          bicycle_types?: string[] | null
           cargo_bike_count?: number | null
           city_availability?: Json | null
           company_address?: string | null

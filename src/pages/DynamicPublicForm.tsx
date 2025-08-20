@@ -93,6 +93,9 @@ const DynamicPublicForm = () => {
     gig_economy_companies: [] as string[],
     gig_economy_other: "",
     quick_commerce_other: "",
+    
+    // Bicycle types
+    bicycle_types: [] as string[],
   });
 
   // Get total steps based on market type
@@ -913,12 +916,13 @@ const DynamicPublicForm = () => {
              step2Fields.last_mile_since_when = 'Erfahrung seit Jahr';
            }
            
-           if (marketType === 'bicycle_delivery') {
-             step2Fields.works_for_quick_commerce = 'Quick Commerce Arbeit';
-             step2Fields.works_for_gig_economy_food = 'Gig Economy Food Arbeit';
-             step2Fields.bicycle_count = 'Anzahl Fahrräder';
-             step2Fields.cargo_bike_count = 'Anzahl Lastenfahrräder';
-           }
+            if (marketType === 'bicycle_delivery') {
+              step2Fields.works_for_quick_commerce = 'Quick Commerce Arbeit';
+              step2Fields.works_for_gig_economy_food = 'Gig Economy Food Arbeit';
+              step2Fields.bicycle_count = 'Anzahl Fahrräder';
+              step2Fields.cargo_bike_count = 'Anzahl Lastenfahrräder';
+              step2Fields.bicycle_types = 'Fahrradtypen';
+            }
            
            if (marketType === 'van_transport') {
              step2Fields.legal_form = 'Legal Status';
@@ -983,11 +987,11 @@ const DynamicPublicForm = () => {
         const value = formData[field as keyof typeof formData];
         console.log(`[VALIDATION] Prüfe Feld "${field}" (${label}):`, value);
        
-       if (field === 'staff_types' || field === 'vehicle_types') {
-         if (!Array.isArray(value) || value.length === 0) {
-           missingFields.push(label as string);
-           console.log(`[VALIDATION ERROR] Array-Feld "${field}" ist leer oder nicht gesetzt`);
-         }
+        if (field === 'staff_types' || field === 'vehicle_types' || field === 'bicycle_types') {
+          if (!Array.isArray(value) || value.length === 0) {
+            missingFields.push(label as string);
+            console.log(`[VALIDATION ERROR] Array-Feld "${field}" ist leer oder nicht gesetzt`);
+          }
        } else if (field === 'city_availability') {
          const hasAnyCity = Object.values(formData.city_availability).some(Boolean);
          if (!hasAnyCity) {
@@ -1723,6 +1727,35 @@ const DynamicPublicForm = () => {
 
 
                           </div>
+
+                          {/* Bicycle Types - only for bicycle delivery */}
+                          {marketType === 'bicycle_delivery' && marketConfig?.bicycleTypes && (
+                            <div className="space-y-4">
+                              <Label>{t('forms:publicForm.logistics.bicycleTypes')}</Label>
+                              <div className="space-y-2">
+                                {marketConfig.bicycleTypes.map((type) => (
+                                  <div key={type} className="flex items-center space-x-2">
+                                    <Checkbox
+                                      id={`bicycle_type_${type}`}
+                                      checked={formData.bicycle_types?.includes(type) || false}
+                                      onCheckedChange={(checked) => {
+                                        const currentTypes = formData.bicycle_types || [];
+                                        if (checked) {
+                                          updateFormData('bicycle_types', [...currentTypes, type]);
+                                        } else {
+                                          updateFormData('bicycle_types', currentTypes.filter(t => t !== type));
+                                        }
+                                      }}
+                                    />
+                                    <Label htmlFor={`bicycle_type_${type}`}>{t(`forms:${type}`)}</Label>
+                                  </div>
+                                ))}
+                              </div>
+                              {hasFieldError('bicycle_types') && (
+                                <span className="text-sm text-red-500">{t('forms:validation.bicycleTypesRequired')}</span>
+                              )}
+                            </div>
+                          )}
 
                           <div className="space-y-4">
                             <Label>{t('forms:publicForm.logistics.operatesMultipleCountries')} *</Label>
