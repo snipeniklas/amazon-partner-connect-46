@@ -102,7 +102,8 @@
       "driversCount": "{{count}} autisti",
       "transportersCount": "{{count}} trasportatori",
       "bicyclesCount": "{{count}} biciclette",
-      "bicycleDriversCount": "{{count}} ciclisti"
+      "bicycleDriversCount": "{{count}} ciclisti",
+      "bicycleTypesCount": "{{count}} tipi di biciclette"
     },
     "actions": {
       "details": "Dettagli",

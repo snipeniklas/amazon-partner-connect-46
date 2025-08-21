@@ -714,13 +714,26 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
                                 </span>
                              </div>
                            )}
-                           {contact.vehicle_types?.length && (
-                             <div className="flex items-center gap-2 text-muted-foreground">
-                               <Truck className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
-                               <span>{t('contacts:list.logistics.vehicleTypesCount', { count: contact.vehicle_types.length })}</span>
-                             </div>
-                           )}
-                             {contact.market_type === 'bicycle_delivery' ? (
+                              {contact.market_type === 'bicycle_delivery' ? (
+                                <>
+                                  {contact.bicycle_types?.length && (
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                      <Bike className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                                      <span>{t('contacts:list.logistics.bicycleTypesCount', { count: contact.bicycle_types.length })}</span>
+                                    </div>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  {contact.vehicle_types?.length && (
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                      <Truck className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                                      <span>{t('contacts:list.logistics.vehicleTypesCount', { count: contact.vehicle_types.length })}</span>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                              {contact.market_type === 'bicycle_delivery' ? (
                                <>
                                  {contact.bicycle_count && (
                                    <div className="flex items-center gap-2 text-muted-foreground">
