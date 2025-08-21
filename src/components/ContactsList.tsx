@@ -21,7 +21,7 @@ import * as XLSX from 'xlsx';
 import { getMarketConfig } from "@/config/marketConfigs";
 import { 
   Eye, Mail, CheckCircle, XCircle, ArrowRight, Building, User, 
-  Phone, Globe, MapPin, Truck, Users, Package, Edit, Trash2, Download, MessageCircle
+  Phone, Globe, MapPin, Truck, Users, Package, Edit, Trash2, Download, MessageCircle, Bike
 } from "lucide-react";
 
 interface Contact {
@@ -720,18 +720,37 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
                                <span>{t('contacts:list.logistics.vehicleTypesCount', { count: contact.vehicle_types.length })}</span>
                              </div>
                            )}
-                            {contact.delivery_driver_count && (
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <Users className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
-                                <span>{t('contacts:list.logistics.driversCount', { count: contact.delivery_driver_count })}</span>
-                              </div>
-                            )}
-                            {contact.total_vehicle_count && (
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <Package className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
-                                <span>{t('contacts:list.logistics.transportersCount', { count: contact.total_vehicle_count })}</span>
-                              </div>
-                            )}
+                             {contact.market_type === 'bicycle_delivery' ? (
+                               <>
+                                 {contact.bicycle_count && (
+                                   <div className="flex items-center gap-2 text-muted-foreground">
+                                     <Bike className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                                     <span>{t('contacts:list.logistics.bicyclesCount', { count: contact.bicycle_count })}</span>
+                                   </div>
+                                 )}
+                                 {contact.bicycle_driver_count && (
+                                   <div className="flex items-center gap-2 text-muted-foreground">
+                                     <Users className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                                     <span>{t('contacts:list.logistics.bicycleDriversCount', { count: contact.bicycle_driver_count })}</span>
+                                   </div>
+                                 )}
+                               </>
+                             ) : (
+                               <>
+                                 {contact.delivery_driver_count && (
+                                   <div className="flex items-center gap-2 text-muted-foreground">
+                                     <Users className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                                     <span>{t('contacts:list.logistics.driversCount', { count: contact.delivery_driver_count })}</span>
+                                   </div>
+                                 )}
+                                 {contact.total_vehicle_count && (
+                                   <div className="flex items-center gap-2 text-muted-foreground">
+                                     <Package className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                                     <span>{t('contacts:list.logistics.transportersCount', { count: contact.total_vehicle_count })}</span>
+                                   </div>
+                                 )}
+                               </>
+                             )}
                         </div>
                       )}
                     </div>

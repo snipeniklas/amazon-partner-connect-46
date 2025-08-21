@@ -100,7 +100,9 @@
       "citiesAvailable": "Städte verfügbar",
       "vehicleTypesCount": "{{count}} Fahrzeugtypen",
       "driversCount": "{{count}} Fahrer",
-      "transportersCount": "{{count}} Transporter"
+      "transportersCount": "{{count}} Transporter",
+      "bicyclesCount": "{{count}} Fahrräder",
+      "bicycleDriversCount": "{{count}} Fahrradfahrer"
     },
     "actions": {
       "details": "Details",
