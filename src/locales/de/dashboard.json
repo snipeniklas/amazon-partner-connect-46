@@ -85,6 +85,11 @@
     "title": "Letzte E-Mail Aktivitäten",
     "noData": "Keine E-Mail Aktivitäten gefunden"
   },
+  "forms": {
+    "title": "Letzte Formulare",
+    "noData": "Keine Formulare gefunden",
+    "submitted": "Eingereicht"
+  },
   "overview": {
     "title": "Dashboard Übersicht",
     "subtitle": "Wichtige Kennzahlen und Statistiken für Ihr Kontaktmanagement"

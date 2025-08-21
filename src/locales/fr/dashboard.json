@@ -62,6 +62,11 @@
     "title": "Activités Email Récentes",
     "noData": "Aucune activité email récente trouvée"
   },
+  "forms": {
+    "title": "Derniers Formulaires",
+    "noData": "Aucune soumission de formulaire trouvée",
+    "submitted": "Soumis"
+  },
   "overview": {
     "title": "Vue d'ensemble du Tableau de Bord",
     "subtitle": "Métriques clés et statistiques pour votre gestion des contacts"

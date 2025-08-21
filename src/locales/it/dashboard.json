@@ -62,6 +62,11 @@
     "title": "Attività Email Recenti",
     "noData": "Nessuna attività email recente trovata"
   },
+  "forms": {
+    "title": "Ultimi Moduli",
+    "noData": "Nessuna sottomissione di moduli trovata",
+    "submitted": "Inviato"
+  },
   "overview": {
     "title": "Panoramica Dashboard",
     "subtitle": "Metriche chiave e statistiche per la gestione dei contatti"

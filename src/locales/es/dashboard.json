@@ -76,6 +76,11 @@
     "awaitingResponse": "Esperando Respuesta",
     "conversionRate": "Tasa de Conversión"
   },
+  "forms": {
+    "title": "Últimos Formularios",
+    "noData": "No se encontraron envíos de formularios",
+    "submitted": "Enviado"
+  },
   "overview": {
     "title": "Resumen del Panel",
     "subtitle": "Métricas clave y estadísticas para su gestión de contactos"

@@ -15,6 +15,7 @@ import { FormsOverview } from "@/components/FormsOverview";
 import { UserManagement } from "@/components/UserManagement";
 import { DashboardOverview } from "@/components/DashboardOverview";
 import { LatestEmailActivities } from "@/components/LatestEmailActivities";
+import { LatestFormSubmissions } from "@/components/LatestFormSubmissions";
 import MetaPixelSettings from "@/components/MetaPixelSettings";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
@@ -294,7 +295,10 @@ const Dashboard = () => {
                     </p>
                     <DashboardOverview user={user} contacts={contacts} />
                   </div>
-                  <LatestEmailActivities user={user} contacts={contacts} />
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <LatestEmailActivities user={user} contacts={contacts} />
+                    <LatestFormSubmissions user={user} contacts={contacts} />
+                  </div>
                 </div>
               } />
               <Route path="/contacts" element={

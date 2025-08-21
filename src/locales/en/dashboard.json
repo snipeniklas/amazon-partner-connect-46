@@ -76,6 +76,11 @@
     "awaitingResponse": "Awaiting Response",
     "conversionRate": "Conversion Rate"
   },
+  "forms": {
+    "title": "Latest Forms",
+    "noData": "No form submissions found",
+    "submitted": "Submitted"
+  },
   "overview": {
     "title": "Dashboard Overview",
     "subtitle": "Key metrics and statistics for your contact management"
