@@ -85,7 +85,8 @@ export const marketConfigs: MarketConfigs = {
       ],
       employeeTypes: [
         "Contracted",
-        "Subcontracted"
+        "Subcontracted",
+        "Other"
       ],
       employmentStatuses: [
         "Full-Time",
@@ -130,7 +131,8 @@ export const marketConfigs: MarketConfigs = {
       ],
       employeeTypes: [
         "Contracted",
-        "Subcontracted"
+        "Subcontracted",
+        "Other"
       ],
       employmentStatuses: [
         "Full-Time",
