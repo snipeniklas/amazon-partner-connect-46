@@ -18,6 +18,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import * as XLSX from 'xlsx';
+import { getMarketConfig } from "@/config/marketConfigs";
 import { 
   Eye, Mail, CheckCircle, XCircle, ArrowRight, Building, User, 
   Phone, Globe, MapPin, Truck, Users, Package, Edit, Trash2, Download, MessageCircle
@@ -165,60 +166,75 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
     }
 
     // Prepare data for export with all fields
-    const exportData = filteredContacts.map(contact => ({
-      [t('contacts:list.columns.name')]: contact.company_name,
-      [t('contacts:list.columns.email')]: contact.email_address,
-      [t('contacts:list.export.firstName')]: contact.contact_person_first_name || '',
-      [t('contacts:list.export.lastName')]: contact.contact_person_last_name || '',
-      [t('contacts:list.columns.position')]: contact.contact_person_position || '',
-      [t('contacts:list.columns.phone')]: contact.phone_number || '',
-      [t('contacts:list.export.companyAddress')]: contact.company_address || '',
-      [t('contacts:list.export.legalForm')]: contact.legal_form || '',
-      [t('contacts:list.export.marketType')]: contact.market_type || '',
-      [t('contacts:list.export.targetMarket')]: contact.target_market || '',
-      [t('contacts:list.export.website')]: contact.website || '',
-      [t('contacts:list.export.emailSent')]: contact.email_sent ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
-      [t('contacts:list.export.formCompleted')]: contact.form_completed ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
-      [t('contacts:list.export.emailDelivered')]: contact.email_delivered ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
-      [t('contacts:list.export.emailOpened')]: contact.email_opened ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
-      [t('contacts:list.export.emailClicked')]: contact.email_clicked ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
-      [t('contacts:list.export.lastMileLogistics')]: contact.is_last_mile_logistics ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
-      [t('contacts:list.export.lastMileSince')]: contact.last_mile_since_when || '',
-      [t('contacts:list.export.foodDeliveryServices')]: contact.food_delivery_services ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
-      [t('contacts:list.columns.experience')]: contact.amazon_experience ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
-      [t('contacts:list.export.fullTimeDrivers')]: contact.delivery_driver_count || 0,
-      [t('contacts:list.export.transporterCount')]: contact.total_vehicle_count || 0,
-      [t('contacts:list.export.operatingCities')]: Array.isArray(contact.operating_cities) 
-        ? contact.operating_cities.join(', ')
-        : contact.operating_cities || '',
-      [t('contacts:list.export.availableCities')]: contact.city_availability 
-        ? Object.entries(contact.city_availability)
-            .filter(([_, available]) => available === true)
-            .map(([city, _]) => city)
-            .join(', ')
-        : '',
-      [t('contacts:list.export.vehicleTypes')]: (contact.vehicle_types || []).join(', '),
-      [t('contacts:list.export.staffTypes')]: contact.target_market === 'uk' || contact.target_market === 'ireland' 
-        ? `${contact.employee_type || ''} / ${contact.employment_status || ''}`.replace(' / ', ' / ').trim()
-        : (contact.staff_types || []).join(', '),
-      [t('contacts:list.export.foodDeliveryPlatforms')]: (contact.food_delivery_platforms || []).join(', '),
-      // Bicycle delivery specific fields
-      [t('contacts:list.export.companyOwnsVehicles')]: contact.company_owns_vehicles ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
-      [t('contacts:list.export.usesCargoBikes')]: contact.uses_cargo_bikes ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
-      [t('contacts:list.export.bicycleCount')]: contact.bicycle_count || 0,
-      [t('contacts:list.export.cargoBikeCount')]: contact.cargo_bike_count || 0,
-      [t('contacts:list.export.bicycleDriverCount')]: contact.bicycle_driver_count || 0,
-      [t('contacts:list.export.gigEconomyCompanies')]: (contact.gig_economy_companies || []).join(', '),
-      [t('contacts:list.export.gigEconomyOther')]: contact.gig_economy_other || '',
-      [t('contacts:list.export.worksForGigEconomyFood')]: contact.works_for_gig_economy_food ? t('contacts:common.yes') : t('contacts:common.no'),
-      [t('contacts:list.export.worksForQuickCommerce')]: contact.works_for_quick_commerce ? t('contacts:common.yes') : t('contacts:common.no'),
-      [t('contacts:list.export.quickCommerceCompanies')]: (contact.quick_commerce_companies || []).join(', '),
-      [t('contacts:list.export.bicycleTypes')]: (contact.bicycle_types || []).join(', '),
-      [t('contacts:list.export.employeeType')]: contact.employee_type || '',
-      [t('contacts:list.export.employmentStatus')]: contact.employment_status || '',
-      [t('contacts:list.export.additionalComments')]: contact.additional_comments || '',
-      [t('contacts:list.export.createdAt')]: new Date(contact.created_at).toLocaleDateString(),
-    }));
+    const exportData = filteredContacts.map(contact => {
+      const baseData = {
+        [t('contacts:list.columns.name')]: contact.company_name,
+        [t('contacts:list.columns.email')]: contact.email_address,
+        [t('contacts:list.export.firstName')]: contact.contact_person_first_name || '',
+        [t('contacts:list.export.lastName')]: contact.contact_person_last_name || '',
+        [t('contacts:list.columns.position')]: contact.contact_person_position || '',
+        [t('contacts:list.columns.phone')]: contact.phone_number || '',
+        [t('contacts:list.export.companyAddress')]: contact.company_address || '',
+        [t('contacts:list.export.legalForm')]: contact.legal_form || '',
+        [t('contacts:list.export.marketType')]: contact.market_type || '',
+        [t('contacts:list.export.targetMarket')]: contact.target_market || '',
+        [t('contacts:list.export.website')]: contact.website || '',
+        [t('contacts:list.export.emailSent')]: contact.email_sent ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+        [t('contacts:list.export.formCompleted')]: contact.form_completed ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+        [t('contacts:list.export.emailDelivered')]: contact.email_delivered ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+        [t('contacts:list.export.emailOpened')]: contact.email_opened ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+        [t('contacts:list.export.emailClicked')]: contact.email_clicked ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+        [t('contacts:list.export.lastMileLogistics')]: contact.is_last_mile_logistics ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+        [t('contacts:list.export.lastMileSince')]: contact.last_mile_since_when || '',
+        [t('contacts:list.export.foodDeliveryServices')]: contact.food_delivery_services ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+        [t('contacts:list.columns.experience')]: contact.amazon_experience ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+        [t('contacts:list.export.fullTimeDrivers')]: contact.delivery_driver_count || 0,
+        [t('contacts:list.export.transporterCount')]: contact.total_vehicle_count || 0,
+        [t('contacts:list.export.operatingCities')]: Array.isArray(contact.operating_cities) 
+          ? contact.operating_cities.join(', ')
+          : contact.operating_cities || '',
+        [t('contacts:list.export.availableCities')]: contact.city_availability 
+          ? Object.entries(contact.city_availability)
+              .filter(([_, available]) => available === true)
+              .map(([city, _]) => city)
+              .join(', ')
+          : '',
+        [t('contacts:list.export.vehicleTypes')]: (contact.vehicle_types || []).join(', '),
+        [t('contacts:list.export.staffTypes')]: contact.target_market === 'uk' || contact.target_market === 'ireland' 
+          ? `${contact.employee_type || ''} / ${contact.employment_status || ''}`.replace(' / ', ' / ').trim()
+          : (contact.staff_types || []).join(', '),
+        [t('contacts:list.export.foodDeliveryPlatforms')]: (contact.food_delivery_platforms || []).join(', '),
+        // Bicycle delivery specific fields
+        [t('contacts:list.export.companyOwnsVehicles')]: contact.company_owns_vehicles ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+        [t('contacts:list.export.usesCargoBikes')]: contact.uses_cargo_bikes ? t('contacts:list.experienceOptions.yes') : t('contacts:list.experienceOptions.no'),
+        [t('contacts:list.export.bicycleCount')]: contact.bicycle_count || 0,
+        [t('contacts:list.export.cargoBikeCount')]: contact.cargo_bike_count || 0,
+        [t('contacts:list.export.bicycleDriverCount')]: contact.bicycle_driver_count || 0,
+        [t('contacts:list.export.gigEconomyCompanies')]: (contact.gig_economy_companies || []).join(', '),
+        [t('contacts:list.export.gigEconomyOther')]: contact.gig_economy_other || '',
+        [t('contacts:list.export.worksForGigEconomyFood')]: contact.works_for_gig_economy_food ? t('contacts:common.yes') : t('contacts:common.no'),
+        [t('contacts:list.export.worksForQuickCommerce')]: contact.works_for_quick_commerce ? t('contacts:common.yes') : t('contacts:common.no'),
+        [t('contacts:list.export.quickCommerceCompanies')]: (contact.quick_commerce_companies || []).join(', '),
+        [t('contacts:list.export.bicycleTypes')]: (contact.bicycle_types || []).join(', '),
+        [t('contacts:list.export.employeeType')]: contact.employee_type || '',
+        [t('contacts:list.export.employmentStatus')]: contact.employment_status || '',
+        [t('contacts:list.export.additionalComments')]: contact.additional_comments || '',
+        [t('contacts:list.export.createdAt')]: new Date(contact.created_at).toLocaleDateString(),
+      };
+
+      // Add individual city columns for UK and Ireland
+      if (contact.target_market === 'uk' || contact.target_market === 'ireland') {
+        const marketConfig = getMarketConfig('van_transport', contact.target_market);
+        if (marketConfig?.cities) {
+          marketConfig.cities.forEach(city => {
+            baseData[`${t('contacts:list.export.city')} - ${city}`] = 
+              contact.city_availability?.[city] ? 'x' : '';
+          });
+        }
+      }
+
+      return baseData;
+    });
 
     const ws = XLSX.utils.json_to_sheet(exportData);
     const wb = XLSX.utils.book_new();

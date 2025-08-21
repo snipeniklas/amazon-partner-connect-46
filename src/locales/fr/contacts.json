@@ -74,7 +74,8 @@
       "employeeType": "Type d'employé",
       "employmentStatus": "Statut d'emploi",
       "additionalComments": "Commentaires supplémentaires",
-      "createdAt": "Créé le"
+      "createdAt": "Créé le",
+      "city": "Ville"
     },
     "empty": {
       "noContacts": "Aucun contact disponible. Ajoutez le premier contact.",
