@@ -1,13 +1,39 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ContactsMap } from "./ContactsMap";
 import { MapControls } from "./MapControls";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { MapPin, Loader } from "lucide-react";
 import { ContactMapData } from "@/types/contact";
+
+// Lazy load the map component to avoid SSR issues
+const ContactsMap = lazy(() => import("./ContactsMap").then(module => ({
+  default: module.ContactsMap
+})));
+
+// Error boundary component for map
+function MapErrorBoundary({ children, fallback }: { children: React.ReactNode; fallback: React.ReactNode }) {
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    const handleError = (error: ErrorEvent) => {
+      if (error.message.includes('leaflet') || error.message.includes('a is not a function')) {
+        setHasError(true);
+      }
+    };
+
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, []);
+
+  if (hasError) {
+    return <>{fallback}</>;
+  }
+
+  return <>{children}</>;
+}
 
 interface Contact {
   id: string;
@@ -171,7 +197,35 @@ export function MapView({ contacts, onContactsChange }: MapViewProps) {
           <Card>
             <CardContent className="p-0">
               <div className="h-[600px] rounded-lg overflow-hidden">
-                <ContactsMap contacts={contactsWithCoordinates} />
+                <MapErrorBoundary 
+                  fallback={
+                    <div className="flex flex-col items-center justify-center h-full bg-muted rounded-lg">
+                      <MapPin className="h-12 w-12 text-muted-foreground mb-4" />
+                      <p className="text-muted-foreground text-center">
+                        Map could not be loaded. <br />
+                        Showing {contactsWithCoordinates.length} contacts with coordinates.
+                      </p>
+                      <div className="mt-4 text-sm text-muted-foreground">
+                        {contactsWithCoordinates.slice(0, 5).map(contact => (
+                          <div key={contact.id} className="py-1">
+                            📍 {contact.company_name} - {contact.company_address}
+                          </div>
+                        ))}
+                        {contactsWithCoordinates.length > 5 && (
+                          <div className="py-1">... and {contactsWithCoordinates.length - 5} more</div>
+                        )}
+                      </div>
+                    </div>
+                  }
+                >
+                  <Suspense fallback={
+                    <div className="flex items-center justify-center h-full">
+                      <Loader className="h-8 w-8 animate-spin text-primary" />
+                    </div>
+                  }>
+                    <ContactsMap contacts={contactsWithCoordinates} />
+                  </Suspense>
+                </MapErrorBoundary>
               </div>
             </CardContent>
           </Card>
