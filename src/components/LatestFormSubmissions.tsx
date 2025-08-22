@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
@@ -24,7 +25,7 @@ interface LatestFormSubmissionsProps {
 }
 
 export function LatestFormSubmissions({ user, contacts }: LatestFormSubmissionsProps) {
-  const { t, i18n } = useTranslation(['dashboard']);
+  const { t, i18n } = useTranslation(['dashboard', 'forms']);
   const [formSubmissions, setFormSubmissions] = useState<FormSubmission[]>([]);
   const [loading, setLoading] = useState(true);
   const { hasAccessToContact } = useUserPermissions(user);
@@ -148,9 +149,17 @@ export function LatestFormSubmissions({ user, contacts }: LatestFormSubmissionsP
                   <p className="text-sm font-medium text-foreground truncate">
                     {submission.company_name}
                   </p>
-                  <p className="text-xs text-muted-foreground truncate">
+                  <p className="text-xs text-muted-foreground truncate mb-2">
                     {submission.email_address}
                   </p>
+                  <div className="flex flex-wrap gap-1">
+                    <Badge variant="secondary" className="text-xs">
+                      {t(`forms:marketTypes.${submission.market_type}`)}
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {t(`forms:markets.${submission.target_market}`)}
+                    </Badge>
+                  </div>
                 </div>
                 <div className="flex-shrink-0 text-right">
                   <p className="text-xs text-muted-foreground">
