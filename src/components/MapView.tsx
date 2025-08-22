@@ -56,6 +56,7 @@ export function MapView({ contacts, onContactsChange }: MapViewProps) {
   const { t } = useTranslation(['dashboard']);
   const { toast } = useToast();
   const [isGeocoding, setIsGeocoding] = useState(false);
+  const [geocodingProgress, setGeocodingProgress] = useState({ processed: 0, total: 0 });
   const [filters, setFilters] = useState({
     marketType: 'all',
     targetMarket: 'all',
@@ -101,35 +102,56 @@ export function MapView({ contacts, onContactsChange }: MapViewProps) {
 
   const handleGeocodeAddresses = async () => {
     setIsGeocoding(true);
+    setGeocodingProgress({ processed: 0, total: contactsWithoutCoordinates.length });
     
     try {
-      const { data, error } = await supabase.functions.invoke('geocode-addresses', {
-        body: { batch: true }
-      });
+      let totalProcessed = 0;
+      const batchSize = 100;
+      
+      // Process in multiple batches for large datasets
+      while (totalProcessed < contactsWithoutCoordinates.length) {
+        const { data, error } = await supabase.functions.invoke('geocode-addresses', {
+          body: { batch: true }
+        });
 
-      if (error) {
-        console.error('Geocoding error:', error);
-        toast({
-          title: "Error",
-          description: t('dashboard:map.geocoding.failed'),
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Success",
-          description: t('dashboard:map.geocoding.completed'),
-        });
-        onContactsChange(); // Refresh contacts to get updated coordinates
+        if (error) {
+          console.error('Geocoding error:', error);
+          toast({
+            title: "Error",
+            description: `Geocoding failed: ${error.message}`,
+            variant: "destructive",
+          });
+          break;
+        } else {
+          totalProcessed += data?.processed || 0;
+          setGeocodingProgress({ processed: totalProcessed, total: contactsWithoutCoordinates.length });
+          
+          // If no more contacts to process, break
+          if (data?.processed === 0) {
+            break;
+          }
+          
+          // Brief pause between batches
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
       }
+      
+      toast({
+        title: "Geocoding Complete",
+        description: `Successfully processed ${totalProcessed} addresses`,
+      });
+      onContactsChange(); // Refresh contacts to get updated coordinates
+      
     } catch (error) {
       console.error('Geocoding error:', error);
       toast({
         title: "Error",
-        description: t('dashboard:map.geocoding.failed'),
+        description: "Geocoding failed. Please try again.",
         variant: "destructive",
       });
     } finally {
       setIsGeocoding(false);
+      setGeocodingProgress({ processed: 0, total: 0 });
     }
   };
 
@@ -175,7 +197,7 @@ export function MapView({ contacts, onContactsChange }: MapViewProps) {
                     {isGeocoding ? (
                       <>
                         <Loader className="h-4 w-4 mr-2 animate-spin" />
-                        {t('dashboard:map.geocoding.inProgress')}
+                        Geocoding {geocodingProgress.processed}/{geocodingProgress.total}
                       </>
                     ) : (
                       <>
@@ -184,6 +206,22 @@ export function MapView({ contacts, onContactsChange }: MapViewProps) {
                       </>
                     )}
                   </Button>
+                  
+                  {isGeocoding && (
+                    <div className="mt-2">
+                      <div className="w-full bg-muted rounded-full h-2">
+                        <div 
+                          className="bg-primary h-2 rounded-full transition-all duration-300" 
+                          style={{ 
+                            width: `${geocodingProgress.total > 0 ? (geocodingProgress.processed / geocodingProgress.total) * 100 : 0}%` 
+                          }}
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1 text-center">
+                        {geocodingProgress.processed} of {geocodingProgress.total} processed
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </CardContent>

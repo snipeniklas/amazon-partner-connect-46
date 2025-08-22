@@ -71,7 +71,7 @@ serve(async (req) => {
       .from('contacts')
       .select('id, company_address, operating_cities, latitude, longitude')
       .or('latitude.is.null,longitude.is.null')
-      .limit(50); // Process in batches to avoid rate limits
+      .limit(100); // Increased batch size for faster processing
 
     if (fetchError) {
       console.error('Error fetching contacts:', fetchError);
@@ -106,14 +106,14 @@ serve(async (req) => {
         // Try geocoding company address first
         if (contact.company_address) {
           coordinates = await geocodeAddress(contact.company_address);
-          await delay(1100); // Respect rate limit: 1 request per second
+          await delay(800); // Faster processing - 800ms delay
         }
 
         // If no coordinates from company address, try first operating city
         if (!coordinates && contact.operating_cities && contact.operating_cities.length > 0) {
           const firstCity = contact.operating_cities[0];
           coordinates = await geocodeAddress(firstCity);
-          await delay(1100);
+          await delay(800);
         }
 
         // Update contact with coordinates if found
