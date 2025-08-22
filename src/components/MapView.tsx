@@ -8,10 +8,8 @@ import { useToast } from "@/hooks/use-toast";
 import { MapPin, Loader } from "lucide-react";
 import { ContactMapData } from "@/types/contact";
 
-// Lazy load the map component to avoid SSR issues
-const ContactsMap = lazy(() => import("./ContactsMap").then(module => ({
-  default: module.ContactsMap
-})));
+// Direct import to avoid lazy loading issues
+import { ContactsMap } from "./ContactsMap";
 
 // Error boundary component for map
 function MapErrorBoundary({ children, fallback }: { children: React.ReactNode; fallback: React.ReactNode }) {
@@ -218,13 +216,7 @@ export function MapView({ contacts, onContactsChange }: MapViewProps) {
                     </div>
                   }
                 >
-                  <Suspense fallback={
-                    <div className="flex items-center justify-center h-full">
-                      <Loader className="h-8 w-8 animate-spin text-primary" />
-                    </div>
-                  }>
-                    <ContactsMap contacts={contactsWithCoordinates} />
-                  </Suspense>
+                  <ContactsMap contacts={contactsWithCoordinates} />
                 </MapErrorBoundary>
               </div>
             </CardContent>

@@ -5,34 +5,18 @@ import "leaflet/dist/leaflet.css";
 import { ContactPopup } from "./ContactPopup";
 import { ContactMapData } from "@/types/contact";
 
-// Safe icon creation with fallback
-const createSafeMarkerIcon = (marketType: string) => {
-  try {
-    const color = marketType === 'van_transport' ? '#003d82' : '#228B22';
-    const emoji = marketType === 'van_transport' ? '🚐' : '🚲';
-    
-    return L.divIcon({
-      html: `<div style="
-        width: 24px;
-        height: 24px;
-        background: ${color};
-        border: 2px solid white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      ">${emoji}</div>`,
-      className: 'safe-marker',
-      iconSize: [24, 24],
-      iconAnchor: [12, 12],
-      popupAnchor: [0, -12],
-    });
-  } catch (error) {
-    console.warn('Failed to create custom icon, using default', error);
-    return new L.Icon.Default();
-  }
+// Standard marker icons using simple colors
+const createStandardMarkerIcon = (marketType: string) => {
+  const iconUrl = marketType === 'van_transport' 
+    ? 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiIGZpbGw9IiMwMDNkODIiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjx0ZXh0IHg9IjEyIiB5PSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIxMiI+VjwvdGV4dD4KPHN2Zz4K'
+    : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiIGZpbGw9IiMyMjhCMjIiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjx0ZXh0IHg9IjEyIiB5PSIxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZmZmZiIgZm9udC1zaXplPSIxMiI+QjwvdGV4dD4KPHN2Zz4K';
+
+  return new L.Icon({
+    iconUrl,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -12],
+  });
 };
 
 interface ContactsMapProps {
@@ -131,7 +115,7 @@ export function ContactsMap({ contacts }: ContactsMapProps) {
                 <Marker
                   key={contact.id}
                   position={[contact.latitude, contact.longitude]}
-                  icon={createSafeMarkerIcon(contact.market_type || 'van_transport')}
+                  icon={createStandardMarkerIcon(contact.market_type || 'van_transport')}
                 >
                   <Popup maxWidth={300} className="custom-popup">
                     <ContactPopup contact={contact} />
