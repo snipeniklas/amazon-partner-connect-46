@@ -9,7 +9,8 @@ import {
   FileText,
   List,
   BarChart3,
-  Settings
+  Settings,
+  MapPin
 } from "lucide-react";
 import {
   Sidebar,
@@ -64,6 +65,11 @@ export function AppSidebar({ contactsCount, isAdmin }: AppSidebarProps) {
       path: '/dashboard/forms',
       title: t('dashboard:tabs.formsOverview'),
       icon: FileText,
+    },
+    {
+      path: '/dashboard/map',
+      title: t('dashboard:tabs.map'),
+      icon: MapPin,
     },
     {
       path: '/dashboard/settings',

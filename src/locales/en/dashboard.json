@@ -8,6 +8,7 @@
     "upload": "CSV Upload",
     "email": "Email",
     "forms": "Forms",
+    "map": "Map View",
     "addContact": "Add Contact",
     "csvUpload": "CSV Import",
     "fileUpload": "File Import", 
@@ -84,5 +85,29 @@
   "overview": {
     "title": "Dashboard Overview",
     "subtitle": "Key metrics and statistics for your contact management"
+  },
+  "map": {
+    "title": "Map View",
+    "subtitle": "Visualize your contacts on an interactive map",
+    "filters": {
+      "marketType": "Market Type",
+      "targetMarket": "Target Market",
+      "city": "City",
+      "status": "Status",
+      "all": "All",
+      "withEmail": "Email Sent",
+      "withoutEmail": "No Email Sent",
+      "formCompleted": "Form Completed"
+    },
+    "markers": {
+      "company": "Company",
+      "operatingCity": "Operating City",
+      "viewDetails": "View Details"
+    },
+    "geocoding": {
+      "inProgress": "Geocoding addresses...",
+      "completed": "Geocoding completed",
+      "failed": "Some addresses could not be geocoded"
+    }
   }
 }

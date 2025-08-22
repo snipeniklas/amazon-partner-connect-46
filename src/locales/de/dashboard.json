@@ -12,7 +12,8 @@
     "csvUpload": "CSV Import",
     "fileUpload": "Datei Import",
     "emailSending": "E-Mail Versand", 
-    "formsOverview": "Formulare einsehen"
+    "formsOverview": "Formulare einsehen",
+    "map": "Kartenansicht"
   },
   "contacts": {
     "added": "Kontakt erfolgreich hinzugefügt!",
@@ -93,5 +94,29 @@
   "overview": {
     "title": "Dashboard Übersicht",
     "subtitle": "Wichtige Kennzahlen und Statistiken für Ihr Kontaktmanagement"
+  },
+  "map": {
+    "title": "Kartenansicht",
+    "subtitle": "Visualisieren Sie Ihre Kontakte auf einer interaktiven Karte",
+    "filters": {
+      "marketType": "Markttyp",
+      "targetMarket": "Zielmarkt",
+      "city": "Stadt",
+      "status": "Status",
+      "all": "Alle",
+      "withEmail": "E-Mail gesendet",
+      "withoutEmail": "Keine E-Mail gesendet",
+      "formCompleted": "Formular ausgefüllt"
+    },
+    "markers": {
+      "company": "Unternehmen",
+      "operatingCity": "Betriebsstadt",
+      "viewDetails": "Details anzeigen"
+    },
+    "geocoding": {
+      "inProgress": "Geocodierung der Adressen...",
+      "completed": "Geocodierung abgeschlossen",
+      "failed": "Einige Adressen konnten nicht geocodiert werden"
+    }
   }
 }

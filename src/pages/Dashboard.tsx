@@ -18,6 +18,7 @@ import { LatestEmailActivities } from "@/components/LatestEmailActivities";
 import { LatestFormSubmissions } from "@/components/LatestFormSubmissions";
 import MetaPixelSettings from "@/components/MetaPixelSettings";
 import { LanguageSelector } from "@/components/LanguageSelector";
+import { MapView } from "@/components/MapView";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { LogOut, Menu } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -50,6 +51,8 @@ const Dashboard = () => {
         return 'email';
       case '/forms':
         return 'forms';
+      case '/map':
+        return 'map';
       case '/users':
         return 'users';
       case '/settings':
@@ -361,6 +364,12 @@ const Dashboard = () => {
                     />
                   </CardContent>
                 </Card>
+              } />
+              <Route path="/map" element={
+                <MapView 
+                  contacts={contacts} 
+                  onContactsChange={fetchContacts}
+                />
               } />
               {permissions.is_admin && (
                 <Route path="/users" element={<UserManagement />} />
