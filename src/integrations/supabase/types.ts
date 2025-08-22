@@ -79,12 +79,15 @@ export type Database = {
           form_completed_at: string | null
           form_config: Json | null
           full_time_drivers: number | null
+          geocoded_at: string | null
           gig_economy_companies: string[] | null
           gig_economy_other: string | null
           id: string
           is_last_mile_logistics: boolean | null
           last_mile_since_when: string | null
+          latitude: number | null
           legal_form: string | null
+          longitude: number | null
           market_type: string | null
           operates_last_mile_logistics: boolean | null
           operates_multiple_cities: boolean | null
@@ -135,12 +138,15 @@ export type Database = {
           form_completed_at?: string | null
           form_config?: Json | null
           full_time_drivers?: number | null
+          geocoded_at?: string | null
           gig_economy_companies?: string[] | null
           gig_economy_other?: string | null
           id?: string
           is_last_mile_logistics?: boolean | null
           last_mile_since_when?: string | null
+          latitude?: number | null
           legal_form?: string | null
+          longitude?: number | null
           market_type?: string | null
           operates_last_mile_logistics?: boolean | null
           operates_multiple_cities?: boolean | null
@@ -191,12 +197,15 @@ export type Database = {
           form_completed_at?: string | null
           form_config?: Json | null
           full_time_drivers?: number | null
+          geocoded_at?: string | null
           gig_economy_companies?: string[] | null
           gig_economy_other?: string | null
           id?: string
           is_last_mile_logistics?: boolean | null
           last_mile_since_when?: string | null
+          latitude?: number | null
           legal_form?: string | null
+          longitude?: number | null
           market_type?: string | null
           operates_last_mile_logistics?: boolean | null
           operates_multiple_cities?: boolean | null
