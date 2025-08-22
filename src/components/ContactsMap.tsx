@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { ContactMarker } from "./ContactMarker";
 import { ContactPopup } from "./ContactPopup";
 import { ContactMapData } from "@/types/contact";
 
@@ -15,10 +14,10 @@ L.Icon.Default.mergeOptions({
 });
 
 // Custom icons for different market types
-const createMarkerIcon = (marketType: string, isMain: boolean = true) => {
+const createMarkerIcon = (marketType: string) => {
   const color = marketType === 'van_transport' ? '#003d82' : '#228B22'; // Amazon blue or green
-  const size = isMain ? [25, 41] : [20, 32];
-  const iconAnchor = isMain ? [12, 41] : [10, 32];
+  const size = [25, 41];
+  const iconAnchor = [12, 41];
   
   return L.divIcon({
     html: `
@@ -38,7 +37,7 @@ const createMarkerIcon = (marketType: string, isMain: boolean = true) => {
           left: 50%;
           transform: translate(-50%, -50%) rotate(45deg);
           color: white;
-          font-size: ${isMain ? '14px' : '12px'};
+          font-size: 14px;
           font-weight: bold;
         ">
           ${marketType === 'van_transport' ? '🚐' : '🚲'}
@@ -101,7 +100,7 @@ export function ContactsMap({ contacts }: ContactsMapProps) {
         <Marker
           key={contact.id}
           position={[contact.latitude, contact.longitude]}
-          icon={createMarkerIcon(contact.market_type || 'van_transport', true)}
+          icon={createMarkerIcon(contact.market_type || 'van_transport')}
         >
           <Popup maxWidth={300} className="custom-popup">
             <ContactPopup contact={contact} />
