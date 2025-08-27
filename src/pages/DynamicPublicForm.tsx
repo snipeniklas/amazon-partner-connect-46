@@ -1681,11 +1681,11 @@ const DynamicPublicForm = () => {
                             >
                               <div className="flex items-center space-x-2">
                                 <RadioGroupItem value="yes" id="owns_vehicles_yes" />
-                                <Label htmlFor="owns_vehicles_yes">{t('common:buttons.yes')}</Label>
+                                <Label htmlFor="owns_vehicles_yes">{t('forms:publicForm.logistics.companyOwnsVehiclesOption')}</Label>
                               </div>
                               <div className="flex items-center space-x-2">
                                 <RadioGroupItem value="no" id="owns_vehicles_no" />
-                                <Label htmlFor="owns_vehicles_no">{t('common:buttons.no')}</Label>
+                                <Label htmlFor="owns_vehicles_no">{t('forms:publicForm.logistics.driversProvideVehiclesOption')}</Label>
                               </div>
                             </RadioGroup>
                           </div>
@@ -1870,11 +1870,11 @@ const DynamicPublicForm = () => {
                             >
                               <div className="flex items-center space-x-2">
                                 <RadioGroupItem value="yes" id="uk_owns_vehicles_yes" />
-                                <Label htmlFor="uk_owns_vehicles_yes">{t('common:buttons.yes')}</Label>
+                                <Label htmlFor="uk_owns_vehicles_yes">{t('forms:publicForm.logistics.companyOwnsVehiclesOption')}</Label>
                               </div>
                               <div className="flex items-center space-x-2">
                                 <RadioGroupItem value="no" id="uk_owns_vehicles_no" />
-                                <Label htmlFor="uk_owns_vehicles_no">{t('common:buttons.no')}</Label>
+                                <Label htmlFor="uk_owns_vehicles_no">{t('forms:publicForm.logistics.driversProvideVehiclesOption')}</Label>
                               </div>
                             </RadioGroup>
                           </div>

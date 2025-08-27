@@ -33,6 +33,8 @@
       "worksForQuickCommerce": "Arbeitet Ihr Unternehmen für app-basierte On-Demand-Essenslieferungen?",
       "operatesLastMileLogistics": "Ist Ihr Unternehmen im Last-Mile-Logistik-Bereich tätig?",
       "companyOwnsVehicles": "Besitzt Ihr Unternehmen die Fahrzeuge (einschließlich Fahrräder) oder stellen die Fahrer ihre eigenen?",
+      "companyOwnsVehiclesOption": "Unternehmen besitzt Fahrzeuge",
+      "driversProvideVehiclesOption": "Fahrer stellen eigene Fahrzeuge zur Verfügung",
       "usesCargobikes": "Verwendet Ihr Unternehmen Lastenfahrräder oder Anhänger zum Transport von Paketen?",
       "employeeType": "Verwendet Ihr Unternehmen Angestellte, selbständige Auftragnehmer oder beides?",
       "companyEstablishedYear": "In welchem Jahr wurde Ihr Unternehmen gegründet?",

@@ -34,6 +34,8 @@
       "operatesLastMileLogistics": "Does your company operate in the Last Mile Logistics space?",
       "companyOwnsVehicles": "Does your company own the vehicles (including bikes) or do drivers provide their own?",
       "companyOwnsVehiclesUkIreland": "Does your company own the vehicles or do drivers provide their own?",
+      "companyOwnsVehiclesOption": "Company Owns Vehicles",
+      "driversProvideVehiclesOption": "Drivers Provide Their Own Vehicles",
       "usesCargobikes": "Does your company use cargo bikes or any kind of attachments such as attachable trailers to carry packages?",
       "employeeType": "Does your company use contracted employees, employee independent contractors, or both?",
       "companyEstablishedYear": "In what year was your company established?",

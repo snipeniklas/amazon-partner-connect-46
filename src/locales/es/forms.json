@@ -33,6 +33,8 @@
       "worksForQuickCommerce": "¿Su empresa trabaja en entrega de comida bajo demanda basada en aplicaciones?",
       "operatesLastMileLogistics": "¿Su empresa opera en el espacio de logística de última milla?",
       "companyOwnsVehicles": "¿Su empresa posee los vehículos (incluidas las bicicletas) o los conductores proporcionan los suyos?",
+      "companyOwnsVehiclesOption": "La empresa posee los vehículos",
+      "driversProvideVehiclesOption": "Los conductores proporcionan sus propios vehículos",
       "usesCargobikes": "¿Su empresa usa bicicletas de carga o remolques para transportar paquetes?",
       "employeeType": "¿Su empresa utiliza empleados contratados, contratistas independientes, o ambos?",
       "companyEstablishedYear": "¿En qué año se estableció su empresa?",
