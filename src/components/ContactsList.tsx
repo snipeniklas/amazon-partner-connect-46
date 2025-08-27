@@ -201,7 +201,7 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
           : '',
         [t('contacts:list.export.vehicleTypes')]: (contact.vehicle_types || []).join(', '),
         [t('contacts:list.export.staffTypes')]: contact.target_market === 'uk' || contact.target_market === 'ireland' 
-          ? `${contact.employee_type || ''} / ${contact.employment_status || ''}`.replace(' / ', ' / ').trim()
+          ? [contact.employee_type, contact.employment_status].filter(Boolean).join(' / ')
           : (contact.staff_types || []).join(', '),
         [t('contacts:list.export.foodDeliveryPlatforms')]: (contact.food_delivery_platforms || []).join(', '),
         // Bicycle delivery specific fields
