@@ -916,13 +916,14 @@ const DynamicPublicForm = () => {
              step2Fields.last_mile_since_when = 'Erfahrung seit Jahr';
            }
            
-            if (marketType === 'bicycle_delivery') {
-              step2Fields.works_for_quick_commerce = 'Quick Commerce Arbeit';
-              step2Fields.works_for_gig_economy_food = 'Gig Economy Food Arbeit';
-              step2Fields.bicycle_count = 'Anzahl Fahrräder';
-              step2Fields.cargo_bike_count = 'Anzahl Lastenfahrräder';
-              step2Fields.bicycle_types = 'Fahrradtypen';
-            }
+             if (marketType === 'bicycle_delivery') {
+               step2Fields.works_for_quick_commerce = 'Quick Commerce Arbeit';
+               step2Fields.works_for_gig_economy_food = 'Gig Economy Food Arbeit';
+               step2Fields.legal_form = 'Rechtsform';
+               step2Fields.bicycle_count = 'Anzahl Fahrräder';
+               step2Fields.cargo_bike_count = 'Anzahl Lastenfahrräder';
+               step2Fields.bicycle_types = 'Fahrradtypen';
+             }
            
            if (marketType === 'van_transport') {
              step2Fields.legal_form = 'Legal Status';
@@ -1512,6 +1513,23 @@ const DynamicPublicForm = () => {
                                 {t('forms:publicForm.logistics.experienceValidationHint', { year: formData.company_established_year })}
                               </p>
                             )}
+                          </div>
+                         )}
+
+                        {/* Legal Form for bicycle_delivery */}
+                        {marketType === 'bicycle_delivery' && (
+                          <div className="space-y-2">
+                            <Label htmlFor="legal_form" className={hasFieldError('legal_form') ? 'text-destructive' : ''}>
+                              {t('forms:publicForm.logistics.legalStatus')} *
+                            </Label>
+                            <Input
+                              id="legal_form"
+                              value={formData.legal_form}
+                              onChange={(e) => updateFormData('legal_form', e.target.value)}
+                              className={hasFieldError('legal_form') ? 'border-destructive focus:border-destructive' : ''}
+                              placeholder={t('forms:publicForm.placeholders.legalStatusPlaceholder')}
+                              required
+                            />
                           </div>
                         )}
                       </div>
