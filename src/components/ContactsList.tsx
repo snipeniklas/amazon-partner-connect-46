@@ -169,13 +169,13 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
     const exportData = filteredContacts.map(contact => {
       const baseData = {
         [t('contacts:list.columns.name')]: contact.company_name,
+        [t('contacts:list.export.legalForm')]: contact.legal_form || '',
         [t('contacts:list.columns.email')]: contact.email_address,
         [t('contacts:list.export.firstName')]: contact.contact_person_first_name || '',
         [t('contacts:list.export.lastName')]: contact.contact_person_last_name || '',
         [t('contacts:list.columns.position')]: contact.contact_person_position || '',
         [t('contacts:list.columns.phone')]: contact.phone_number || '',
         [t('contacts:list.export.companyAddress')]: contact.company_address || '',
-        [t('contacts:list.export.legalForm')]: contact.legal_form || '',
         [t('contacts:list.export.marketType')]: contact.market_type || '',
         [t('contacts:list.export.targetMarket')]: contact.target_market || '',
         [t('contacts:list.export.website')]: contact.website || '',
