@@ -1301,16 +1301,16 @@ const DynamicPublicForm = () => {
                   </CardContent>
                 </Card>
 
-                <div className="flex flex-col gap-4 sm:flex-row sm:justify-between pt-6 px-4 pb-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-between pt-6 px-4 pb-6 min-h-[120px]">
                   <Button 
                     variant="outline" 
                     onClick={() => setShowSummary(false)}
-                    className="w-full sm:w-auto order-3 sm:order-1"
+                    className="w-full sm:w-auto"
                   >
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     {t('common:buttons.back')}
                   </Button>
-                  <div className="flex flex-col gap-3 sm:flex-row sm:gap-2 order-1 sm:order-2">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:gap-2">
                     <Button 
                       variant="outline"
                       onClick={generatePDF}
