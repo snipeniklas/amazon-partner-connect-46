@@ -103,6 +103,8 @@
     "partTimeOption": "Part-time",
     "contractedEmployees": "Contracted Employees",
     "independentContractors": "Independent Contractors",
+    "employeeTypeStudent": "Student",
+    "employeeTypeFreelance": "Freelance",
     "bothOption": "Both",
     "amazonExperiencePlaceholder": "Please describe your parcel delivery service experience or write 'No' if none",
       "otherGigEconomyCompany": "Please describe",

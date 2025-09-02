@@ -173,13 +173,13 @@ export const marketConfigs: MarketConfigs = {
       staffTypes: [
         "Full-time",
         "Part-time",
-        "Freelance",
-        "Student"
+        "Both"
       ],
       employeeTypes: [
         "Contracted",
         "Subcontracted",
-        "Other"
+        "Student",
+        "Freelance"
       ],
       platforms: [
         "Uber Eats",
@@ -218,13 +218,13 @@ export const marketConfigs: MarketConfigs = {
       staffTypes: [
         "Full-time",
         "Part-time",
-        "Freelance",
-        "Student"
+        "Both"
       ],
       employeeTypes: [
         "Contracted",
         "Subcontracted",
-        "Other"
+        "Student",
+        "Freelance"
       ],
       platforms: [
         "Uber Eats",
@@ -265,13 +265,13 @@ export const marketConfigs: MarketConfigs = {
       staffTypes: [
         "Temps Plein",
         "Temps Partiel",
-        "Freelance",
-        "Étudiant"
+        "Les deux"
       ],
       employeeTypes: [
         "Contractuel",
         "Sous-traitant",
-        "Autre"
+        "Étudiant",
+        "Freelance"
       ],
       platforms: [
         "Uber Eats",
@@ -310,13 +310,13 @@ export const marketConfigs: MarketConfigs = {
       staffTypes: [
         "Tiempo Completo",
         "Tiempo Parcial",
-        "Freelance",
-        "Estudiante"
+        "Ambos"
       ],
       employeeTypes: [
         "Contratado",
         "Subcontratado",
-        "Otro"
+        "Estudiante",
+        "Freelance"
       ],
       platforms: [
         "Uber Eats",
@@ -355,13 +355,13 @@ export const marketConfigs: MarketConfigs = {
       staffTypes: [
         "Tiempo Completo",
         "Tiempo Parcial",
-        "Freelance",
-        "Estudiante"
+        "Ambos"
       ],
       employeeTypes: [
         "Contratado",
         "Subcontratado",
-        "Otro"
+        "Estudiante",
+        "Freelance"
       ],
       platforms: [
         "Uber Eats",
@@ -400,13 +400,13 @@ export const marketConfigs: MarketConfigs = {
       staffTypes: [
         "Vollzeit",
         "Teilzeit",
-        "Freelance",
-        "Student"
+        "Beide"
       ],
       employeeTypes: [
         "Angestellt",
         "Subunternehmer",
-        "Andere"
+        "Student",
+        "Freelance"
       ],
       platforms: [
         "Uber Eats",

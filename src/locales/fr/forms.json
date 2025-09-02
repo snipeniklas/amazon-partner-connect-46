@@ -102,6 +102,8 @@
     "partTimeOption": "Temps partiel",
     "contractedEmployees": "Employés Contractuels",
     "independentContractors": "Contractants Indépendants",
+    "employeeTypeStudent": "Étudiant",
+    "employeeTypeFreelance": "Freelance",
     "bothOption": "Les deux",
     "amazonExperiencePlaceholder": "Veuillez décrire votre expérience avec les services de colis ou écrire 'Non' si aucune",
       "otherGigEconomyCompany": "Veuillez décrire",

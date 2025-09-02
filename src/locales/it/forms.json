@@ -102,6 +102,8 @@
     "partTimeOption": "Tempo parziale",
     "contractedEmployees": "Dipendenti Assunti",
     "independentContractors": "Collaboratori Indipendenti",
+    "employeeTypeStudent": "Studente",
+    "employeeTypeFreelance": "Freelance",
     "bothOption": "Entrambi",
     "amazonExperiencePlaceholder": "Descrivi la tua esperienza con servizi di pacchi o scrivi 'No' se non ne hai",
       "otherGigEconomyCompany": "Per favore descrivi",
