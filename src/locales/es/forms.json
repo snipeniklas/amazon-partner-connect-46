@@ -127,7 +127,8 @@
     "selectAtLeastOneVehicleType": "Por favor seleccione al menos un tipo de vehículo",
     "selectAtLeastOneStaffType": "Por favor seleccione al menos un tipo de personal",
     "selectAtLeastOneLocation": "Por favor seleccione al menos una {{location}}",
-    "bicycleTypesRequired": "Por favor seleccione al menos un tipo de bicicleta"
+    "bicycleTypesRequired": "Por favor seleccione al menos un tipo de bicicleta",
+    "selectEmployeeType": "Por favor seleccione un tipo de empleado"
   },
   "gigEconomyCompanies": {
     "uberEats": "Uber Eats",

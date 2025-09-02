@@ -176,6 +176,11 @@ export const marketConfigs: MarketConfigs = {
         "Freelance",
         "Student"
       ],
+      employeeTypes: [
+        "Contracted",
+        "Subcontracted",
+        "Other"
+      ],
       platforms: [
         "Uber Eats",
         "Deliveroo",
@@ -215,6 +220,11 @@ export const marketConfigs: MarketConfigs = {
         "Part-time",
         "Freelance",
         "Student"
+      ],
+      employeeTypes: [
+        "Contracted",
+        "Subcontracted",
+        "Other"
       ],
       platforms: [
         "Uber Eats",
@@ -258,6 +268,11 @@ export const marketConfigs: MarketConfigs = {
         "Freelance",
         "Étudiant"
       ],
+      employeeTypes: [
+        "Contractuel",
+        "Sous-traitant",
+        "Autre"
+      ],
       platforms: [
         "Uber Eats",
         "Deliveroo",
@@ -297,6 +312,11 @@ export const marketConfigs: MarketConfigs = {
         "Tiempo Parcial",
         "Freelance",
         "Estudiante"
+      ],
+      employeeTypes: [
+        "Contratado",
+        "Subcontratado",
+        "Otro"
       ],
       platforms: [
         "Uber Eats",
@@ -338,6 +358,11 @@ export const marketConfigs: MarketConfigs = {
         "Freelance",
         "Estudiante"
       ],
+      employeeTypes: [
+        "Contratado",
+        "Subcontratado",
+        "Otro"
+      ],
       platforms: [
         "Uber Eats",
         "Deliveroo",
@@ -377,6 +402,11 @@ export const marketConfigs: MarketConfigs = {
         "Teilzeit",
         "Freelance",
         "Student"
+      ],
+      employeeTypes: [
+        "Angestellt",
+        "Subunternehmer",
+        "Andere"
       ],
       platforms: [
         "Uber Eats",

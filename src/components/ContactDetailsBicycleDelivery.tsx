@@ -66,8 +66,8 @@ export const ContactDetailsBicycleDelivery = ({ contact }: ContactDetailsBicycle
           )}
           {contact.employee_type && (
             <div className="flex items-center gap-2">
-              <span className="font-medium">Mitarbeitertyp: </span>
-              <span className="text-muted-foreground">{contact.employee_type}</span>
+              <span className="font-medium">Beschäftigungsart: </span>
+              <Badge variant="outline">{contact.employee_type}</Badge>
             </div>
           )}
           {contact.staff_types && contact.staff_types.length > 0 && (

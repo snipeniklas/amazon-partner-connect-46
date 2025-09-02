@@ -954,6 +954,7 @@ const DynamicPublicForm = () => {
             if (marketType === 'bicycle_delivery') {
               step3Fields.delivery_driver_count = 'Anzahl Lieferfahrer';
               step3Fields.bicycle_driver_count = 'Anzahl Fahrrad-Fahrer';
+              step3Fields.employee_type = 'Beschäftigungsart';
             }
             
             return step3Fields;
@@ -2100,31 +2101,59 @@ const DynamicPublicForm = () => {
                              </fieldset>
                            </div>
                          </div>
-                       ) : (
-                         /* Other markets: Original staff types */
-                         <div className="space-y-4">
-                           <fieldset>
-                             <legend className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${hasFieldError('staff_types') ? 'text-destructive' : ''}`}>
-                               {marketType === 'bicycle_delivery' ? t('forms:publicForm.ridersTypes') : t('forms:publicForm.staffVehicles.staffTypes')} *
-                             </legend>
-                             {hasFieldError('staff_types') && (
-                               <p className="text-sm text-destructive">{t('forms:validation.selectAtLeastOneStaffType')}</p>
-                             )}
-                             <div className="grid grid-cols-2 gap-3">
-                               {marketConfig.staffTypes.map((type) => (
-                                 <div key={type} className="flex items-center space-x-2">
-                                   <Checkbox
-                                     id={`staff_${type}`}
-                                     checked={formData.staff_types.includes(type)}
-                                     onCheckedChange={() => toggleArrayItem('staff_types', type)}
-                                   />
-                                   <Label htmlFor={`staff_${type}`} className="text-sm">{type}</Label>
-                                 </div>
-                               ))}
-                             </div>
-                           </fieldset>
-                         </div>
-                       )}
+                        ) : (
+                          /* Other markets: Original staff types */
+                          <div className="space-y-6">
+                            <fieldset>
+                              <legend className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${hasFieldError('staff_types') ? 'text-destructive' : ''}`}>
+                                {marketType === 'bicycle_delivery' ? t('forms:publicForm.ridersTypes') : t('forms:publicForm.staffVehicles.staffTypes')} *
+                              </legend>
+                              {hasFieldError('staff_types') && (
+                                <p className="text-sm text-destructive">{t('forms:validation.selectAtLeastOneStaffType')}</p>
+                              )}
+                              <div className="grid grid-cols-2 gap-3">
+                                {marketConfig.staffTypes.map((type) => (
+                                  <div key={type} className="flex items-center space-x-2">
+                                    <Checkbox
+                                      id={`staff_${type}`}
+                                      checked={formData.staff_types.includes(type)}
+                                      onCheckedChange={() => toggleArrayItem('staff_types', type)}
+                                    />
+                                    <Label htmlFor={`staff_${type}`} className="text-sm">{type}</Label>
+                                  </div>
+                                ))}
+                              </div>
+                            </fieldset>
+
+                            {/* Employment Type for bicycle delivery */}
+                            {marketType === 'bicycle_delivery' && marketConfig.employeeTypes && (
+                              <fieldset>
+                                <legend className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${hasFieldError('employee_type') ? 'text-destructive' : ''}`}>
+                                  {t('forms:publicForm.logistics.employeeType')} *
+                                </legend>
+                                {hasFieldError('employee_type') && (
+                                  <p className="text-sm text-destructive">{t('forms:validation.selectEmployeeType')}</p>
+                                )}
+                                <div className="grid grid-cols-2 gap-3">
+                                  {marketConfig.employeeTypes.map((type) => (
+                                    <div key={type} className="flex items-center space-x-2">
+                                      <Checkbox
+                                        id={`employee_type_${type}`}
+                                        checked={formData.employee_type === type}
+                                        onCheckedChange={(checked) => {
+                                          if (checked) {
+                                            updateFormData('employee_type', type);
+                                          }
+                                        }}
+                                      />
+                                      <Label htmlFor={`employee_type_${type}`} className="text-sm">{type}</Label>
+                                    </div>
+                                  ))}
+                                </div>
+                              </fieldset>
+                            )}
+                          </div>
+                        )}
 
                         {/* Employee/Staff questions moved from Step 2 */}
                         {marketType === 'van_transport' && (
