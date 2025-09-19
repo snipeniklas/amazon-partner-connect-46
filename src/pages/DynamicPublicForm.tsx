@@ -1012,7 +1012,7 @@ const DynamicPublicForm = () => {
            missingFields.push(label as string);
            console.log(`[VALIDATION ERROR] Keine Stadt/Zone ausgewählt`);
          }
-        } else if (field === 'is_last_mile_logistics' || field === 'works_for_quick_commerce' || field === 'works_for_gig_economy_food' || field === 'company_owns_vehicles' || field === 'operates_multiple_countries' || field === 'operates_multiple_cities') {
+        } else if (field === 'is_last_mile_logistics' || field === 'works_for_quick_commerce' || field === 'works_for_gig_economy_food' || field === 'company_owns_vehicles' || field === 'operates_multiple_countries' || field === 'operates_multiple_cities' || field === 'uses_scooters') {
           // For boolean fields that start as null (UK specific), we need explicit selection
           if (field === 'company_owns_vehicles') {
            if (value === null) {
@@ -1032,7 +1032,14 @@ const DynamicPublicForm = () => {
            console.log(`[VALIDATION SKIP] Boolean-Feld "${field}" hat Standardwert (${value}), keine Validierung nötig`);
            // Skip validation for these standard boolean fields as they have default values
          }
-         // For other boolean fields, we skip validation as they have default values
+          // For uses_scooters, needs explicit selection in bicycle delivery
+          else if (field === 'uses_scooters' && targetMarket === 'bicycle_delivery') {
+            if (value === null || value === undefined) {
+              missingFields.push(label as string);
+              console.log(`[VALIDATION ERROR] Boolean-Feld "${field}" ist null für Fahrradlieferung`);
+            }
+          }
+          // For other boolean fields, we skip validation as they have default values
        } else if (field === 'last_mile_since_when') {
          // Special validation for experience year
          if (!value || (typeof value === 'string' && !value.trim())) {
