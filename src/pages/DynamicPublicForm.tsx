@@ -1864,7 +1864,7 @@ const DynamicPublicForm = () => {
                                             onCheckedChange={() => toggleArrayItem('scooter_types', type)}
                                           />
                                           <Label htmlFor={`scooter_type_${type.toLowerCase().replace('-', '_')}`}>
-                                            {t(`forms:publicForm.logistics.scooterType${type.replace('-', '')}`)}
+                                            {t(`forms:publicForm.logistics.scooterType${type.replace(/[-\s]/g, '')}`)}
                                           </Label>
                                         </div>
                                       ))}
