@@ -96,6 +96,12 @@ const DynamicPublicForm = () => {
     
     // Bicycle types
     bicycle_types: [] as string[],
+    
+    // Scooter fields
+    uses_scooters: null as boolean | null,
+    willing_to_acquire_scooters: null as boolean | null,
+    scooter_count: null as number | null,
+    scooter_types: [] as string[],
   });
 
   // Get total steps based on market type
@@ -916,14 +922,20 @@ const DynamicPublicForm = () => {
              step2Fields.last_mile_since_when = 'Erfahrung seit Jahr';
            }
            
-             if (marketType === 'bicycle_delivery') {
-               step2Fields.works_for_quick_commerce = 'Quick Commerce Arbeit';
-               step2Fields.works_for_gig_economy_food = 'Gig Economy Food Arbeit';
-               step2Fields.legal_form = 'Rechtsform';
-               step2Fields.bicycle_count = 'Anzahl Fahrräder';
-               step2Fields.cargo_bike_count = 'Anzahl Lastenfahrräder';
-               step2Fields.bicycle_types = 'Fahrradtypen';
-             }
+              if (marketType === 'bicycle_delivery') {
+                step2Fields.works_for_quick_commerce = 'Quick Commerce Arbeit';
+                step2Fields.works_for_gig_economy_food = 'Gig Economy Food Arbeit';
+                step2Fields.legal_form = 'Rechtsform';
+                step2Fields.bicycle_count = 'Anzahl Fahrräder';
+                step2Fields.cargo_bike_count = 'Anzahl Lastenfahrräder';
+                step2Fields.bicycle_types = 'Fahrradtypen';
+                step2Fields.uses_scooters = 'Scooter-Nutzung';
+                
+                // Conditional validation for scooter fields
+                if (formData.uses_scooters === true) {
+                  step2Fields.scooter_count = 'Anzahl Scooter';
+                }
+              }
            
            if (marketType === 'van_transport') {
              step2Fields.legal_form = 'Legal Status';
@@ -1774,6 +1786,86 @@ const DynamicPublicForm = () => {
                                 <span className="text-sm text-red-500">{t('forms:validation.bicycleTypesRequired')}</span>
                               )}
                             </div>
+                          )}
+
+                          {/* Scooter Questions for Bicycle Delivery */}
+                          {marketType === 'bicycle_delivery' && (
+                            <>
+                              <div className="space-y-4">
+                                <Label>{t('forms:publicForm.logistics.usesScooters')} *</Label>
+                                <RadioGroup
+                                  value={formData.uses_scooters ? 'yes' : 'no'}
+                                  onValueChange={(value) => updateFormData('uses_scooters', value === 'yes')}
+                                >
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="yes" id="uses_scooters_yes" />
+                                    <Label htmlFor="uses_scooters_yes">{t('common:buttons.yes')}</Label>
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="no" id="uses_scooters_no" />
+                                    <Label htmlFor="uses_scooters_no">{t('common:buttons.no')}</Label>
+                                  </div>
+                                </RadioGroup>
+                                {hasFieldError('uses_scooters') && (
+                                  <span className="text-sm text-red-500">{t('forms:validation.usesScootersRequired')}</span>
+                                )}
+                              </div>
+
+                              {formData.uses_scooters === false && (
+                                <div className="space-y-4">
+                                  <Label>{t('forms:publicForm.logistics.willingToAcquireScooters')}</Label>
+                                  <RadioGroup
+                                    value={formData.willing_to_acquire_scooters ? 'yes' : 'no'}
+                                    onValueChange={(value) => updateFormData('willing_to_acquire_scooters', value === 'yes')}
+                                  >
+                                    <div className="flex items-center space-x-2">
+                                      <RadioGroupItem value="yes" id="willing_scooters_yes" />
+                                      <Label htmlFor="willing_scooters_yes">{t('common:buttons.yes')}</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                      <RadioGroupItem value="no" id="willing_scooters_no" />
+                                      <Label htmlFor="willing_scooters_no">{t('common:buttons.no')}</Label>
+                                    </div>
+                                  </RadioGroup>
+                                </div>
+                              )}
+
+                              {formData.uses_scooters === true && (
+                                <>
+                                  <div className="space-y-4">
+                                    <Label>{t('forms:publicForm.logistics.scooterCount')} *</Label>
+                                    <Input
+                                      type="number"
+                                      min="0"
+                                      value={formData.scooter_count || ''}
+                                      onChange={(e) => updateFormData('scooter_count', parseInt(e.target.value) || 0)}
+                                      placeholder="0"
+                                    />
+                                    {hasFieldError('scooter_count') && (
+                                      <span className="text-sm text-red-500">{t('forms:validation.scooterCountRequired')}</span>
+                                    )}
+                                  </div>
+
+                                  <div className="space-y-4">
+                                    <Label>{t('forms:publicForm.logistics.scooterTypes')}</Label>
+                                    <div className="grid grid-cols-1 gap-3">
+                                      {['Scooter', 'E-Scooter', 'Cargo Scooter'].map((type) => (
+                                        <div key={type} className="flex items-center space-x-2">
+                                          <Checkbox
+                                            id={`scooter_type_${type.toLowerCase().replace('-', '_')}`}
+                                            checked={(formData.scooter_types || []).includes(type)}
+                                            onCheckedChange={() => toggleArrayItem('scooter_types', type)}
+                                          />
+                                          <Label htmlFor={`scooter_type_${type.toLowerCase().replace('-', '_')}`}>
+                                            {t(`forms:publicForm.logistics.scooterType${type.replace('-', '')}`)}
+                                          </Label>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </>
+                              )}
+                            </>
                           )}
 
                           <div className="space-y-4">

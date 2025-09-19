@@ -26,6 +26,11 @@ interface Contact {
   total_vehicle_count?: number;
   operates_multiple_countries?: boolean;
   operates_multiple_cities?: boolean;
+  // Scooter fields
+  uses_scooters?: boolean;
+  willing_to_acquire_scooters?: boolean;
+  scooter_count?: number;
+  scooter_types?: string[];
 }
 
 interface ContactDetailsBicycleDeliveryProps {
@@ -124,6 +129,38 @@ export const ContactDetailsBicycleDelivery = ({ contact }: ContactDetailsBicycle
             <div className="flex items-center gap-2">
               <span className="font-medium">Gesamtfahrzeuge: </span>
               <Badge variant="outline">{contact.total_vehicle_count}</Badge>
+            </div>
+          )}
+          {contact.uses_scooters !== undefined && (
+            <div className="flex items-center gap-2">
+              <span className="font-medium">Nutzt Scooter: </span>
+              <Badge variant={contact.uses_scooters ? "default" : "secondary"}>
+                {contact.uses_scooters ? "✓ Ja" : "✗ Nein"}
+              </Badge>
+            </div>
+          )}
+          {contact.willing_to_acquire_scooters !== undefined && !contact.uses_scooters && (
+            <div className="flex items-center gap-2">
+              <span className="font-medium">Bereit Scooter zu beschaffen: </span>
+              <Badge variant={contact.willing_to_acquire_scooters ? "default" : "secondary"}>
+                {contact.willing_to_acquire_scooters ? "✓ Ja" : "✗ Nein"}
+              </Badge>
+            </div>
+          )}
+          {contact.scooter_count !== undefined && contact.uses_scooters && (
+            <div className="flex items-center gap-2">
+              <span className="font-medium">Anzahl Scooter: </span>
+              <Badge variant="outline">{contact.scooter_count}</Badge>
+            </div>
+          )}
+          {contact.scooter_types && contact.scooter_types.length > 0 && (
+            <div>
+              <span className="font-medium">Scooter-Typen: </span>
+              <div className="flex flex-wrap gap-1 mt-1">
+                {contact.scooter_types.map((type, index) => (
+                  <Badge key={index} variant="outline">{type}</Badge>
+                ))}
+              </div>
             </div>
           )}
         </CardContent>

@@ -97,6 +97,8 @@ export type Database = {
           quick_commerce_companies: string[] | null
           quick_commerce_other: string | null
           resend_email_id: string | null
+          scooter_count: number | null
+          scooter_types: string[] | null
           staff_types: string[] | null
           target_market: string | null
           total_vehicle_count: number | null
@@ -104,8 +106,10 @@ export type Database = {
           updated_at: string
           user_id: string
           uses_cargo_bikes: boolean | null
+          uses_scooters: boolean | null
           vehicle_types: string[] | null
           website: string | null
+          willing_to_acquire_scooters: boolean | null
           works_for_gig_economy_food: boolean | null
           works_for_quick_commerce: boolean | null
         }
@@ -156,6 +160,8 @@ export type Database = {
           quick_commerce_companies?: string[] | null
           quick_commerce_other?: string | null
           resend_email_id?: string | null
+          scooter_count?: number | null
+          scooter_types?: string[] | null
           staff_types?: string[] | null
           target_market?: string | null
           total_vehicle_count?: number | null
@@ -163,8 +169,10 @@ export type Database = {
           updated_at?: string
           user_id: string
           uses_cargo_bikes?: boolean | null
+          uses_scooters?: boolean | null
           vehicle_types?: string[] | null
           website?: string | null
+          willing_to_acquire_scooters?: boolean | null
           works_for_gig_economy_food?: boolean | null
           works_for_quick_commerce?: boolean | null
         }
@@ -215,6 +223,8 @@ export type Database = {
           quick_commerce_companies?: string[] | null
           quick_commerce_other?: string | null
           resend_email_id?: string | null
+          scooter_count?: number | null
+          scooter_types?: string[] | null
           staff_types?: string[] | null
           target_market?: string | null
           total_vehicle_count?: number | null
@@ -222,8 +232,10 @@ export type Database = {
           updated_at?: string
           user_id?: string
           uses_cargo_bikes?: boolean | null
+          uses_scooters?: boolean | null
           vehicle_types?: string[] | null
           website?: string | null
+          willing_to_acquire_scooters?: boolean | null
           works_for_gig_economy_food?: boolean | null
           works_for_quick_commerce?: boolean | null
         }

@@ -96,6 +96,13 @@
     "ridersCount": "Número de repartidores",
     "bikesVehiclesQuestion": "¿Qué tipos de bicicletas/vehículos utiliza?",
     "totalBikesVehicles": "Número total de bicicletas/vehículos",
+    "usesScooters": "¿Su empresa también utiliza scooters/e-scooters/cargo scooters para entregas?",
+    "willingToAcquireScooters": "¿Estarían dispuestos a adquirir scooters para negocios apropiados?",
+    "scooterCount": "¿Cuántos scooters tienen en funcionamiento?",
+    "scooterTypes": "¿Qué tipos de scooters utilizan?",
+    "scooterTypeScooter": "Scooter",
+    "scooterTypeEScooter": "E-Scooter",
+    "scooterTypeCargoScooter": "Cargo Scooter",
     "employeeTypeSelectPlaceholder": "Seleccionar tipo de empleado",
     "employmentStatusPlaceholder": "Seleccionar estado de empleo",
     "fullTimeOption": "Tiempo completo",
@@ -130,6 +137,8 @@
     "selectAtLeastOneStaffType": "Por favor seleccione al menos un tipo de personal",
     "selectAtLeastOneLocation": "Por favor seleccione al menos una {{location}}",
     "bicycleTypesRequired": "Por favor seleccione al menos un tipo de bicicleta",
+    "usesScootersRequired": "Por favor indique si utilizan scooters",
+    "scooterCountRequired": "Por favor proporcione el número de scooters",
     "selectEmployeeType": "Por favor seleccione un tipo de empleado"
   },
   "gigEconomyCompanies": {

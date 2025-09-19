@@ -71,6 +71,11 @@ interface Contact {
   works_for_gig_economy_food?: boolean;
   works_for_quick_commerce?: boolean;
   bicycle_types?: string[];
+  // Scooter fields
+  uses_scooters?: boolean;
+  willing_to_acquire_scooters?: boolean;
+  scooter_count?: number;
+  scooter_types?: string[];
   // Email tracking fields
   email_delivered?: boolean;
   email_opened?: boolean;
@@ -216,6 +221,10 @@ export const ContactsList = ({ contacts, onContactsChange }: ContactsListProps) 
         [t('contacts:list.export.worksForQuickCommerce')]: contact.works_for_quick_commerce ? t('contacts:common.yes') : t('contacts:common.no'),
         [t('contacts:list.export.quickCommerceCompanies')]: (contact.quick_commerce_companies || []).join(', '),
         [t('contacts:list.export.bicycleTypes')]: (contact.bicycle_types || []).join(', '),
+        [t('contacts:list.export.usesScooters')]: contact.uses_scooters ? t('contacts:common.yes') : t('contacts:common.no'),
+        [t('contacts:list.export.willingToAcquireScooters')]: contact.willing_to_acquire_scooters ? t('contacts:common.yes') : t('contacts:common.no'),
+        [t('contacts:list.export.scooterCount')]: contact.scooter_count || 0,
+        [t('contacts:list.export.scooterTypes')]: (contact.scooter_types || []).join(', '),
         [t('contacts:list.export.employeeType')]: contact.employee_type || '',
         [t('contacts:list.export.employmentStatus')]: contact.employment_status || '',
         [t('contacts:list.export.additionalComments')]: contact.additional_comments || '',
